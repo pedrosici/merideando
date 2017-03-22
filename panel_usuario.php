@@ -1,6 +1,6 @@
 <?php
 
-//Evitamos que nos salgan los NOTICES de PHP
+//Evitamos que nos salgan los NOTICES de PHP aaaaa
 error_reporting(E_ALL ^ E_NOTICE);
 
 include('php/conexion.php');
