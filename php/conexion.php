@@ -1,6 +1,6 @@
 
 <?php
-// ARCHIVO DE CONEXION A LA BASE DE DATOS
+// ARCHIVO DE CONEXION A LA BASE DE DATOSssss
 //Nombre del servidor
 $host="localhost";
 //Usuario de la Base de datos
