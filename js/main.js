@@ -1,4 +1,5 @@
 $(document).ready(function (e) {
+    $('#formulario')[0].reset();
     $("#formulario").on('submit',(function(e) {
     e.preventDefault();
     $("#mensaje").empty();
@@ -11,9 +12,9 @@ $(document).ready(function (e) {
         cache: false,             // To unable request pages to be cached
         processData:false,        // To send DOMDocument or non processed data file it is set to false
         success: function(nuevo){   // A function to be called if request succeeds
-            $('#mensaje').addClass('bg-success').html('Anuncio creado con exito').show(200).delay(2500).hide(200);
-			$('#agrega-anuncio').html(nuevo);
-			return false;
+                $('#mensaje').addClass('bg-success').html('¡Anuncio creado con exito!').show(200).delay(3000).hide(200);
+                $('#agrega-anuncio').html(nuevo);
+                return false;
         }
     });
     }));
@@ -49,27 +50,8 @@ $(function() {
 
 
 
-
-function nuevoAnuncio(){
-    
-    var url = '/merideando/php/crear_anuncio.php';
-    $.ajax({
-        type:'POST',
-        url: url,
-        data: new FormData(this),
-        contentType: false,
-        processData: false,
-        cache: false,
-        success: function(nuevo){
-            $('#mensaje').addClass('bg-success').html('Anuncio creado con exito').show(200).delay(2500).hide(200);
-			$('#agrega-anuncio').html(nuevo);
-			return false;
-        }
-    });
-    return false;
-}
-
 function editarAnuncio(id){
+    $('#formulario')[0].reset();
     var url = '/merideando/php/editar_anuncio.php';
     $.ajax({
         type:'POST',
@@ -77,23 +59,27 @@ function editarAnuncio(id){
         data:'id=' + id,
         success: function(valores){
             //Evalúa un código JavaScript representado como una cadena de caracteres (string)
-            var datos = eval(valores);
+            
+            var datos = JSON.parse(valores);
+           
+            $('#id_anuncio').val(id);
             $('#razon_soc').val(datos[0]);
-            $('#cif').val(datos[1]);
+            $('#dni').val(datos[1]);
             $('#direccion').val(datos[2]);
             $('#telefono').val(datos[3]);
             $('#email').val(datos[4]);
             $('#descripcion').val(datos[5]);
-            $('#imagen').val(datos[6]);
-            $('#categoria').val(datos[7]);
-//            $('#editar-anuncio').modal({
-//                show:true,
-//                backdrop:'static'
-//            })
+            
+            $('#id_anuncio').val(datos[7]);
+
+//            $('#categoria').val(datos[7]);
+
         }
     });
     return false;
 }
+
+
 
 function eliminarAnuncio(id){
     var url = '/merideando/php/eliminar_anuncio.php';
@@ -104,8 +90,9 @@ function eliminarAnuncio(id){
         url: url,
         data: 'id=' + id,
         success: function(nuevo){
-            $('#mensaje').addClass('bg-success').html('Anuncio eliminado con exito').show(200).delay(2500).hide(200);
+            $('#mensaje').addClass('bg-success').html('Anuncio eliminado con exito').show(200).delay(3000).hide(200);
 			$('#agrega-anuncio').html(nuevo);
+            $('body').popover({selector: '[rel=popover]'});
 			return false;
         }
         });
@@ -114,3 +101,4 @@ function eliminarAnuncio(id){
        return false; 
     }
 }
+

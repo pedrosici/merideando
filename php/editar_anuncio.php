@@ -21,14 +21,14 @@ $id = $_POST['id'];
  $resultado = $query->fetch_array();
 
 $anuncio = array (
-    "razon_soc" => $resultado['razon_soc'],
-    "cif"       => $resultado['cif'],
-    "direccion" => $resultado['direccion'],
-    "telefono" => $resultado['telefono'],
-    "email"     => $resultado['email'],
-    "descripcion" => $resultado['descripcion'],
-    "imagen" => $resultado['imagen'],
-    "categoria_id" => $resultado['categoria'],
+    0 => $resultado['razon_soc'],
+    1 => $resultado['cif'],
+    2 => $resultado['direccion'],
+    3 => $resultado['telefono'],
+    4 => $resultado['email'],
+    5 => $resultado['descripcion'],
+    7 => $resultado['id_anuncio'],
+ //   7 => $resultado['categoria']
     );
 
 echo json_encode($anuncio);

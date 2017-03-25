@@ -1,6 +1,6 @@
 <?php
 
-//Evitamos que nos salgan los NOTICES de PHP aaaaa
+//Evitamos que nos salgan los NOTICES de PHP
 error_reporting(E_ALL ^ E_NOTICE);
 
 include('php/conexion.php');
@@ -69,7 +69,7 @@ $id = $_SESSION['user_id'];
                                     
                             <?php
                             
-                            $sql1 = "SELECT * FROM anuncios WHERE usuario_id = \"$id\"";
+                            $sql1 = "SELECT a.id_anuncio, a.razon_soc, a.cif, a.direccion, a.telefono, a.email, a.descripcion, a.imagen, a.total_votos, c.nombre_cat FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE a.usuario_id = \"$id\"";
                             $query = $con->query($sql1);
                            
                             if ($query->num_rows > 0 ){
@@ -82,13 +82,14 @@ $id = $_SESSION['user_id'];
                                         <th width="50">Categoría</th>
                                         <th width="50">Descripción</th>
                                         <th width="50">Contacto</th>
+                                        <th width="50">Votos</th>
                                         <th width="50">Enlace</th>
                                         <th width="50">Acción</th>
                                     </tr>
                                     <tr>
                                         <td>'.$resultado['razon_soc'].'</td>
                                         <td><img src="images/'.$resultado['imagen'].'" height="50"/></td>
-                                        <td></td>
+                                        <td>'.$resultado['nombre_cat'].'</td>
                                         <td><a data-container="body" data-toggle="popover" data-placement="bottom" data-content="'.$resultado['descripcion'].'"><i class="fa fa-eye fa-2x" aria-hidden="true"></i></a>
                                         </td>
                                         
@@ -97,10 +98,11 @@ $id = $_SESSION['user_id'];
                                                      <li>Email: '.$resultado['email'].'</li>
                                                  </ul>"><i class="fa fa-eye fa-2x" aria-hidden="true"></i></a>
                                         </td>
+                                        <td>'.$resultado['total_votos'].'</td>
                                         <td><a href="anuncio.php?id='.$resultado['id_anuncio'].'" target="_blank"><i class="fa fa-link fa-2x" aria-hidden="true"></i></a>
                                         
                                         
-                                        <td><a href="#editar-anuncio" class="fa fa-pencil fa-2x" data-toggle="modal" onClick="editarAnuncio('.$resultado['id_anuncio'].');"></a> <a href="#" onClick="eliminarAnuncio('.$resultado['id_anuncio'].');" class="fa fa-trash fa-2x"></a></td>
+                                        <td><a href="#editar-anuncio" class="fa fa-pencil fa-2x" data-toggle="modal" onClick="editarAnuncio('.$resultado['id_anuncio'].');" title="Editar Anuncio"></a> <a href="#" onClick="eliminarAnuncio('.$resultado['id_anuncio'].');" class="fa fa-trash fa-2x" title="Eliminar anuncio"></a></td>
                                      </tr>
                                      </table>';    
                                } 
@@ -126,7 +128,7 @@ $id = $_SESSION['user_id'];
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                       <h3>Crea tu anuncio</h3>
                    </div>
-                    <form id="formulario" method="post" id="formulario" role="form" enctype="multipart/form-data">
+                    <form id="formulario" method="post" role="form" enctype="multipart/form-data">
                         <div class="modal-body">
                            <div class="form-group row">
                                     <div class="col-md-6">
@@ -174,6 +176,7 @@ $id = $_SESSION['user_id'];
                                 </div>
                                 <!-- PASAMOS OCULTO EL ID DEL USUARIO QUE CREA EL ANUNCIO -->
                                 <input type="hidden" name="id_usuario" value="<?php echo '.$id.'?>">
+                                
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-6">
@@ -181,7 +184,7 @@ $id = $_SESSION['user_id'];
                                     <input type="file" name="logo" id="imagen" required />
                                 </div>
                                 <div class="col-md-6" id="imagenprevia">
-                                    <img class="img-responsive" id="vistaprevia" src="images/noimage.png" width="250" height="230" />
+                                    <img class="img-responsive" id="vistaprevia" src="images/noimage.png" width="100%" />
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -192,7 +195,7 @@ $id = $_SESSION['user_id'];
                         </div>
                    <div class="modal-footer">
                     <span id="firma">Merideando - 2017</span>
-                        <button type="submit" class="btn btn-success" value="crear">Crear anuncio</button>
+                        <button type="submit" class="btn btn-success" value="crear" id="crear">Crear anuncio</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                    </div>
                 </form>
@@ -209,7 +212,7 @@ $id = $_SESSION['user_id'];
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                       <h3>Edita tu anuncio</h3>
                    </div>
-                    <form id="formulario" method="POST" onsubmit="return editarAnuncio();" role="form">
+                    <form id="formulario" method="post" role="form" enctype="multipart/form-data">
                         <div class="modal-body">
                            <div class="form-group row">
                                     <div class="col-md-6">
@@ -224,7 +227,7 @@ $id = $_SESSION['user_id'];
                                 <div class="form-group row">
                                     <div class="col-md-6">
                                         <label for="cif">CIF</label>
-                                        <input type="text" class="form-control col-md-6" name="cif" id="cif" placeholder="Introduce un CIF" required>
+                                        <input type="text" class="form-control col-md-6" name="cif" id="dni" placeholder="Introduce un CIF" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="telefono">Teléfono</label>
@@ -261,7 +264,21 @@ $id = $_SESSION['user_id'];
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <label for="imagen">Logo</label>
-                                    <input type="file" name="imagen" class="form-control" id="imagen">
+                                    <?php 
+    
+                                        $sql = "SELECT imagen FROM anuncios WHERE id_anuncio = '{$_GET['id']}'";
+                                        $query = $con->query($sql);
+
+                                        if ($query->num_rows > 0 ){
+                                            while ($resultado = $query->fetch_array()){
+                                            echo '<img src="images/'.$resultado['imagen'].'" width="50">';
+                                            }
+                                        } else {
+                                            echo '<input type="file" name="logo" id="imagen" required />';
+                                        }
+                                    ?>
+                                    
+                                    
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -272,7 +289,7 @@ $id = $_SESSION['user_id'];
                         </div>
                    <div class="modal-footer">
                     <span id="firma">Merideando - 2017</span>
-                        <button type="submit" class="btn btn-success" value="crear">Crear anuncio</button>
+                        <button type="submit" class="btn btn-success" value="Editar" id="Editar">Editar anuncio</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                    </div>
                 </form>

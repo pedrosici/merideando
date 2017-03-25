@@ -1,9 +1,9 @@
 
 <?php
-// ARCHIVO DE CONEXION A LA BASE DE DATOSssss
+// ARCHIVO DE CONEXION A LA BASE DE DATOS
 //Nombre del servidor
 $host="localhost";
-//Usuario de la Base de datos
+//Usuario de la Base de datossss
 $user="root";
 //Contraseña del usuario
 $password="";

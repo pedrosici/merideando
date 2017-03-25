@@ -20,7 +20,7 @@ $id = $_POST['id'];
 
 // Actualizamos los registros y los recuperamos
 
- $sql1 = "SELECT * FROM anuncios WHERE usuario_id = '$id_usuario'";
+ $sql1 = "SELECT a.id_anuncio, a.razon_soc, a.cif, a.direccion, a.telefono, a.email, a.descripcion, a.imagen, a.total_votos, c.nombre_cat FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE a.usuario_id = '$id_usuario'";
  $query = $con->query($sql1);
 
 if ($query->num_rows > 0 ){
@@ -33,13 +33,14 @@ if ($query->num_rows > 0 ){
                                         <th width="50">Categoría</th>
                                         <th width="50">Descripción</th>
                                         <th width="50">Contacto</th>
+                                        <th width="50">Votos</th>
                                         <th width="50">Enlace</th>
                                         <th width="50">Acción</th>
                                     </tr>
                                     <tr>
                                         <td>'.$resultado['razon_soc'].'</td>
                                         <td><img src="images/'.$resultado['imagen'].'" height="50"/></td>
-                                        <td></td>
+                                        <td>'.$resultado['nombre_cat'].'</td>
                                         <td><a data-container="body" data-toggle="popover" data-placement="bottom" data-content="'.$resultado['descripcion'].'"><i class="fa fa-eye fa-2x" aria-hidden="true"></i></a>
                                         </td>
                                         
@@ -48,12 +49,13 @@ if ($query->num_rows > 0 ){
                                                      <li>Email: '.$resultado['email'].'</li>
                                                  </ul>"><i class="fa fa-eye fa-2x" aria-hidden="true"></i></a>
                                         </td>
+                                        <td>'.$resultado['total_votos'].'</td>
                                         <td><a href="anuncio.php?id='.$resultado['id_anuncio'].'" target="_blank"><i class="fa fa-link fa-2x" aria-hidden="true"></i></a>
                                         
                                         
-                                        <td><a href="#editar-anuncio" class="fa fa-pencil fa-2x" data-toggle="modal" onClick="editarAnuncio('.$resultado['id_anuncio'].');"></a> <a href="#" onClick="eliminarAnuncio('.$resultado['id_anuncio'].');" class="fa fa-trash fa-2x"></a></td>
+                                        <td><a href="#editar-anuncio" class="fa fa-pencil fa-2x" data-toggle="modal" onClick="editarAnuncio('.$resultado['id_anuncio'].');" title="Editar Anuncio"></a> <a href="#" onClick="eliminarAnuncio('.$resultado['id_anuncio'].');" class="fa fa-trash fa-2x" title="Eliminar anuncio"></a></td>
                                      </tr>
-                                     </table>';    
+                                     </table>';  
                                } 
 } else {  
     echo '<div class="slider_text text-center"><h3>No tienes ningún anuncio creado todavía</h3></div>';
