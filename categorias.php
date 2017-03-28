@@ -4,12 +4,7 @@
     include('php/conexion.php');
 
     session_start();
-    if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"]==null){
-	   print "<script>alert(\"Acceso invalido!\");window.location='login.php';</script>";
-}
-
-
-$id = $_SESSION['user_id'];
+    $id = $_SESSION['user_id'];
 
 ?>
 
@@ -37,24 +32,27 @@ $id = $_SESSION['user_id'];
         <section class="categorias">
             <div class="container">
                 <div class="row">
-                    <div class="section_title text-center">						
-							<h2>Negocios y servicios</h2>
-							<h4>Elige la categoría que buscas</h4>
+                    <div class="section_title text-center mg-tp-80 mg-bt-40">						
+							<h2>Categorías</h2>
+							<h4>Elige la categoría adecuada para el anuncio que buscas</h4>
 							<div class="icon_wrap"><i class="fa fa-search"></i></div>
 				    </div>
-                    <div class="col-md-12">
-                        <?php
-                            $sql = "SELECT COUNT(a.id_anuncio) as cantidad, c.nombre_cat FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria GROUP BY c.id_categoria";
-                            $query = $con->query($sql);
-                        //Comprobamos si existen resultados
-                           if (mysqli_num_rows($query) > 0){
-                            while ($resultado = $query->fetch_array()){                                            
-                                                                     
-                 echo '<ul class="list-group">
-                            <li class="list-group-item"><i class="fa fa-home" aria-hidden="true"></i>
-                                <span class="badge">'.$resultado['cantidad'].'</span>'.$resultado['nombre_cat'].'
-                            </li>
-                        </ul>';
+                    <div class="col-md-12 text-center">
+            <?php
+                $sql = "SELECT COUNT(a.id_anuncio) as cantidad, c.nombre_cat, c.icono, c.id_categoria FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria GROUP BY c.id_categoria";
+                    
+                $query = $con->query($sql);
+                 //Comprobamos si existen resultados
+                    if (mysqli_num_rows($query) > 0){
+                        while ($resultado = $query->fetch_array()){                 echo ' <a href="categoria.php?id='.$resultado['id_categoria'].'" target="_blank"><div class="col-md-4 col-sm-4 wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s" data-wow-offset="0">
+                            <div class="single_feature">
+                                <i class="fa '.$resultado['icono'].'"></i>
+                                <h4>'.$resultado['nombre_cat'].'</h4>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">'.$resultado['cantidad'].' anuncios publicados</li>
+                                    </ul>
+                                </div>
+                            </div></a>';                                                              
                      
                             } //FIN while
                            }  // FIN if

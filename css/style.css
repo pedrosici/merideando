@@ -1,4 +1,19 @@
-/* -------------- PRINCIPAL ---------------- */
+/*
+
+Hoja de estilos principal
+Autor:  Pedro Sicilia Marcelo
+
+
+/*=========================================
+            ÍNDICE CSS
+
+    1. Estilos generales (body, links, márgenes de secciones, títulos, formatos de texto.. etc)
+    2. 
+    
+*/
+
+
+/* -------------- ESTILOS PRINCIPALES ---------------- */
 
 body {
 background-color: #fff;
@@ -30,11 +45,8 @@ h6 {
     margin: 0;
 }
 
-h2{
-    font-family: 'Lobster', cursive;
-}
 
-/* ---------------- NAVBAR ---------------------- */
+/* ---------------- MÁRGENES DE CONTENIDO ---------------------- */
 
 .mg-bt-80 {
     margin-bottom: 80px;
@@ -398,3 +410,10 @@ line-height: 36px;
 .hover_img a { position:relative; }
 .hover_img a span { position:absolute; display:none; z-index:99; }
 .hover_img a:hover span { display:block; }
+
+/* --- GOOGLE MAPS ---*/
+
+#map {
+        height: 200px;
+        width: 100%;
+       }

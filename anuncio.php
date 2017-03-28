@@ -10,22 +10,6 @@ include('php/conexion.php');
 
 <!DOCTYPE html>
  <html lang="en">
-    <head>
-        <!-- Meta -->
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Merideando</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1"> 
-        <!-- Bootstrap -->
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">  
-        <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-
-    </head>
-     
- <html lang="en">
 	 <head>
         <!-- Meta -->
 		<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
@@ -33,7 +17,7 @@ include('php/conexion.php');
         <title>Merideando - Panel Admin.</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1"> 
         <!-- Bootstrap -->
-         <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+         
          <script src="js/main.js"></script>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">  
@@ -50,15 +34,17 @@ include('php/conexion.php');
             
         <?php 
             // Consulta SQL
-            $sql = "SELECT * FROM anuncios WHERE id_anuncio = '{$_GET['id']}'";
+            $sql = "SELECT a.razon_soc, a.cif, a.direccion, a.longitud, a.latitud, a.telefono, a.email, a.descripcion, a.imagen, a.total_votos, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE a.id_anuncio = '{$_GET['id']}'";
             $query = $con->query($sql);
             // Comprobamos existencia del anuncio
             
              if ($query->num_rows > 0 ){
                 while ($resultado = $query->fetch_array()){
+                    $lat = $resultado['latitud'];
+                    $lng = $resultado['longitud'];
         ?>
-            <div class="col-md-12 mg-tp-40 text-center">
-                    <img src="images/<?php echo $resultado['imagen']; ?>" height="100">
+            <div class="col-md-12 mg-tp-40 mg-bt-40 text-center">
+                    <img src="images/<?php echo $resultado['imagen']; ?>" class="img-rounded" height="100">
             </div>
              <div class="section_title mg-tp-40 mg-bt-40  text-center">						
                  <h2><?php echo $resultado['razon_soc']; ?></h2>
@@ -80,7 +66,7 @@ include('php/conexion.php');
             
         <div class="col-md-12 mg-bt-80 text-center">
                 <p><?php echo $resultado['descripcion']; ?> </p>
-            <div class="icon_wrap"><i class="fa fa-cutlery" aria-hidden="true"></i></div>
+            <div class="icon_wrap"><i class="fa <?php echo $resultado['icono']; ?>" aria-hidden="true"></i></div>
         </div>
          
     </div>    
@@ -102,6 +88,7 @@ include('php/conexion.php');
                 <tr><td><i class="fa fa-envelope-o" aria-hidden="true"></i></td>
                     <td><a href="mailto:<?php echo $resultado['email']; ?>">Contactar vía email</a></td>
                 </tr>
+                
                 
             </table>
             
@@ -140,24 +127,23 @@ include('php/conexion.php');
     </div>
          
     <div class="row">
-        <div class="col-md-6 mg-bt-80">
+        
+        <div class="col-md-12 mg-bt-40">
             <div class="mg-bt-40 text-center">
-                <h3>Galeria</h3>
+                <h3>Ubicación</h3>
             </div>
-            
-            <img src="images/galileo.jpg" class="img-thumbnail" width="150">
-            <img src="images/galileo.jpg" class="img-thumbnail" width="150">
-            <img src="images/galileo.jpg" class="img-thumbnail" width="150">
+            <div id="map"></div>
         </div>
-            
-        <div class="col-md-6 mg-bt-80">
+        
+        <div class="col-md-12 mg-bt-40">
             <div class="mg-bt-40 text-center">
-                <h3>Comentarios</h3>
+                <h3>Comentarios y Opiniones</h3>
             </div>
             
-            <section class="posts">
+            <section class="posts col-md-6">
                 <article class="post clearfix">
-                    <p class="post-title">La mejor pizzería de Mérida</p>
+                    <h3 class="post-title">La mejor pizzería de Mérida</h3><h6 class="post-fecha"><i class="fa fa-clock-o"></i> 26/03/2017  <span class="post-autor">por Pedro</span></h6>
+                   
                    
                          
                     <p class="post-contenido text-justify">
@@ -165,6 +151,21 @@ include('php/conexion.php');
                     </p>
                 </article>
             </section>
+            
+            <section class="posts col-md-6">
+                <article class="post clearfix">
+                    <h3 class="post-title">No está mal, un italiano más</h3><h6 class="post-fecha"><i class="fa fa-clock-o"></i> 26/03/2017  <span class="post-autor">por Juan</span></h6>
+                   
+                   
+                         
+                    <p class="post-contenido text-justify">
+                        Pizzería bien situada, en el centro de Mérida. Buen local y camareros atentos pero la masa de las pizzas estaba congelada, tampoco tenian agua embotellada.
+                    </p>
+                </article>
+            </section>
+        </div>
+        <div class="col-md-12 text-center mg-bt-40">
+            <a class="btn btn-primary">Comentar</a>
         </div>
    </div>
          
@@ -179,8 +180,22 @@ include('php/conexion.php');
         
     <!-- Incluimos el footer o pie de página -->       
       <?php include "php/footer.php"; ?>
-        
-      <!--Import jQuery before materialize.js-->
+     <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC516yYGBDQeQIHcm7W1KhWJ_NDL8iUT8s&callback=initMap">
+    </script>   
+      <script type="text/javascript">
+        function initMap() {
+	        var coord = {lat: <?php echo $lat; ?>, lng: <?php echo $lng; ?>};
+	        var map = new google.maps.Map(document.getElementById('map'), {
+	          zoom: 18,
+	          center: coord
+	        });
+	        var marker = new google.maps.Marker({
+	          position: coord,
+	          map: map
+	        });
+	      }
+        </script>
         <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
        <script src="js/jquery.vide.min.js"></script>

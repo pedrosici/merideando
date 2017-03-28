@@ -33,19 +33,27 @@ $id_usuario = $_SESSION['user_id'];
 
 $razon = $_POST['razon'];
 $telefono = $_POST['telefono'];
-$direccion = $_POST['direccion'];
+
 $cif = $_POST['cif'];
 $email = $_POST['email'];
 $descripcion = $_POST['descripcion'];
 $id_categoria = $_POST['categoria'];
 $imagen = $_FILES['logo']['name'];
 
+if (isset($_POST['direccion'])){
+    $direccion = $_POST['direccion'];
+    $maps_url = "https://maps.googleapis.com/maps/api/geocode/json?address=06800". urlencode($direccion) ."&key=AIzaSyCeJfZoJVH1ATfo04SXDIl7j765fGCvhRA";
+    $maps_json = file_get_contents($maps_url);
+    $maps_array = json_decode($maps_json, true);
+    $lat = $maps_array["results"][0]["geometry"]["location"]["lat"];
+    $lng = $maps_array["results"][0]["geometry"]["location"]["lng"];
+}
 
 
 //Verificamos el modo en el que estamos, si es creación o edición de un anuncio
 
 
-$sql = "INSERT into ANUNCIOS (razon_soc, cif, direccion, telefono, email, descripcion, imagen, fecha, usuario_id, categoria_id) VALUE ('$razon', '$cif', '$direccion', '$telefono', '$email', '$descripcion','$imagen', NOW(), '$id_usuario', '$id_categoria')";
+$sql = "INSERT into ANUNCIOS (razon_soc, cif, direccion, latitud, longitud, telefono, email, descripcion,  imagen, fecha, usuario_id, categoria_id) VALUE ('$razon', '$cif', '$direccion', '$lat', '$lng', '$telefono', '$email', '$descripcion','$imagen', NOW(), '$id_usuario', '$id_categoria')";
 
 $query = $con->query($sql);
        

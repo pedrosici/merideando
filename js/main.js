@@ -1,5 +1,4 @@
 $(document).ready(function (e) {
-    $('#formulario')[0].reset();
     $("#formulario").on('submit',(function(e) {
     e.preventDefault();
     $("#mensaje").empty();
@@ -101,4 +100,6 @@ function eliminarAnuncio(id){
        return false; 
     }
 }
+
+
 

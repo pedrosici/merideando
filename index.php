@@ -2,9 +2,9 @@
 
 //Evitamos que nos salgan los NOTICES de PHP
 error_reporting(E_ALL ^ E_NOTICE);
-
+//Iniciamos variables SESSION
 session_start();
-
+//Incluimos archivo de conexion a la BD
 include('php/conexion.php');
 ?>
 
@@ -28,7 +28,6 @@ include('php/conexion.php');
     <body>
         <nav class="navbar navbar-default">
           <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
@@ -39,7 +38,6 @@ include('php/conexion.php');
               <a class="navbar-brand" href="#"><img src="images/logo1.png"  width="100px"></a>
             </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Inicio<span class="sr-only">(current)</span></a></li>
@@ -118,7 +116,7 @@ include('php/conexion.php');
             </div>
         </header>
         
-        <section class="presentacion section-padding" id="nosotros">
+        <section class="section-padding" id="nosotros">
             <div class="container">
                 <div class="row">
                     <div class="section_title text-center">						
@@ -156,13 +154,25 @@ include('php/conexion.php');
 								<p>Publicar anuncios en nuestra página es un medio ideal para contactar con posibles clientes y con la garantía de ganar visibilidad en internet.</p>
 							</div>
 						</div><!-- END COL -->
-						<div class="col-md-4 col-sm-4 wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.4s" data-wow-offset="0">
+                        
+                       <?php //Consulta para sacar TOTAL de anuncios en la BD
+                            $sql = "SELECT COUNT(id_anuncio) as cantidad FROM anuncios";
+                            $query = $con->query($sql);
+                        //Comprobamos si existen resultados
+                           if (mysqli_num_rows($query) > 0){
+                            while ($resultado = $query->fetch_array()){
+                                echo '<div class="col-md-4 col-sm-4 wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.4s" data-wow-offset="0">
 							<div class="single_feature">
 								<i class="fa fa-database"></i>
 								<h4>Variedad de anuncios</h4>
-								<p>Disponemos de más de 10 <a href="categorias.php">categorías</a> diferentes para tus anuncios, lo que facilita la búsqueda y la comparación con otros negocios del sector.</p>
+								<p>Disponemos de más de 10 <a href="categorias.php">categorías</a> diferentes y '.$resultado['cantidad'].' anuncios publicados hasta el momento, ¿A qué esperas para publicar el tuyo?</p>
 							</div>
-						</div><!-- END COL -->
+						</div><!-- END COL -->';
+                            }
+                           }
+                        
+                        ?>
+						
 						<div class="col-md-4 col-sm-4 wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.5s" data-wow-offset="0">
 							<div class="single_feature">
 								<i class="fa fa-heart-o"></i>
@@ -259,7 +269,11 @@ include('php/conexion.php');
      <!-- Incluimos el footer o pie de página -->       
       <?php include "php/footer.php"; ?>
         
-      <!--Import jQuery before materialize.js-->
+     <!-- Script para mostrar Google Maps con mi API Key -->
+        <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC516yYGBDQeQIHcm7W1KhWJ_NDL8iUT8s&callback=initMap">
+    </script>
+        <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
        <script src="js/jquery.vide.min.js"></script>
