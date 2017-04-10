@@ -54,14 +54,6 @@ include('php/conexion.php');
               </ul>
                 
               <ul class="nav navbar-nav navbar-right">
-                  <li>
-                      <form class="navbar-form navbar-left">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Buscar en la web">
-                        </div>
-                        <button type="submit" class="btn btn-default">Buscar</button>
-                      </form>
-                  </li>
                   <!-- Mostramos las opciones de cuenta segun la sesión del usuario -->
                   <?php if(!isset($_SESSION["user_id"])):?>
                   <li class="dropdown">
@@ -199,7 +191,7 @@ include('php/conexion.php');
 							<div class="icon_wrap"><i class="fa fa-bullhorn"></i></div>	
 						</div>	
                     
-                         <div class="col-md-4 wow fadeInLeft" data-wow-duration="1s" delay="0.2s" data-wow-offset="0">
+                         <div class="col-sm-4 col-xs-12  wow fadeInLeft" data-wow-duration="1s" delay="0.2s" data-wow-offset="0">
                              <div class="single-address">
                                 <i class="fa fa-pencil-square-o"></i>
                                 <h4>Regístrate</h4>
@@ -207,17 +199,17 @@ include('php/conexion.php');
                              <p>Necesitamos información sobre ti y tu negocio. Para registrarte, pincha en <a href="login.php">este enlace</a></p>
                         </div>
                         
-                        <div class="col-md-4 wow fadeInLeft" data-wow-duration="1s" delay="0.2s" data-wow-offset="0" >
+                        <div class="col-sm-4 col-xs-12 wow fadeInLeft" data-wow-duration="1s" delay="0.2s" data-wow-offset="0" >
                             <div class="single-address">
                                 <i class="fa fa-pencil-square-o"></i>
                             <h4>Crea tu anuncio</h4>
                             </div>
                             <p>Una vez registrado podrás empezar a crear el anuncio ideal, para ello puedes acceder a <a href="panel_usuario.php">tu panel de administración</a></p>    
                         </div>
-                        <div class="col-md-4 wow fadeInLeft" data-wow-duration="1s" delay="0.2s" data-wow-offset="0">
+                        <div class="col-sm-4 col-xs-12 c wow fadeInLeft" data-wow-duration="1s" delay="0.2s" data-wow-offset="0">
                             <div class="single-address">
                                 <i class="fa fa-pencil-square-o"></i>
-                                <h4>Visualiza tu anuncio y compártelo</h4>
+                                <h4>Visualiza y compártelo</h4>
                             </div>
                             <p>Ya has publicado tu anuncio, es hora de que todos lo vean. Puedes compartirlo o ver el resto de anuncios relacionados con el tuyo</p>
                                 
@@ -239,7 +231,7 @@ include('php/conexion.php');
                     
                      <?php
                         //Consulta para sacar ultimos anuncios publicados
-                            $sql = "SELECT * FROM anuncios ORDER BY fecha DESC LIMIT 3";
+                            $sql = "SELECT * FROM anuncios ORDER BY fecha DESC LIMIT 4";
                             $query = $con->query($sql);
                         //Comprobamos si existen resultados
                            if (mysqli_num_rows($query) > 0){
@@ -247,10 +239,10 @@ include('php/conexion.php');
                     
                        
                                 
-                            echo '<div class="col-md-4 media">
+                            echo '<div class="col-sm-4 col-xs-6 media text-center">
                               <div class="media-left media-middle">
                                 <a href="#">
-                                  <img class="media-object" src="images/'.$resultado['imagen'].'" alt="logo" width="50">
+                                  <img class="media-object" src="images/'.$resultado['imagen'].'" alt="logo" width="60">
                                 </a>
                               </div>
                               <div class="media-body">
