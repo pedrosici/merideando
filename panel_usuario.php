@@ -66,7 +66,19 @@ $id = $_SESSION['user_id'];
                             
                             <div class="col-md-12 col-xs-12">
                                 <div class="registros" id="agrega-anuncio">
-                                    
+                                    <table class="table table-striped table-condensed table-hover table-bordered text-center">
+                                    <thead>
+                                    <tr>
+                                        <th width="150">Razón social</th>
+                                        <th width="50">Logo</th>
+                                        <th width="50">Categoría</th>
+                                        <th width="25">Descripción</th>
+                                        <th width="25">Contacto</th>
+                                        <th width="25">Votos</th>
+                                        <th width="50">Enlace</th>
+                                        <th width="50">Acción</th>
+                                    </tr>
+                                    </thead>
                             <?php
                             
                             $sql1 = "SELECT a.id_anuncio, a.razon_soc, a.cif, a.direccion, a.telefono, a.email, a.descripcion, a.imagen, a.total_votos, c.nombre_cat FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE a.usuario_id = \"$id\"";
@@ -75,18 +87,7 @@ $id = $_SESSION['user_id'];
                             if ($query->num_rows > 0 ){
                                 while ($resultado = $query->fetch_array()){
                                 
-                                    echo '<table class="table table-striped table-condensed table-hover">
-                                    <tr>
-                                        <th width="150">Razón social</th>
-                                        <th width="50">Logo</th>
-                                        <th width="50">Categoría</th>
-                                        <th width="50">Descripción</th>
-                                        <th width="50">Contacto</th>
-                                        <th width="50">Votos</th>
-                                        <th width="50">Enlace</th>
-                                        <th width="50">Acción</th>
-                                    </tr>
-                                    <tr>
+                                    echo '<tr>
                                         <td>'.$resultado['razon_soc'].'</td>
                                         <td><img src="images/'.$resultado['imagen'].'" height="50"/></td>
                                         <td>'.$resultado['nombre_cat'].'</td>
@@ -103,9 +104,12 @@ $id = $_SESSION['user_id'];
                                         
                                         
                                         <td><a href="#editar-anuncio" class="fa fa-pencil fa-2x" data-toggle="modal" onClick="editarAnuncio('.$resultado['id_anuncio'].');" title="Editar Anuncio"></a> <a href="#" onClick="eliminarAnuncio('.$resultado['id_anuncio'].');" class="fa fa-trash fa-2x" title="Eliminar anuncio"></a></td>
-                                     </tr>
-                                     </table>';    
-                               } 
+                                     </tr>';    
+                               }  ?>
+                                        
+                                </table>
+                                    
+                               <?php
                                 
                             } else {  
                                 echo '<div class="slider_text text-center"><h3>No tienes ningún anuncio creado todavía</h3></div>';
@@ -113,16 +117,17 @@ $id = $_SESSION['user_id'];
                                 
                             
                             ?>
-    
+                                        
+                                
                             </div> 
                         </div>
                     </div>
-            </div>
+            
         
    <!-- MODAL PARA CREAR ANUNCIOS -->     
 
         <div class="modal fade" data-backdrop="false" id="crear-anuncio" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                    <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -206,7 +211,7 @@ $id = $_SESSION['user_id'];
         <!-- MODAL PARA EDITAR ANUNCIOS -->     
 
         <div class="modal fade" data-backdrop="false" id="editar-anuncio" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                    <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -239,11 +244,11 @@ $id = $_SESSION['user_id'];
                                         <label for="categoria">Categoría</label>
                                         <select class="form-control" name="categoria">
                                     <?php
-                                            $sql3 = "SELECT * FROM categorias ORDER BY nombre_cat ASC";
+                                            $sql3 = "SELECT id_categoria, nombre_cat FROM categorias WHERE ORDER BY nombre_cat ASC";
                                             $query = $con->query($sql3);
                                             
                                             while($categorias = $query->fetch_array()){ ?>
-                                              <option value="<?php echo $categorias['id_categoria']?>"><?php echo $categorias['nombre_cat']?></option>
+                                              <option id="categoria" value="<?php echo $categorias['id_categoria']?>"><?php echo $categorias['nombre_cat']?></option>
                                     <?php   } ?>
       
                                         </select>
@@ -296,7 +301,7 @@ $id = $_SESSION['user_id'];
               </div>
            </div>
         </div>
-        
+    </div>
     <!-- Incluimos el footer o pie de página -->       
       <?php include "php/footer.php"; ?>
         

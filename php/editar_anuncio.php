@@ -28,7 +28,7 @@ $anuncio = array (
     4 => $resultado['email'],
     5 => $resultado['descripcion'],
     7 => $resultado['id_anuncio'],
- //   7 => $resultado['categoria']
+    8 => $resultado['categoria_id']
     );
 
 echo json_encode($anuncio);

@@ -32,10 +32,11 @@
     <body>
         <!-- Incluimos el navbar o cabecera de la página -->
         <?php include "php/navbar.php"; ?>
+        
         <section class="categorias">
             <div class="container">
                 <div class="row"> 
-               <?php      //Comprobamos si existen resultados
+               <?php //Comprobamos si existen resultados
                     if (mysqli_num_rows($query) > 0){
                         while ($resultado = $query->fetch_array()){  
                     
@@ -51,57 +52,77 @@
             </div>
         </section> 
         
-        <section class="main container-fluid mg-bt-40">     
+        <section class="main container-fluid mg-bt-40"> 
+            
              <aside  id="bloqueblog" class="col-md-3 pull-left">
-                <div class="section_title text-center mg-bt-40">
-                    <h2>Categorias</h2>
-                 </div>
+                 <div class="col-md-11">
+                    <div class="section_title text-center mg-bt-40">
+                        <h3><i class="fa fa-align-justify"></i> Categorias</h3>
+                     </div>
         <!-- Script php para las categorias -->
-                <?php
-
-                    // Consulta SQL
-                    $sql= "SELECT * FROM categorias ORDER BY id_categoria DESC";
-                    $query = $con->query($sql);
-                    // Comprobamos existencia
-                    if (mysqli_num_rows($query) > 0){
-                     // Mostramos resultados
-                        while ($resultado = $query->fetch_array()){ 
-                            echo '<div class="list-group">
-                       <a href="categoria.php?id='.$resultado['id_categoria'].'" class="list-group-item"><h4><i class="fa '.$resultado['icono'].'"></i> '.$resultado['nombre_cat'].'</h4></a>
-                    </div>';
+                     
+                     <ul class="list-group">
+            <?php
+                // Consulta SQL
+                $sql= "SELECT * FROM categorias ORDER BY id_categoria DESC";
+                $query = $con->query($sql);
+                // Comprobamos existencia
+                if (mysqli_num_rows($query) > 0){
+                // Mostramos resultados
+                     while ($resultado = $query->fetch_array()){ 
+                        echo '  <a href="categoria.php?id='.$resultado['id_categoria'].'">
+                                <li class="list-group-item">
+                                  <h4><i class="fa '.$resultado['icono'].'"></i> '.$resultado['nombre_cat'].'</h4></a>
+                                </li></a>
+                             ';
 
                         } //end while
                     }     //end if
 
                     ?>
-
+                         </ul>
+                        
+                    </div>
                 </aside>
-        
+            
         
         <section class="col-md-9">
             <?php
-
-                    // Consulta SQL
-                    $sql= "SELECT * FROM anuncios WHERE categoria_id ='{$_GET['id']}'";
-                    $query = $con->query($sql);
+            // Consulta SQL
+                $sql= "SELECT * FROM anuncios WHERE categoria_id ='{$_GET['id']}'";
+                $query = $con->query($sql);
                    
-                    // Comprobamos existencia
-                    if (mysqli_num_rows($query) > 0){
-                     // Mostramos resultados
-                        while ($resultado = $query->fetch_array()){ 
-                           echo '<div class="col-md-12 list-group">
-                                <div class="media-left media-middle">
-                                    <a href="anuncio.php">
-                                        <img class="media-object img-rounded" src="images/'.$resultado['imagen'].'" alt="logo" width="150">
-                                    </a>
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading">'.$resultado['razon_soc'].'</h4><i class="fa fa-map-marker"></i> '.$resultado['direccion'].'
-                                    <p>'.$resultado['descripcion'].'</p>
-                                </div>
-                            </div>';
+            // Comprobamos existencia
+                if (mysqli_num_rows($query) > 0){
+                // Mostramos resultados
+                    while ($resultado = $query->fetch_array()){ 
+                        echo '<div class="col-md-12 list-group">
+                                <div class="wrapper">
+                                    <div class="item-list">
+                                        <div class="col-sm-2 no-padding">
+                                            <a href="anuncio.php?id='.$resultado['id_anuncio'].'">
+                                                <img class="media-object img-rounded" src="images/'.$resultado['imagen'].'" alt="logo" width="150">
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <a href="anuncio.php?id='.$resultado['id_anuncio'].'"><h4 class="title">'.$resultado['razon_soc'].'</h4></a>
+                                            <h5 class="subtitulo"><i class="fa fa-map-marker"></i> '.$resultado['direccion'].'</h5>
+                                            <p>'.$resultado['descripcion'].'</p>
+                                        </div>
+                                        <div class="col-sm-3 botones text-right">
+                                              <a href="anuncio.php?id='.$resultado['id_anuncio'].'" class="btn btn-primary btn-md"><i class="fa fa-eye fa-2x"></i> Ver</a>
+                                            <a class="btn btn-primary btn-md"><i class="fa fa-thumbs-o-up fa-2x"></i> 20</a>
+                                        </div>
+                                    </div>
+                                </div>';
                         }
-                    }
+                    } else {
+                    
+                        echo '<div class="col-md-12 mg-tp-80 text-center">
+                                <h4>No existen anuncios para esta categoría</h4>
+                               </div>
+                        ';
+                }
                             
             ?>
            

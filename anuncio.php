@@ -18,7 +18,7 @@ include('php/conexion.php');
 		<meta name="viewport" content="width=device-width, initial-scale=1"> 
         <!-- Bootstrap -->
          
-         <script src="js/main.js"></script>
+         
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">  
         <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
@@ -34,42 +34,36 @@ include('php/conexion.php');
             
         <?php 
             // Consulta SQL
-            $sql = "SELECT a.razon_soc, a.cif, a.direccion, a.longitud, a.latitud, a.telefono, a.email, a.descripcion, a.imagen, a.total_votos, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE a.id_anuncio = '{$_GET['id']}'";
+            $sql = "SELECT a.razon_soc, a.cif, a.direccion, a.longitud, a.latitud, a.telefono, a.email, a.descripcion, a.imagen, a.likes, a.hates, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE a.id_anuncio = '{$_GET['id']}'";
             $query = $con->query($sql);
             // Comprobamos existencia del anuncio
             
              if ($query->num_rows > 0 ){
                 while ($resultado = $query->fetch_array()){
                     $lat = $resultado['latitud'];
-                    $lng = $resultado['longitud'];
-        ?>
+                    $lng = $resultado['longitud']; ?>
+            
             <div class="col-md-12 mg-tp-40 mg-bt-40 text-center">
                     <img src="images/<?php echo $resultado['imagen']; ?>" class="img-rounded" height="100">
             </div>
              <div class="section_title mg-tp-40 mg-bt-40  text-center">						
                  <h2><?php echo $resultado['razon_soc']; ?></h2>
-
-
             </div>   
-             <div class="col-md-12 mg-bt-40 text-center">
-                <button class="btn btn-success" type="button">
-                  <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> <span class="badge">4</span>
-                </button>
-                 <button class="btn btn-danger" type="button">
-                  <i class="fa fa-thumbs-down" aria-hidden="true"></i> <span class="badge">1</span>
-                </button>
-
-
-            </div>
-        
-        
             
-        <div class="col-md-12 mg-bt-80 text-center">
-                <p><?php echo $resultado['descripcion']; ?> </p>
-            <div class="icon_wrap"><i class="fa <?php echo $resultado['icono']; ?>" aria-hidden="true"></i></div>
-        </div>
+            <div class="col-md-12 mg-bt-40 text-center">
+                <ul class="votos">
+                    <li class="btn btn_votos  btn-success" data-voto="likes" data-id="<?php echo $resultado['id_anuncio'];?>"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> <span class="badge"><?php echo $resultado['likes'];?></span></li>
+                    <li class="btn_votos btn btn-danger" data-voto="hates" data-id="<?php echo $resultado['id_anuncio'];?>"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> <span class="badge"><?php echo $resultado['hates'];?></span></li>
+                </ul>
+             </div>
+             
+
+            <div class="col-md-12 mg-bt-80 text-center">
+                    <p><?php echo $resultado['descripcion']; ?> </p>
+                <div class="icon_wrap"><i class="fa <?php echo $resultado['icono']; ?>" aria-hidden="true"></i></div>
+            </div>
          
-    </div>    
+        </div>    
             
             
     <div class="row">    
@@ -173,7 +167,7 @@ include('php/conexion.php');
                 } //FIN IF
              } //FIN WHILE
         else {
-            echo '<h3> No existe ningún anuncio publicado en esta sección.';
+            echo '<div class="col-md-12 mg-bt-80 mg-tp-80 text-center"><h3>¡ERROR! El anuncio que intenta ver no existe.</h3></div>';
         }
     ?>
 </div>
@@ -197,6 +191,7 @@ include('php/conexion.php');
 	      }
         </script>
         <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
         <script src="js/bootstrap.min.js"></script>
        <script src="js/jquery.vide.min.js"></script>
     </body>
