@@ -4,11 +4,12 @@
     include('php/conexion.php');
 
     session_start();
+
     $id = $_SESSION['user_id'];
+    $busqueda = $_GET['id'];
 
     //Seleccionamos los datos referentes a la categoría elegida 
-    $sql = "SELECT * FROM categorias WHERE id_categoria='{$_GET['id']}'";
-    $query = $con->query($sql)
+    $sql = "SELECT * FROM categorias WHERE id_categoria = ?";
 
 ?>
 
@@ -37,8 +38,11 @@
             <div class="container">
                 <div class="row"> 
                <?php //Comprobamos si existen resultados
-                    if (mysqli_num_rows($query) > 0){
-                        while ($resultado = $query->fetch_array()){  
+                   $query = $con->prepare($sql);
+                    $query->execute(array($busqueda));
+                        //Comprobamos si existen resultados
+                           if ($query->rowCount() > 0){
+                            while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
                     
                     echo '<div class="section_title text-center mg-tp-80 mg-bt-40">						
 							<h2>'.$resultado['nombre_cat'].'</h2>
@@ -62,24 +66,22 @@
         <!-- Script php para las categorias -->
                      
                      <ul class="list-group">
-            <?php
-                // Consulta SQL
-                $sql= "SELECT * FROM categorias ORDER BY id_categoria DESC";
-                $query = $con->query($sql);
-                // Comprobamos existencia
-                if (mysqli_num_rows($query) > 0){
-                // Mostramos resultados
-                     while ($resultado = $query->fetch_array()){ 
-                        echo '  <a href="categoria.php?id='.$resultado['id_categoria'].'">
-                                <li class="list-group-item">
-                                  <h4><i class="fa '.$resultado['icono'].'"></i> '.$resultado['nombre_cat'].'</h4></a>
-                                </li></a>
-                             ';
+                    <?php
+                        // Consulta SQL
+                        $sql= "SELECT * FROM categorias ORDER BY id_categoria DESC";
+                        $query = $con->prepare($sql);
+                        $query->execute();
+                        //Comprobamos si existen resultados
+                        if ($query->rowCount() > 0){
+                            while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
+                                echo '<a href="categoria.php?id='.$resultado['id_categoria'].'">
+                                        <li class="list-group-item">
+                                          <h4><i class="fa '.$resultado['icono'].'"></i> '.$resultado['nombre_cat'].'</h4></a>
+                                        </li></a>';
+                                } //end while
+                            }     //end if
 
-                        } //end while
-                    }     //end if
-
-                    ?>
+                            ?>
                          </ul>
                         
                     </div>
@@ -89,13 +91,12 @@
         <section class="col-md-9">
             <?php
             // Consulta SQL
-                $sql= "SELECT * FROM anuncios WHERE categoria_id ='{$_GET['id']}'";
-                $query = $con->query($sql);
-                   
-            // Comprobamos existencia
-                if (mysqli_num_rows($query) > 0){
-                // Mostramos resultados
-                    while ($resultado = $query->fetch_array()){ 
+                $sql= "SELECT * FROM anuncios WHERE categoria_id = ?";
+                $query = $con->prepare($sql);
+                $query->execute(array($busqueda));
+                //Comprobamos si existen resultados
+                if ($query->rowCount() > 0){
+                    while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){         
                         echo '<div class="col-md-12 list-group">
                                 <div class="wrapper">
                                     <div class="item-list">
@@ -117,11 +118,9 @@
                                 </div>';
                         }
                     } else {
-                    
                         echo '<div class="col-md-12 mg-tp-80 text-center">
                                 <h4>No existen anuncios para esta categoría</h4>
-                               </div>
-                        ';
+                               </div>';
                 }
                             
             ?>

@@ -5,7 +5,9 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 session_start();
 include('php/conexion.php');
-        
+
+$busqueda = $_GET['id'];
+
 ?>
 
 <!DOCTYPE html>
@@ -34,12 +36,13 @@ include('php/conexion.php');
             
         <?php 
             // Consulta SQL
-            $sql = "SELECT a.razon_soc, a.cif, a.direccion, a.longitud, a.latitud, a.telefono, a.email, a.descripcion, a.imagen, a.likes, a.hates, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE a.id_anuncio = '{$_GET['id']}'";
-            $query = $con->query($sql);
-            // Comprobamos existencia del anuncio
-            
-             if ($query->num_rows > 0 ){
-                while ($resultado = $query->fetch_array()){
+            $sql = "SELECT  a.razon_soc, a.cif, a.direccion, a.telefono, a.email, a.descripcion, a.imagen, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE a.id_anuncio = ?";
+            $query = $con->prepare($sql);
+            $query->execute(array($busqueda));
+            //Comprobamos si existen resultados
+            if ($query->rowCount() > 0){
+                while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
+                    //Posición ubicación anuncio
                     $lat = $resultado['latitud'];
                     $lng = $resultado['longitud']; ?>
             
@@ -57,7 +60,6 @@ include('php/conexion.php');
                 </ul>
              </div>
              
-
             <div class="col-md-12 mg-bt-80 text-center">
                     <p><?php echo $resultado['descripcion']; ?> </p>
                 <div class="icon_wrap"><i class="fa <?php echo $resultado['icono']; ?>" aria-hidden="true"></i></div>
@@ -129,37 +131,59 @@ include('php/conexion.php');
             <div id="map"></div>
         </div>
         
-        <div class="col-md-12 mg-bt-40">
+         <div class="col-md-12 mg-bt-40">
             <div class="mg-bt-40 text-center">
-                <h3>Comentarios y Opiniones</h3>
+                <h3>Opiniones y comentarios</h3>
             </div>
-            
-            <section class="posts col-md-6">
-                <article class="post clearfix">
-                    <h3 class="post-title">La mejor pizzería de Mérida</h3><h6 class="post-fecha"><i class="fa fa-clock-o"></i> 26/03/2017  <span class="post-autor">por Pedro</span></h6>
-                   
-                   
-                         
-                    <p class="post-contenido text-justify">
-                        Gran variedad de pizzas y pasta a buen precio. Estaba todo rico. El restaurante es muy amplio y el vestuario del personal resulta curioso... :)
-                    </p>
-                </article>
-            </section>
-            
-            <section class="posts col-md-6">
-                <article class="post clearfix">
-                    <h3 class="post-title">No está mal, un italiano más</h3><h6 class="post-fecha"><i class="fa fa-clock-o"></i> 26/03/2017  <span class="post-autor">por Juan</span></h6>
-                   
-                   
-                         
-                    <p class="post-contenido text-justify">
-                        Pizzería bien situada, en el centro de Mérida. Buen local y camareros atentos pero la masa de las pizzas estaba congelada, tampoco tenian agua embotellada.
-                    </p>
-                </article>
-            </section>
         </div>
-        <div class="col-md-12 text-center mg-bt-40">
-            <a class="btn btn-primary">Comentar</a>
+        
+    </div><!-- /row -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div id="listaComentarios">
+                
+        <?php
+            $sql = "SELECT comentario, nick, fecha_comentario FROM comentarios WHERE id_anuncio = ?";
+            $query = $con->prepare($sql);
+            $query->execute(array($busqueda));
+                    
+            //Comprobamos si existen resultados
+            if ($query->rowCount() > 0){
+                while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
+                    echo '<div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <i class="fa fa-user-circle-o" aria-hidden="true"></i> <strong>'.$resultado['nick'].'</strong>  <span class="text-muted"><i class="fa fa-clock-o" aria-hidden="true"></i> '.$resultado['fecha_comentario'].'</span>
+                                </div>
+                                <div class="panel-body">'.$resultado['comentario'].'</div>
+                            </div>
+                          </div>';
+                }
+            }
+                ?>
+            
+            </div>
+        </div><!-- /col-sm-5 -->
+        
+        
+        <div class="col-sm-12 text-center mg-tp-40 mg-bt-40">
+            <form role="form" name="comentario" id="comentarios_ajax" method="POST" class="col-md-6 col-md-offset-3 text-center">
+                <h3>Escribe tu opinión</h3>
+                <p>Tu opinión es importante, intenta ser justo y sincero con tu aportación.</p>
+			 <div class="form-group">
+                <label for="name">Tu nombre</label>
+			     <input id="autor_id" name="name" type="text" class="form-control" placeholder="Autor del comentario" required>
+		      </div>
+                <div class="form-group">
+                    <label for="message">Mensaje</label>
+                    <textarea id="comentario" name="comentario" class="form-control" placeholder="Escribe tu comentario acerca del anuncio" required></textarea>
+                </div>
+                <input type="hidden" id="id_anuncio" value="<?php echo $busqueda; ?>">
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="Comentar">
+                </div>
+		</form>
+            <div id="resultado"></div>
         </div>
    </div>
          
@@ -190,8 +214,36 @@ include('php/conexion.php');
 	        });
 	      }
         </script>
+        
+        
         <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
+        
+        <script>
+            $(document).ready(function() {
+            /*Obtenemos el evento Submit, este ejecuta cuando el usuario hace click al boton comentar
+            #comentario_ajax es el id del formulario de donde tratamos de enviar el comentario, si tu formulario tiene otro id tenes que cambiar este acontinucion*/
+            $("#comentarios_ajax").submit(function() {
+                var autor_id = $("#autor_id").val();
+                var post_id = $("#post_id").val();
+                var comentario = $("#comentario").val();
+                var id_anuncio = $("#id_anuncio").val();
+                var cadena = 'id_anuncio='+id_anuncio+'&autor_id='+autor_id+'&post_id='+post_id+'&comentario='+encodeURIComponent(comentario);
+                $.ajax({ type: "POST", 
+                         url: "php/comentarios_anuncio.php", 
+                         data: cadena,
+                         cache: false, 
+                         success: function(datos){ 
+                                  if (datos) {  
+                                     $("#resultado").addClass('alert alert-success').html('¡Su comentario ha sido publicado con éxito').show(200).delay(3000).hide(200);
+                                     $("#listaComentarios").append(datos); 
+                                     }
+                                  }
+                });
+                return false;
+            });
+            });
+        </script>
         <script src="js/bootstrap.min.js"></script>
        <script src="js/jquery.vide.min.js"></script>
     </body>

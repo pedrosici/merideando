@@ -34,14 +34,7 @@
               </ul>
                 
               <ul class="nav navbar-nav navbar-right">
-                  <li>
-                      <form class="navbar-form navbar-left">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Buscar en la web">
-                        </div>
-                        <button type="submit" class="btn btn-default">Buscar</button>
-                      </form>
-                  </li>
+                  
                   <!-- Mostramos las opciones de cuenta segun la sesión del usuario -->
                   <?php if(!isset($_SESSION["user_id"])):?>
                   <li class="dropdown">

@@ -154,10 +154,11 @@ include('php/conexion.php');
                         
                        <?php //Consulta para sacar TOTAL de anuncios en la BD
                             $sql = "SELECT COUNT(id_anuncio) as cantidad FROM anuncios";
-                            $query = $con->query($sql);
+                            $query = $con->prepare($sql);
+                            $query->execute();
                         //Comprobamos si existen resultados
-                           if (mysqli_num_rows($query) > 0){
-                            while ($resultado = $query->fetch_array()){
+                           if ($query->rowCount() > 0){
+                            while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
                                 echo '<div class="col-md-4 col-sm-4 wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.4s" data-wow-offset="0">
 							<div class="single_feature">
 								<i class="fa fa-database"></i>
@@ -237,13 +238,12 @@ include('php/conexion.php');
                      <?php
                         //Consulta para sacar ultimos anuncios publicados
                             $sql = "SELECT a.razon_soc,a.id_anuncio, a.direccion, a.imagen, a.categoria_id, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE id_anuncio = a.id_anuncio ORDER BY fecha DESC LIMIT 3";
-                            $query = $con->query($sql);
+                            $query = $con->prepare($sql);
+                            $query->execute();
                         //Comprobamos si existen resultados
-                           if (mysqli_num_rows($query) > 0){
-                            while ($resultado = $query->fetch_array()){
-                    
-                       
-                                
+                           if ($query->rowCount() > 0){
+                            while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
+    
                             echo '<div class="col-md-4 media">
                               <div class="media-left media-middle">
                                 <a href="anuncio.php?id='.$resultado['id_anuncio'].'">

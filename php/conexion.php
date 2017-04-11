@@ -1,14 +1,11 @@
-
 <?php
 // ARCHIVO DE CONEXION A LA BASE DE DATOS
-//Nombre del servidor
-$host="localhost";
-//Usuario de la Base de datossss
-$user="root";
-//Contraseña del usuario
-$password="";
-//Nombre de la BD
-$db="merideando";
-//Variable de conexion
-$con = new mysqli($host,$user,$password,$db);
-?>
+
+try {
+    $con = new PDO('mysql:host=localhost;dbname=merideando','root','');
+    $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $con->exec("SET CHARACTER SET utf8");
+    
+} catch(PDOException $e){
+    die('Error: ' . $e->getMessage());
+}

@@ -41,12 +41,14 @@
             <?php
                 $sql = "SELECT COUNT(a.id_anuncio) as cantidad, c.nombre_cat, c.icono, c.id_categoria FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria GROUP BY c.id_categoria";
                     
-                $query = $con->query($sql);
-                 //Comprobamos si existen resultados
-                    if (mysqli_num_rows($query) > 0){
-                        while ($resultado = $query->fetch_array()){                 echo ' <a href="categoria.php?id='.$resultado['id_categoria'].'" target="_blank"><div class="col-md-4 col-sm-4 wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s" data-wow-offset="0">
-                            <div class="single_feature">
-                                <i class="fa '.$resultado['icono'].'"></i>
+                $query = $con->prepare($sql);
+                $query->execute();
+                //Comprobamos si existen resultados
+                if ($query->rowCount() > 0){
+                    while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){                
+                        echo ' <a href="categoria.php?id='.$resultado['id_categoria'].'" target="_blank"><div class="col-md-4 col-sm-4 wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s" data-wow-offset="0">
+                        <div class="single_feature">
+                            <i class="fa '.$resultado['icono'].'"></i>
                                 <h4>'.$resultado['nombre_cat'].'</h4>
                                     <ul class="list-group">
                                         <li class="list-group-item">'.$resultado['cantidad'].' anuncios publicados</li>

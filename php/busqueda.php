@@ -1,6 +1,6 @@
 <?php
 
- require_once 'dbconfig.php';
+ require_once 'conexion.php';
 
  // Eliminamos espacios en blanco u otros caracteres del inicio y final de la cadena de la búsqueda del usuario
  $busqueda = trim($_REQUEST['term']);
@@ -14,7 +14,7 @@
 // Consultamos los datos necesarios del anuncio en la BD
  $query = 'SELECT * FROM anuncios WHERE razon_soc LIKE :term'; 
  
- $stmt = $DBcon->prepare($query);
+ $stmt = $con->prepare($query);
  $stmt->execute(array(':term'=>"%$busqueda%"));
  
  if ( $stmt->rowCount()>0 ) {
