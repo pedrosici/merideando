@@ -96,7 +96,32 @@ h6 {
     letter-spacing: 1px;
 	font-size:30px;
     text-transform: uppercase;
+    
 }
+
+.title{
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-bottom: 10px;
+}
+
+.subtitulo {
+    padding-bottom: 10px;
+}
+
+.botones{
+    padding-top:30px;
+}
+
+.inner-box{
+    border: 1px solid #eee;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+
+   
+
 .single_welcome p {
 color: #333;
 font-family: "Berkshire Swash",sans-serif;
@@ -401,6 +426,28 @@ line-height: 36px;
     overflow-y: auto;
 }
 
+/*----- CONTENEDORES -----*/
+.wrapper{
+    clear:both;
+    display:block;
+    height:auto;
+    overflow:auto;
+    width:100%;
+}
+
+.item-list{
+    padding: 15px;
+    border: 1px solid #ccc;
+    width: 100%;
+    height: auto;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    clear: both;
+    margin-bottom: 15px;
+    box-shadow: 1px 1px 3px 0px #F1F1F1;
+}
+
 /** TABLAS **/
 
 .registros{
@@ -417,3 +464,51 @@ line-height: 36px;
         height: 200px;
         width: 100%;
        }
+
+/* ----- BUSCADOR ----*/
+
+form .form-group{
+           width: 700px;
+           max-width: 100%;
+           border-radius: 0 !important;
+        }
+        * {
+          -webkit-border-radius: 0 !important;
+             -moz-border-radius: 0 !important;
+                  border-radius: 0 !important;
+        }
+        .ui-autocomplete {
+            max-height: 300px;
+            overflow-y: auto;
+            /* prevent horizontal scrollbar */
+            overflow-x: hidden;
+        }
+        * html .ui-autocomplete {
+            height: 300px;
+        }
+
+        .ui-autocomplete .ui-menu-item-wrapper {
+            font-size: 15px;
+            border-radius: 0;
+            border-bottom: solid #eceff1 2px;
+            padding: 10px;
+            color: #000;
+            background: #f9f9f9;
+        }
+        .ui-autocomplete .ui-menu-item {
+            color: #000;
+            background: #f9f9f9;
+        }
+
+        .ui-autocomplete .ui-menu-item:hover, .ui-menu-item-wrapper:hover {
+            color: #fff;
+            background: #a8a9d0;
+        }
+
+        .ui-menu .ui-state-focus,
+        .ui-menu .ui-state-active {
+         color: #fff;
+            background: #967cfc;
+            background: #a8a9d0;
+            border: 0;
+        }

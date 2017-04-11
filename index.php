@@ -1,7 +1,7 @@
 <?php
 
 //Evitamos que nos salgan los NOTICES de PHP
-error_reporting(E_ALL ^ E_NOTICE);
+
 //Iniciamos variables SESSION
 session_start();
 //Incluimos archivo de conexion a la BD
@@ -22,6 +22,9 @@ include('php/conexion.php');
         <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        
 
     </head>
 
@@ -93,14 +96,16 @@ include('php/conexion.php');
                                      <!---<a class="btn-light-bg " href="#">Purchase Now</a> -->
                                 </div>
                             </div>
-
-                            <div class="form-group col-md-4 col-md-offset-4 text-center">
-                                <form action="index.php" method="POST" name="buscador" id="buscador">
-                                  <div class="input-group margin-bottom-sm">
-                                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                    <input class="form-control" type="text" placeholder="¿Qué buscas?">
-                                  </div>
+                            <div class="col-md-12 text-center">
+                                <div class="form-group">
+                                <form>
+                                    <div class="input-group">
+                                    <input id="buscador" class="form-control input-lg" type="text" placeholder="¿Qué buscas?" />
+                                    <div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
+                                </div>
                                 </form>
+                                
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -134,7 +139,7 @@ include('php/conexion.php');
 				<div class="container">
 					<div class="row text-center">
 						<div class="section_title mg-bt-40">						
-							<h2>Sobre nosotros</h2>
+							<h2>Sobre Nosotros</h2>
                             <h4>Conoce como trabajamos</h4>
 							<div class="icon_wrap"><i class="fa fa-heart-o"></i></div>	
 						</div>		
@@ -191,7 +196,7 @@ include('php/conexion.php');
 							<div class="icon_wrap"><i class="fa fa-bullhorn"></i></div>	
 						</div>	
                     
-                         <div class="col-sm-4 col-xs-12  wow fadeInLeft" data-wow-duration="1s" delay="0.2s" data-wow-offset="0">
+                         <div class="col-md-4 wow fadeInLeft" data-wow-duration="1s" delay="0.2s" data-wow-offset="0">
                              <div class="single-address">
                                 <i class="fa fa-pencil-square-o"></i>
                                 <h4>Regístrate</h4>
@@ -199,17 +204,17 @@ include('php/conexion.php');
                              <p>Necesitamos información sobre ti y tu negocio. Para registrarte, pincha en <a href="login.php">este enlace</a></p>
                         </div>
                         
-                        <div class="col-sm-4 col-xs-12 wow fadeInLeft" data-wow-duration="1s" delay="0.2s" data-wow-offset="0" >
+                        <div class="col-md-4 wow fadeInLeft" data-wow-duration="1s" delay="0.2s" data-wow-offset="0" >
                             <div class="single-address">
                                 <i class="fa fa-pencil-square-o"></i>
                             <h4>Crea tu anuncio</h4>
                             </div>
                             <p>Una vez registrado podrás empezar a crear el anuncio ideal, para ello puedes acceder a <a href="panel_usuario.php">tu panel de administración</a></p>    
                         </div>
-                        <div class="col-sm-4 col-xs-12 c wow fadeInLeft" data-wow-duration="1s" delay="0.2s" data-wow-offset="0">
+                        <div class="col-md-4 wow fadeInLeft" data-wow-duration="1s" delay="0.2s" data-wow-offset="0">
                             <div class="single-address">
                                 <i class="fa fa-pencil-square-o"></i>
-                                <h4>Visualiza y compártelo</h4>
+                                <h4>Visualiza tu anuncio y compártelo</h4>
                             </div>
                             <p>Ya has publicado tu anuncio, es hora de que todos lo vean. Puedes compartirlo o ver el resto de anuncios relacionados con el tuyo</p>
                                 
@@ -231,7 +236,7 @@ include('php/conexion.php');
                     
                      <?php
                         //Consulta para sacar ultimos anuncios publicados
-                            $sql = "SELECT * FROM anuncios ORDER BY fecha DESC LIMIT 4";
+                            $sql = "SELECT a.razon_soc,a.id_anuncio, a.direccion, a.imagen, a.categoria_id, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE id_anuncio = a.id_anuncio ORDER BY fecha DESC LIMIT 3";
                             $query = $con->query($sql);
                         //Comprobamos si existen resultados
                            if (mysqli_num_rows($query) > 0){
@@ -239,14 +244,16 @@ include('php/conexion.php');
                     
                        
                                 
-                            echo '<div class="col-sm-4 col-xs-6 media text-center">
+                            echo '<div class="col-md-4 media">
                               <div class="media-left media-middle">
-                                <a href="#">
-                                  <img class="media-object" src="images/'.$resultado['imagen'].'" alt="logo" width="60">
+                                <a href="anuncio.php?id='.$resultado['id_anuncio'].'">
+                                  <img class="media-object img-rounded" src="images/'.$resultado['imagen'].'" alt="logo" width="100">
                                 </a>
                               </div>
                               <div class="media-body">
-                                <h4 class="media-heading">'.$resultado['razon_soc'].'</h4>
+                                <a href="anuncio.php?id='.$resultado['id_anuncio'].'"><h4 class="media-heading">'.$resultado['razon_soc'].'</h4></a>
+                                <a href="categoria.php?id='.$resultado['categoria_id'].'"><i class="fa '.$resultado['icono'].'" aria-hidden="true"></i> <span>'.$resultado['nombre_cat'].'</span></a><br>
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
                                 '.$resultado['direccion'].'
                               </div>
                             </div>';
@@ -260,14 +267,34 @@ include('php/conexion.php');
         
      <!-- Incluimos el footer o pie de página -->       
       <?php include "php/footer.php"; ?>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+     
+       
         
-     <!-- Script para mostrar Google Maps con mi API Key -->
-        <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC516yYGBDQeQIHcm7W1KhWJ_NDL8iUT8s&callback=initMap">
-    </script>
-        <script type="text/javascript" src="js/main.js"></script>
-        <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-       <script src="js/jquery.vide.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+     <script>   
+         $(document).ready(function(){
+
+             $('#buscador').autocomplete({
+                 source: "php/busqueda.php",
+                 minLength: 2,
+                 select: function(event, ui) {
+                     var url = ui.item.id;
+                     if (url != '#') {
+                         location.href = 'anuncio.php?id=' + url; 
+                     }
+                 },
+                 open: function(event, ui) {
+                     $(".ui-autocomplete").css("z-index", 1000)
+                 }
+             })
+
+            });  
+            </script>
+            <script src="js/jquery.vide.min.js"></script>
+        
     </body>
-  </html>
+</html>
