@@ -135,7 +135,7 @@ include('php/conexion.php');
             </div>
         </section>
         
-        <section class="nosotros">
+        <section class="fondo">
 				<div class="container">
 					<div class="row text-center">
 						<div class="section_title mg-bt-40">						
@@ -152,7 +152,7 @@ include('php/conexion.php');
 							</div>
 						</div><!-- END COL -->
                         
-                       <?php //Consulta para sacar TOTAL de anuncios en la BD
+                        <?php //Consulta para sacar TOTAL de anuncios en la BD
                             $sql = "SELECT COUNT(id_anuncio) as cantidad FROM anuncios";
                             $query = $con->prepare($sql);
                             $query->execute();
@@ -226,7 +226,7 @@ include('php/conexion.php');
                 </div><!-- FIN CONTAINER -->
     </section><!-- FIN SECTION -->
         
-    <section class="novedades section-padding">
+    <section class="fondo section-padding">
             <div class="container">
                 <div class="row">
                     <div class="section_title text-center">						
@@ -244,10 +244,10 @@ include('php/conexion.php');
                            if ($query->rowCount() > 0){
                             while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
     
-                            echo '<div class="col-md-4 media">
+                            echo '<div class="col-sm-4 col-xs-12 media">
                               <div class="media-left media-middle">
                                 <a href="anuncio.php?id='.$resultado['id_anuncio'].'">
-                                  <img class="media-object img-rounded" src="images/'.$resultado['imagen'].'" alt="logo" width="100">
+                                  <img class="media-object img-rounded" src="images/'.$resultado['imagen'].'" alt="logo" width="80">
                                 </a>
                               </div>
                               <div class="media-body">

@@ -6,8 +6,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 session_start();
 include('php/conexion.php');
 
-$busqueda = $_GET['id'];
-
+$id_anuncio = $_GET['id'];
 ?>
 
 <!DOCTYPE html>
@@ -36,39 +35,39 @@ $busqueda = $_GET['id'];
             
         <?php 
             // Consulta SQL
-            $sql = "SELECT  a.razon_soc, a.cif, a.direccion, a.telefono, a.email, a.descripcion, a.imagen, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE a.id_anuncio = ?";
+            $sql = "SELECT a.razon_soc, a.cif, a.direccion, a.longitud, a.latitud, a.telefono, a.email, a.descripcion, a.web, a.twitter, a.facebook, a.instagram, a.imagen, a.likes, a.hates, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE a.id_anuncio = ?";
             $query = $con->prepare($sql);
-            $query->execute(array($busqueda));
-            //Comprobamos si existen resultados
-            if ($query->rowCount() > 0){
+            $query->execute(array($id_anuncio));
+            
+            // Comprobamos existencia del anuncio
+             if ($query->rowCount() > 0){
                 while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
                     //Posición ubicación anuncio
                     $lat = $resultado['latitud'];
                     $lng = $resultado['longitud']; ?>
             
-            <div class="col-md-12 mg-tp-40 mg-bt-40 text-center">
-                    <img src="images/<?php echo $resultado['imagen']; ?>" class="img-rounded" height="100">
+            <div class="col-md-4 mg-tp-40 mg-bt-40 text-center">
+                    <img src="images/<?php echo $resultado['imagen']; ?>" class="img-rounded" height="80">
             </div>
-             <div class="section_title mg-tp-40 mg-bt-40  text-center">						
+             <div class="col-md-8 mg-tp-40 mg-bt-40 ">						
                  <h2><?php echo $resultado['razon_soc']; ?></h2>
+                 <p><?php echo $resultado['descripcion']; ?> </p>
             </div>   
             
+            
+             
+
+            <div class="col-md-12 mg-bt-80 text-center">
+                
+                <div class="icon_wrap"><i class="fa <?php echo $resultado['icono']; ?>" aria-hidden="true"></i></div>
+            </div>
             <div class="col-md-12 mg-bt-40 text-center">
                 <ul class="votos">
                     <li class="btn btn_votos  btn-success" data-voto="likes" data-id="<?php echo $resultado['id_anuncio'];?>"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> <span class="badge"><?php echo $resultado['likes'];?></span></li>
                     <li class="btn_votos btn btn-danger" data-voto="hates" data-id="<?php echo $resultado['id_anuncio'];?>"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> <span class="badge"><?php echo $resultado['hates'];?></span></li>
                 </ul>
              </div>
-             
-            <div class="col-md-12 mg-bt-80 text-center">
-                    <p><?php echo $resultado['descripcion']; ?> </p>
-                <div class="icon_wrap"><i class="fa <?php echo $resultado['icono']; ?>" aria-hidden="true"></i></div>
-            </div>
-         
-        </div>    
-            
-            
-    <div class="row">    
+  
         <div class="col-md-4 mg-bt-80">
             <div class="mg-bt-40 text-center">
                 <h3>Contacto</h3>
@@ -84,8 +83,12 @@ $busqueda = $_GET['id'];
                 <tr><td><i class="fa fa-envelope-o" aria-hidden="true"></i></td>
                     <td><a href="mailto:<?php echo $resultado['email']; ?>">Contactar vía email</a></td>
                 </tr>
-                
-                
+                <?php 
+                    if ($resultado['web'] != NULL || $resultado['web'] != "" ){
+                        echo '<tr><td><i class="fa fa-link" aria-hidden="true"></i></td>
+                                <td><a href="http://'.$resultado['web'].'">Visitar web</a></td>
+                              </tr>';
+                    }  ?>
             </table>
             
         </div>
@@ -101,51 +104,48 @@ $busqueda = $_GET['id'];
                 </tr>
                 <tr>
                     <td>10:00 AM - 20:30 PM</td>
-                    <td>11:30 AM - 18:00</td>
+                    <td>11:30 AM - 18:00 PM</td>
                 </tr>
             </table>
         </div>
-        <div class="col-md-4 mg-bt-80">
+        <div class="col-md-4 mg-bt-80 text-center">
             <div class="mg-bt-40 text-center">
                 <h3>Redes sociales</h3>
             </div>
-            
-                <ul class="social" style="list-style:none;" >
-                    <li> <a href="#"> <i class=" fa fa-facebook">   </i> </a> </li>
-                    <li> <a href="#"> <i class="fa fa-twitter">   </i> </a> </li>
-                    <li> <a href="#"> <i class="fa fa-google-plus">   </i> </a> </li>
-                    <li> <a href="#"> <i class="fa fa-pinterest">   </i> </a> </li>
-                    <li> <a href="#"> <i class="fa fa-youtube">   </i> </a> </li>
-                </ul>
-             
+                  <?php   
+                    if (($resultado['facebook'] == "") && ($resultado['twitter'] == "") && ($resultado['instagram'] == "")){
+                        echo '<p>El anunciante no dispone de redes sociales.</p>';
+                    } else {
+                        echo '<ul class="social" style="list-style:none;">';
+                        if ($resultado['facebook'] != NULL || $resultado['facebook'] != "" ){
+                            echo '<li><a href="https://es-la.facebook.com/'.$resultado['facebook'].'"><i class="fa fa-facebook"></i></a></li>';
+                        }
+                        if ($resultado['twitter'] != NULL || $resultado['twitter'] != "" ){
+                            echo '<li><a href="https://twitter.com/'.$resultado['twitter'].'"><i class="fa fa-twitter"></i></a></li>';
+                        }
+                        if ($resultado['instagram'] != NULL || $resultado['instagram'] != "" ){
+                            echo '<li><a href="https://www.instagram.com/'.$resultado['instagram'].'"><i class="fa fa-instagram"></i></a></li>';
+                        }
+                        echo '</ul>';
+                    }  ?>
+                    
+                
         </div>
-             
-    </div>
-         
-    <div class="row">
-        
+
         <div class="col-md-12 mg-bt-40">
             <div class="mg-bt-40 text-center">
                 <h3>Ubicación</h3>
             </div>
             <div id="map"></div>
-        </div>
-        
-         <div class="col-md-12 mg-bt-40">
-            <div class="mg-bt-40 text-center">
-                <h3>Opiniones y comentarios</h3>
-            </div>
-        </div>
-        
-    </div><!-- /row -->
-    <div class="row">
+        </div>  
+   
         <div class="col-sm-12">
             <div id="listaComentarios">
                 
         <?php
-            $sql = "SELECT comentario, nick, fecha_comentario FROM comentarios WHERE id_anuncio = ?";
+            $sql = "SELECT comentario, nick, fecha_comentario FROM comentarios WHERE anuncio_id = ?";
             $query = $con->prepare($sql);
-            $query->execute(array($busqueda));
+            $query->execute(array($id_anuncio));
                     
             //Comprobamos si existen resultados
             if ($query->rowCount() > 0){
@@ -164,8 +164,7 @@ $busqueda = $_GET['id'];
             
             </div>
         </div><!-- /col-sm-5 -->
-        
-        
+         
         <div class="col-sm-12 text-center mg-tp-40 mg-bt-40">
             <form role="form" name="comentario" id="comentarios_ajax" method="POST" class="col-md-6 col-md-offset-3 text-center">
                 <h3>Escribe tu opinión</h3>
@@ -178,14 +177,15 @@ $busqueda = $_GET['id'];
                     <label for="message">Mensaje</label>
                     <textarea id="comentario" name="comentario" class="form-control" placeholder="Escribe tu comentario acerca del anuncio" required></textarea>
                 </div>
-                <input type="hidden" id="id_anuncio" value="<?php echo $busqueda; ?>">
-                <div class="form-group">
+                <input type="hidden" id="id_anuncio" value="<?php echo $id_anuncio; ?>">
+                <div class="form-group col-sm-12">
                     <input type="submit" class="btn btn-primary" value="Comentar">
                 </div>
-		</form>
-            <div id="resultado"></div>
+                <div class="col-sm-12" id="resultado"></div>
+		  </form>
+            
         </div>
-   </div>
+  
          
     <?php
                 } //FIN IF
@@ -194,13 +194,16 @@ $busqueda = $_GET['id'];
             echo '<div class="col-md-12 mg-bt-80 mg-tp-80 text-center"><h3>¡ERROR! El anuncio que intenta ver no existe.</h3></div>';
         }
     ?>
-</div>
+        </div> <!-- FIN ROW -->  
+    </div> <!-- FIN CONTAINER -->
         
     <!-- Incluimos el footer o pie de página -->       
       <?php include "php/footer.php"; ?>
+        
      <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC516yYGBDQeQIHcm7W1KhWJ_NDL8iUT8s&callback=initMap">
-    </script>   
+    </script>  
+        
       <script type="text/javascript">
         function initMap() {
 	        var coord = {lat: <?php echo $lat; ?>, lng: <?php echo $lng; ?>};
@@ -215,7 +218,6 @@ $busqueda = $_GET['id'];
 	      }
         </script>
         
-        
         <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         
@@ -225,17 +227,18 @@ $busqueda = $_GET['id'];
             #comentario_ajax es el id del formulario de donde tratamos de enviar el comentario, si tu formulario tiene otro id tenes que cambiar este acontinucion*/
             $("#comentarios_ajax").submit(function() {
                 var autor_id = $("#autor_id").val();
-                var post_id = $("#post_id").val();
                 var comentario = $("#comentario").val();
                 var id_anuncio = $("#id_anuncio").val();
-                var cadena = 'id_anuncio='+id_anuncio+'&autor_id='+autor_id+'&post_id='+post_id+'&comentario='+encodeURIComponent(comentario);
+                
+                var cadena = '&id_anuncio='+id_anuncio+'&autor_id='+autor_id+'&comentario='+encodeURIComponent(comentario);
+                
                 $.ajax({ type: "POST", 
                          url: "php/comentarios_anuncio.php", 
                          data: cadena,
                          cache: false, 
                          success: function(datos){ 
                                   if (datos) {  
-                                     $("#resultado").addClass('alert alert-success').html('¡Su comentario ha sido publicado con éxito').show(200).delay(3000).hide(200);
+                                     $("#resultado").addClass('alert alert-success').html('Comentario publicado con éxito');
                                      $("#listaComentarios").append(datos); 
                                      }
                                   }

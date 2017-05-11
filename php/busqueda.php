@@ -8,7 +8,6 @@
  $sugg_json = array();    // Mostramos datos de un JSON como una sugerencia de búsqueda
  $json_row = array();     // Mostramos los resultados de MYSQL como un string de JSON
  
-
  $busqueda = preg_replace('/\s+/', ' ', $busqueda); // Reemplaza los espacios del input
 
 // Consultamos los datos necesarios del anuncio en la BD
@@ -29,7 +28,7 @@
  } else {
      $json_row["id"] = "#";
      $json_row["value"] = "";
-     $json_row["label"] = "Nothing Found!";
+     $json_row["label"] = "¡No se encontraron anuncios relacionados!";
      array_push($sugg_json, $json_row);
  }
  

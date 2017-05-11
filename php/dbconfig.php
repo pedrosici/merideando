@@ -7,6 +7,6 @@
  
  try {
   $DBcon = new PDO("mysql:host=$DBhost;dbname=$DBname",$DBuser,$DBpass);
- } catch(PDOException $e){
-  die('Error: ' . $e->getMessage());
+ } catch(PDOException $ex){
+  die($ex->getMessage());
  }

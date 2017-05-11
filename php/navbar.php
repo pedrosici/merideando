@@ -1,3 +1,7 @@
+<?php
+    $current_page = basename($_SERVER['PHP_SELF']);
+?>
+
 <nav class="navbar navbar-default">
           <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -14,7 +18,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="index.php">Inicio<span class="sr-only">(current)</span></a></li>
+                <li class="<?php if ($current_page == "index.php"){ echo "active "; }?>"><a href="index.php">Inicio<span class="sr-only">(current)</span></a></li>
                   <!-- Mostramos las opciones de cuenta segun la sesión del usuario -->
                   <?php if(!isset($_SESSION["user_id"])):?>
                 <li class="dropdown">
@@ -25,16 +29,15 @@
                     <li><a href="#contacto">Contacto</a></li>
                   </ul>
                 </li>
-                <li><a href="categorias.php">Categorías</a></li>
+                <li class="<?php if ($current_page == "categorias.php"){ echo "active "; }?> item"><a href="categorias.php">Categorías</a></li>
                  <?php else:?>
-                  <li><a href="panel_usuario.php">Mis anuncios</a></li>
+                  <li class="<?php if ($current_page == "panel_usuario.php"){ echo "active "; }?> item"><a href="panel_usuario.php">Mis anuncios</a></li>
                   <li><a href="categorias.php">Categorías</a></li>
                   
                 <?php endif;?>
               </ul>
                 
               <ul class="nav navbar-nav navbar-right">
-                  
                   <!-- Mostramos las opciones de cuenta segun la sesión del usuario -->
                   <?php if(!isset($_SESSION["user_id"])):?>
                   <li class="dropdown">

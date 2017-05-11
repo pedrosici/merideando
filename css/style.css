@@ -212,8 +212,8 @@ line-height: 36px;
 
 /* -------------- NOSOTROS ---------------- */
 
-.nosotros {
-    background: #f7f7f7 none repeat scroll 0 0;
+.fondo {
+    background: #f3f3f3 none repeat scroll 0 0;
     padding-top: 60px;
 }
 
@@ -458,6 +458,8 @@ line-height: 36px;
 .hover_img a span { position:absolute; display:none; z-index:99; }
 .hover_img a:hover span { display:block; }
 
+
+
 /* --- GOOGLE MAPS ---*/
 
 #map {
@@ -467,16 +469,6 @@ line-height: 36px;
 
 /* ----- BUSCADOR ----*/
 
-form .form-group{
-           width: 700px;
-           max-width: 100%;
-           border-radius: 0 !important;
-        }
-        * {
-          -webkit-border-radius: 0 !important;
-             -moz-border-radius: 0 !important;
-                  border-radius: 0 !important;
-        }
         .ui-autocomplete {
             max-height: 300px;
             overflow-y: auto;
@@ -512,3 +504,6 @@ form .form-group{
             background: #a8a9d0;
             border: 0;
         }
+
+/*----- CATEGORIAS ---*/
+

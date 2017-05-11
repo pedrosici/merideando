@@ -4,13 +4,13 @@
     include('php/conexion.php');
 
     session_start();
-
     $id = $_SESSION['user_id'];
-    $busqueda = $_GET['id'];
 
     //Seleccionamos los datos referentes a la categoría elegida 
-    $sql = "SELECT * FROM categorias WHERE id_categoria = ?";
-
+    $sql = "SELECT * FROM categorias WHERE id_categoria='{$_GET['id']}'";
+    $id_cat = $_GET['id'];
+    
+  
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +22,7 @@
         <title>Merideando</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1"> 
         <!-- Bootstrap -->
-        <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+        
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">  
         <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
@@ -37,7 +37,9 @@
         <section class="categorias">
             <div class="container">
                 <div class="row"> 
-               <?php //Comprobamos si existen resultados
+                    
+               <?php
+                   //Comprobamos si existen resultados
                    $query = $con->prepare($sql);
                     $query->execute(array($busqueda));
                         //Comprobamos si existen resultados
@@ -57,16 +59,15 @@
         </section> 
         
         <section class="main container-fluid mg-bt-40"> 
-            
-             <aside  id="bloqueblog" class="col-md-3 pull-left">
-                 <div class="col-md-11">
+                 <div class="col-sm-3 col-md-3 pull-left">
                     <div class="section_title text-center mg-bt-40">
                         <h3><i class="fa fa-align-justify"></i> Categorias</h3>
                      </div>
         <!-- Script php para las categorias -->
                      
-                     <ul class="list-group">
-                    <?php
+                    <div class="list-group">
+                    
+                <?php  $current_page = $_SERVER['REQUEST_URI'];
                         // Consulta SQL
                         $sql= "SELECT * FROM categorias ORDER BY id_categoria DESC";
                         $query = $con->prepare($sql);
@@ -74,51 +75,46 @@
                         //Comprobamos si existen resultados
                         if ($query->rowCount() > 0){
                             while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
-                                echo '<a href="categoria.php?id='.$resultado['id_categoria'].'">
-                                        <li class="list-group-item">
-                                          <h4><i class="fa '.$resultado['icono'].'"></i> '.$resultado['nombre_cat'].'</h4></a>
-                                        </li></a>';
+                                echo '<a href="categoria.php?id='.$resultado['id_categoria'].'" class="list-group-item list-group-item-action ';
+                                if ($current_page == "/merideando/categoria.php?id=".$resultado['id_categoria']){ echo 'active'; }
+                                echo '"><i class="fa '.$resultado['icono'].'"></i> '.$resultado['nombre_cat'].'</a>';            
                                 } //end while
                             }     //end if
-
+ 
                             ?>
-                         </ul>
-                        
+                          
                     </div>
-                </aside>
-            
-        
-        <section class="col-md-9">
+                </div>
+
+        <section class="col-sm-9 col-md-9">
             <?php
             // Consulta SQL
                 $sql= "SELECT * FROM anuncios WHERE categoria_id = ?";
                 $query = $con->prepare($sql);
-                $query->execute(array($busqueda));
+                $query->execute(array($id_cat));
                 //Comprobamos si existen resultados
                 if ($query->rowCount() > 0){
                     while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){         
-                        echo '<div class="col-md-12 list-group">
+                        echo '<div class="col-sm-12 list-group">
                                 <div class="wrapper">
                                     <div class="item-list">
-                                        <div class="col-sm-2 no-padding">
+                                        <div class="col-sm-4 col-xs-3">
                                             <a href="anuncio.php?id='.$resultado['id_anuncio'].'">
-                                                <img class="media-object img-rounded" src="images/'.$resultado['imagen'].'" alt="logo" width="150">
+                                                <img class="img-rounded" src="images/'.$resultado['imagen'].'" alt="logo" width="80">
                                             </a>
                                         </div>
-                                        <div class="col-sm-7">
+                                        <div class="col-sm-6 col-xs-7">
                                             <a href="anuncio.php?id='.$resultado['id_anuncio'].'"><h4 class="title">'.$resultado['razon_soc'].'</h4></a>
                                             <h5 class="subtitulo"><i class="fa fa-map-marker"></i> '.$resultado['direccion'].'</h5>
-                                            <p>'.$resultado['descripcion'].'</p>
                                         </div>
-                                        <div class="col-sm-3 botones text-right">
-                                              <a href="anuncio.php?id='.$resultado['id_anuncio'].'" class="btn btn-primary btn-md"><i class="fa fa-eye fa-2x"></i> Ver</a>
-                                            <a class="btn btn-primary btn-md"><i class="fa fa-thumbs-o-up fa-2x"></i> 20</a>
+                                        <div class="col-sm-2 col-xs-2">
+                                              <a href="anuncio.php?id='.$resultado['id_anuncio'].'" class="btn btn-primary btn-sm"><i class="fa fa-eye fa-2x"></i> Ver</a>
                                         </div>
                                     </div>
                                 </div>';
                         }
                     } else {
-                        echo '<div class="col-md-12 mg-tp-80 text-center">
+                        echo '<div class="col-sm-12 mg-tp-80 text-center">
                                 <h4>No existen anuncios para esta categoría</h4>
                                </div>';
                 }
@@ -132,7 +128,7 @@
       <?php include "php/footer.php"; ?>
         
         <!--Import jQuery before materialize.js-->
-        
+        <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
        <script src="js/jquery.vide.min.js"></script>
      </body>

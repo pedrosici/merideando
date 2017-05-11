@@ -1,6 +1,6 @@
 <?php
     //Evitamos que nos salgan los NOTICES de PHP
-
+    
 
     session_start();
 ?>
