@@ -49,24 +49,25 @@ $id_anuncio = $_GET['id'];
             <div class="col-md-4 mg-tp-40 mg-bt-40 text-center">
                     <img src="images/<?php echo $resultado['imagen']; ?>" class="img-rounded" height="80">
             </div>
-             <div class="col-md-8 mg-tp-40 mg-bt-40 ">						
+             <div class="col-md-8 mg-tp-40 mg-bt-40 text-center ">						
                  <h2><?php echo $resultado['razon_soc']; ?></h2>
                  <p><?php echo $resultado['descripcion']; ?> </p>
             </div>   
-            
-            
-             
 
-            <div class="col-md-12 mg-bt-80 text-center">
-                
+            <div class="col-md-12 mg-bt-40 text-center">
                 <div class="icon_wrap"><i class="fa <?php echo $resultado['icono']; ?>" aria-hidden="true"></i></div>
             </div>
+<!--
             <div class="col-md-12 mg-bt-40 text-center">
+                <div class="mg-bt-40 text-center">
+                <h3>Valora este servicio</h3>
+                </div>
                 <ul class="votos">
-                    <li class="btn btn_votos  btn-success" data-voto="likes" data-id="<?php echo $resultado['id_anuncio'];?>"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> <span class="badge"><?php echo $resultado['likes'];?></span></li>
-                    <li class="btn_votos btn btn-danger" data-voto="hates" data-id="<?php echo $resultado['id_anuncio'];?>"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> <span class="badge"><?php echo $resultado['hates'];?></span></li>
+                    <li class="btn btn_votos  btn-success" data-voto="likes" data-id="<?php // echo $resultado['id_anuncio'];?>"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> <span class="badge"><?php //echo $resultado['likes'];?></span></li>
+                    <li class="btn_votos btn btn-danger" data-voto="hates" data-id="<?php //echo $resultado['id_anuncio'];?>"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> <span class="badge"><?php //echo $resultado['hates'];?></span></li>
                 </ul>
              </div>
+-->
   
         <div class="col-md-4 mg-bt-80">
             <div class="mg-bt-40 text-center">

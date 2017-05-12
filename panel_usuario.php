@@ -61,17 +61,7 @@ $id_anuncio = $_GET['id_anuncio'];
                             
                             <div class="col-md-12 col-xs-12 ">
                                 <div class="registros" id="agrega-anuncio">
-                                   <table class="table table-striped table-condensed table-hover table-bordered text-center">
-                                        <thead >
-                                        <tr>
-                                            <th class="text-center" width="150">Razón social</th>
-                                            <th class="text-center" width="50">Logo</th>
-                                            <th class="text-center" width="50">Categoría</th>
-                                            <th class="text-center" width="25">Votos</th>
-                                            <th class="text-center" width="50">Enlace</th>
-                                            <th class="text-center" width="50">Acción</th>
-                                        </tr>
-                                        </thead> 
+                                   
                             <?php
                             
                             $sql = "SELECT a.id_anuncio, a.razon_soc, a.cif, a.direccion, a.telefono, a.email, a.descripcion, a.imagen, a.likes, a.hates, c.nombre_cat FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE a.usuario_id = ?";
@@ -80,7 +70,17 @@ $id_anuncio = $_GET['id_anuncio'];
                             
                             // Comprobamos existencia del anuncio
                              if ($query->rowCount() > 0){
-                                 
+                                 echo '<table class="table table-striped table-condensed table-hover table-bordered text-center">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center" width="150">Razón social</th>
+                                            <th class="text-center" width="50">Logo</th>
+                                            <th class="text-center" width="50">Categoría</th>
+                                            <th class="text-center" width="25">Votos</th>
+                                            <th class="text-center" width="50">Enlace</th>
+                                            <th class="text-center" width="50">Acción</th>
+                                        </tr>
+                                        </thead>'; 
                                 while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
                                 
                                     echo '<tr>
@@ -89,22 +89,21 @@ $id_anuncio = $_GET['id_anuncio'];
                                         <td>'.$resultado['nombre_cat'].'</td>
                                         <td>'.$resultado['likes'].'</td>
                                         <td><a href="anuncio.php?id='.$resultado['id_anuncio'].'" target="_blank"><i class="fa fa-link fa-2x" aria-hidden="true"></i></a>
-                                        
-                                        
-                                        <td><a href="#editar-anuncio" class="fa fa-pencil fa-2x" data-toggle="modal" onClick="editarAnuncio('.$resultado['id_anuncio'].');" title="Editar Anuncio"></a> <a href="#" onClick="eliminarAnuncio('.$resultado['id_anuncio'].');" class="fa fa-trash fa-2x" title="Eliminar anuncio"></a></td>
-                                     </tr>'; 
-                                    
-                                } ?> </table>
+                                        <td><a href="#editar-anuncio" class="fa fa-pencil fa-2x" data-toggle="modal" onClick="editarAnuncio('.$resultado['id_anuncio'].');" title="Editar Anuncio"></a> <a  href="#eliminar-anuncio" data-toggle="modal" onClick="setIdAnuncio('.$resultado['id_anuncio'].')" class="fa fa-trash fa-2x" title="Eliminar anuncio"></a></td>
+                                     </tr></table>'; 
+                                } ?> 
                                     
                             <?php
                                 
                             } else {  
                                 echo '<div class="slider_text text-center"><h3>No tienes ningún anuncio creado todavía</h3></div>';
-                            }
-                                
+                            }                                
                             ?>
+                                    
+                                    
                                          
-                            </div> 
+                            </div>
+                            <div id="mensaje"></div>
                         </div>
                     </div>
                 </div>
@@ -126,7 +125,7 @@ $id_anuncio = $_GET['id_anuncio'];
                                     </div>
                                     <div class="col-md-6">
                                         <label for="direccion">Dirección física</label> (Ej: John Lennon, 36)
-                                        <input type="text" class="form-control" name="direccion" placeholder="Dirección">
+                                        <input type="text" class="form-control" name="direccion" id="direccion" placeholder="Dirección">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -211,11 +210,6 @@ $id_anuncio = $_GET['id_anuncio'];
                                     <img class="img-responsive" id="vistaprevia" src="images/noimage.png" width="100%" />
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <div id="mensaje" class="col-md-12">
-                                
-                                </div>
-                            </div>
                         </div>
                    <div class="modal-footer">
                         <button type="submit" class="btn btn-success" value="crear" id="crear">Crear anuncio</button>
@@ -239,22 +233,22 @@ $id_anuncio = $_GET['id_anuncio'];
                         <div class="modal-body">
                            <div class="form-group row">
                                     <div class="col-md-6">
-                                        <label for="razon">Razón Social</label>
-                                        <input type="text" class="form-control col-md-6" name="razon" id="razon_soc" placeholder="Introduce un nombre" required>
+                                        <label for="razon">Razón Social*</label>
+                                        <input type="text" class="form-control col-md-6" name="razon" id="razon_soc"  placeholder="Introduce un nombre" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="direccion">Dirección</label>
-                                        <input type="text" class="form-control" name="direccion" id="direccion" placeholder="Dirección" required>
+                                        <label for="direccion">Dirección física</label> (Ej: John Lennon, 36)
+                                        <input type="text" class="form-control" name="direccion" id="direccion" placeholder="Dirección">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-6">
                                         <label for="cif">CIF*</label>
-                                        <input type="text" class="form-control col-md-6" name="cif" id="dni" placeholder="Introduce un CIF" required>
+                                        <input type="text" class="form-control col-md-6" name="cif" id="cif" placeholder="Introduce un CIF" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="telefono">Teléfono*</label>
-                                        <input type="text" class="form-control" name="telefono" id="telefono" placeholder="Teléfono de contacto" required>
+                                        <input type="text" class="form-control" name="telefono" placeholder="Teléfono de contacto" required>
                                     </div>
                                 </div>
                             <div class="form-group row">
@@ -262,12 +256,12 @@ $id_anuncio = $_GET['id_anuncio'];
                                         <label for="categoria">Categoría</label>
                                         <select class="form-control" name="categoria">
                                     <?php
-                                            $sql = "SELECT id_categoria, nombre_cat FROM categorias ORDER BY nombre_cat ASC";
-                                            $query = $con->prepare($sql);
-                                            $query->execute();
-                                            
-                                            while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ ?>
-                                              <option id="categoria" value="<?php echo $resultado['id_categoria']?>"><?php echo $resultado['nombre_cat']?></option>
+                                        $sql = "SELECT * FROM categorias ORDER BY nombre_cat ASC";
+                                        $query = $con->prepare($sql);
+                                        $query->execute();
+
+                                        while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ ?>
+                                            <option value="<?php echo $resultado['id_categoria']?>"><?php echo $resultado['nombre_cat']?></option>
                                     <?php   } ?>
       
                                         </select>
@@ -280,34 +274,53 @@ $id_anuncio = $_GET['id_anuncio'];
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <label for="descripcion">Descripción*</label>
-                                    <textarea class="form-control" rows="5" name="descripcion" id="descripcion" placeholder="Describe tu negocio" required></textarea>
+                                    <textarea class="form-control" rows="5" name="descripcion" placeholder="Describe tu negocio" required></textarea>
                                 </div>
                                 <!-- PASAMOS OCULTO EL ID DEL USUARIO QUE CREA EL ANUNCIO -->
                                 <input type="hidden" name="id_usuario" value="<?php echo '.$id.'?>">
+                                
                             </div>
                             <div class="form-group row">
-                                <div class="col-md-12">
-                                    <label for="imagen">Logo*</label>
-
-                                    <?php 
-    /*
-                                        $sql = "SELECT imagen FROM anuncios WHERE id_anuncio = '{$_GET['id']}'";
-                                        $query = $con->query($sql);
-
-                                        if ($query->num_rows > 0 ){
-                                            while ($resultado = $query->fetch_array()){
-                                            echo '<img src="images/'.$resultado['imagen'].'" width="50">';
-                                            }
-                                        } else {
-                                            echo '<input type="file" name="logo" id="imagen" required />';
-                                        }*/
-                                    ?>
-  
+                                <div class="col-md-6">
+                                    <label for="web">Web de tu negocio</label>
+                                   <div class="input-group">
+                                        <span class="input-group-addon primary"><span>http://</span></span>
+                                        <input type="text" class="form-control" name="web" id="web" placeholder="Url de mi web">
+                                        <span class="input-group-addon primary"><span class="fa fa-link"></span></span>
+                                   </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="web">Redes sociales</label>
+                                   <div class="input-group">
+                                        <span class="input-group-addon primary"><span>@</span></span>
+                                        <input type="text" class="form-control" name="twitter" id="twitter" placeholder="Twitter">
+                                        <span class="input-group-addon primary"><span class="fa fa-twitter"></span></span>
+                                   </div>
+                                    
+                                    <div class="input-group">
+                                        <span class="input-group-addon primary"><span>@</span></span>
+                                        <input type="text" class="form-control" name="instagram" id="instagram" placeholder="Instagram">
+                                        <span class="input-group-addon primary"><span class="fa fa-instagram"></span></span>
+                                    </div>
+                                    
+                                    <div class="input-group">
+                                        <span class="input-group-addon primary"><span>facebook.com/</span></span>
+                                        <input type="text" name="facebook" class="form-control" id="facebook" placeholder="Facebook">
+                                        <span class="input-group-addon primary"><span class="fa fa-facebook"></span></span>
+                                   </div>
+                                  
+                                </div>
+                                
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-6">
+                                    <label for="logo">Logo*</label>
+                                    <input type="file" name="logo" id="imagen" required />
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div id="mensaje" class="col-md-12">
-                                
+                                <div class="col-md-4" id="imagenprevia">
+                                    <img class="img-responsive" id="vistaprevia" src="images/noimage.png" width="100%" />
                                 </div>
                             </div>
                         </div>
@@ -321,6 +334,26 @@ $id_anuncio = $_GET['id_anuncio'];
               </div>
            </div>
         </div>
+        
+        <!-- MODAL ELIMINAR ANUNCIO -->
+        <div class="modal fade" data-backdrop="false" id="eliminar-anuncio" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Eliminar anuncio</h4>
+              </div>
+                <div class="col-sm-12">
+                <p>¿Estás seguro de que deseas eliminar este anuncio?</p>
+                 </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" data-dismiss="modal" onClick="eliminarAnuncio();" class="btn btn-danger">Sí</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        
     
     <!-- Incluimos el footer o pie de página -->       
       <?php include "php/footer.php"; ?>

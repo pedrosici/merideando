@@ -1,9 +1,6 @@
+var id_anuncio = 0;
+
 $(document).ready(function (e) {
-    
-    
-    
-    
-    
     $("#formulario").on('submit',(function(e) {
     e.preventDefault();
     $("#mensaje").empty();
@@ -16,8 +13,9 @@ $(document).ready(function (e) {
         cache: false,             // To unable request pages to be cached
         processData:false,        // To send DOMDocument or non processed data file it is set to false
         success: function(nuevo){   // A function to be called if request succeeds
-                $('#mensaje').addClass('bg-success').html('¡Anuncio creado con exito!').show(200).delay(3000).hide(200);
-                $('#agrega-anuncio').html(nuevo);
+                $('#mensaje').addClass('alert alert-success alert-dismissible mg-bt-40 text-center').html('<h4>¡Anuncio creado con exito!</h4>').show(200).delay(3000).hide(200);
+			    $('#agrega-anuncio').html(nuevo);
+			return false;
                 return false;
         }
     });
@@ -27,7 +25,6 @@ $(document).ready(function (e) {
 $(function() {
     $("#imagen").change(function() {
     $("#mensaje").empty(); // To remove the previous error message
-   
     var file = this.files[0];
     var imagefile = file.type;
     var match = ["image/jpeg","image/png","image/jpg"];
@@ -68,42 +65,44 @@ function editarAnuncio(id){
            
             $('#id_anuncio').val(id);
             $('#razon_soc').val(datos[0]);
-            $('#dni').val(datos[1]);
+            $('#cif').val(datos[1]);
             $('#direccion').val(datos[2]);
             $('#telefono').val(datos[3]);
             $('#email').val(datos[4]);
             $('#descripcion').val(datos[5]);
             $('#id_anuncio').val(datos[7]);
             $('#categoria').val(datos[8]);
-
+            $('#web').val(datos[9]);
+            $('#twitter').val(datos[10]);
+            $('#instagram').val(datos[11]);
+            $('#facebook').val(datos[12]);
         }
     });
     return false;
 }
 
 
+//Guardamos id_anuncio para pasarlo al modal
+function setIdAnuncio(id){
+    id_anuncio = id;
+}
 
-function eliminarAnuncio(id){
+
+
+function eliminarAnuncio(){
     var url = '/merideando/php/eliminar_anuncio.php';
-    var pregunta = confirm("¿Está seguro de que desea eliminar el anuncio?");
-    if (pregunta == true){
        $.ajax({
         type:'POST',
         url: url,
-        data: 'id=' + id,
+        data: 'id=' + id_anuncio,
         success: function(nuevo){
-            $('#mensaje').addClass('bg-success').html('Anuncio eliminado con exito').show(200).delay(3000).hide(200);
+            $('#mensaje').addClass('alert alert-success alert-dismissible mg-bt-40 text-center').html('<h4>Anuncio eliminado con exito</h4>').show(200).delay(3000).hide(200);
 			$('#agrega-anuncio').html(nuevo);
-            $('body').popover({selector: '[rel=popover]'});
 			return false;
         }
         });
     return false;
-    } else {
-       return false; 
-    }
 }
-
 
 $(document).ready(function() {
 	$('.votos .btn_votos').click(function (e) {
