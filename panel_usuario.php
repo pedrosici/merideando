@@ -90,9 +90,9 @@ $id_anuncio = $_GET['id_anuncio'];
                                         <td>'.$resultado['likes'].'</td>
                                         <td><a href="anuncio.php?id='.$resultado['id_anuncio'].'" target="_blank"><i class="fa fa-link fa-2x" aria-hidden="true"></i></a>
                                         <td><a href="#editar-anuncio" class="fa fa-pencil fa-2x" data-toggle="modal" onClick="editarAnuncio('.$resultado['id_anuncio'].');" title="Editar Anuncio"></a> <a  href="#eliminar-anuncio" data-toggle="modal" onClick="setIdAnuncio('.$resultado['id_anuncio'].')" class="fa fa-trash fa-2x" title="Eliminar anuncio"></a></td>
-                                     </tr></table>'; 
-                                } ?> 
-                                    
+                                     </tr>'; 
+                                } echo '</table>'; ?> 
+                                 
                             <?php
                                 
                             } else {  
