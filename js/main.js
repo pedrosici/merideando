@@ -24,22 +24,21 @@ $(document).ready(function (e) {
 
 $(function() {
     $("#imagen").change(function() {
-    $("#mensaje").empty(); // To remove the previous error message
-    var file = this.files[0];
-    var imagefile = file.type;
-    var match = ["image/jpeg","image/png","image/jpg"];
-    if(!((imagefile == match[0]) || (imagefile == match[1]) || (imagefile == match[2]))){
-        $('#vistaprevia').attr('src','noimage.png');
-        $("#mensaje").html("<p id='error'>Selecciona una imagen válida</p>"+"<h4>Nota</h4>"+"<span id='error_message'>Solo las extensiones jpeg, jpg and png son admitidas.</span>");
-        return false;
-    }
-    else {
-        var reader = new FileReader();
-        reader.onload = imageIsLoaded;
-        reader.readAsDataURL(this.files[0]);
-    }
+        $("#mensaje").empty(); // To remove the previous error message
+        var file = this.files[0];
+        var imagefile = file.type;
+        var match = ["image/jpeg","image/png","image/jpg"];
+        if(!((imagefile == match[0]) || (imagefile == match[1]) || (imagefile == match[2]))){
+            $('#vistaprevia').attr('src','noimage.png');
+            $("#mensaje").html("<p id='error'>Selecciona una imagen válida</p>"+"<h4>Nota</h4>"+"<span id='error_message'>Solo las extensiones jpeg, jpg and png son admitidas.</span>");
+            return false;
+        } else {
+            var reader = new FileReader();
+            reader.onload = imageIsLoaded;
+            reader.readAsDataURL(this.files[0]);
+        }
     });
-    });
+});
 
     function imageIsLoaded(e) {
         $("#imagen").css("color","green");
@@ -59,24 +58,29 @@ function editarAnuncio(id){
         url: url,
         data:'id=' + id,
         success: function(valores){
+            //Deseleccionamos el option del select que saldrá por defecto al editar un anuncio
+             $('#id_cat option').attr("selected", false);
             //Evalúa un código JavaScript representado como una cadena de caracteres (string)
-            
             var datos = JSON.parse(valores);
-           
+
             $('#id_anuncio').val(id);
             $('#razon_soc').val(datos[0]);
-            $('#cif').val(datos[1]);
-            $('#direccion').val(datos[2]);
-            $('#telefono').val(datos[3]);
+            $('#identidad').val(datos[1]);
+            $('#direc').val(datos[2]);
+            $('#telef').val(datos[3]);
             $('#email').val(datos[4]);
             $('#descripcion').val(datos[5]);
+            $('#url').val(datos[6]);
             $('#id_anuncio').val(datos[7]);
-            $('#categoria').val(datos[8]);
-            $('#web').val(datos[9]);
-            $('#twitter').val(datos[10]);
-            $('#instagram').val(datos[11]);
-            $('#facebook').val(datos[12]);
+            $('#twit').val(datos[8]);
+            $('#insta').val(datos[9]);
+            $('#fb').val(datos[10]);
+            $('#img').attr("src", 'images/' + datos[11]);
+            //Seleccionamos por defecto la categoría del anuncio que deseamos editar
+            $('#id_cat option[value=' + datos[12] + ']').attr('selected', true);
         }
+        
+        
     });
     return false;
 }
@@ -87,7 +91,13 @@ function setIdAnuncio(id){
     id_anuncio = id;
 }
 
-
+function eliminarSeleccion(id){
+    // Recorremos todos los valores
+    $("#"+id+" option").each(function(){
+    // Marcamos cada valor como NO seleccionado
+    $("#"+id+" option[value="+this.value+"]").prop("selected",false);
+    });
+}
 
 function eliminarAnuncio(){
     var url = '/merideando/php/eliminar_anuncio.php';

@@ -229,32 +229,32 @@ $id_anuncio = $_GET['id_anuncio'];
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                       <h3>Edita tu anuncio</h3>
                    </div>
-                    <form id="formulario" method="post" role="form" enctype="multipart/form-data">
+                    <form id="formulario" method="POST" role="form" enctype="multipart/form-data">
                         <div class="modal-body">
                            <div class="form-group row">
                                     <div class="col-md-6">
                                         <label for="razon">Razón Social*</label>
-                                        <input type="text" class="form-control col-md-6" name="razon" id="razon_soc"  placeholder="Introduce un nombre" required>
+                                        <input type="text" class="form-control col-md-6" name="razon" id="razon_soc"  placeholder="Introduce un nombre" required />
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="direccion">Dirección física</label> (Ej: John Lennon, 36)
-                                        <input type="text" class="form-control" name="direccion" id="direccion" placeholder="Dirección">
+                                        <label for="direccion">Dirección física (Ej: John Lennon, 36)</label>
+                                        <input type="text" class="form-control" name="direccion" id="direc" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-6">
                                         <label for="cif">CIF*</label>
-                                        <input type="text" class="form-control col-md-6" name="cif" id="cif" placeholder="Introduce un CIF" required>
+                                        <input type="text" class="form-control col-md-6" name="cif" id="identidad" placeholder="Introduce un CIF" required />
                                     </div>
                                     <div class="col-md-6">
                                         <label for="telefono">Teléfono*</label>
-                                        <input type="text" class="form-control" name="telefono" placeholder="Teléfono de contacto" required>
+                                        <input type="text" class="form-control" name="telefono" id="telef" placeholder="Teléfono de contacto" required>
                                     </div>
                                 </div>
                             <div class="form-group row">
                                     <div class="col-md-6">
                                         <label for="categoria">Categoría</label>
-                                        <select class="form-control" name="categoria">
+                                        <select class="form-control" name="categoria" id="id_cat">
                                     <?php
                                         $sql = "SELECT * FROM categorias ORDER BY nombre_cat ASC";
                                         $query = $con->prepare($sql);
@@ -274,7 +274,7 @@ $id_anuncio = $_GET['id_anuncio'];
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <label for="descripcion">Descripción*</label>
-                                    <textarea class="form-control" rows="5" name="descripcion" placeholder="Describe tu negocio" required></textarea>
+                                    <textarea class="form-control" rows="5" name="descripcion" placeholder="Describe tu negocio" id="descripcion" required></textarea>
                                 </div>
                                 <!-- PASAMOS OCULTO EL ID DEL USUARIO QUE CREA EL ANUNCIO -->
                                 <input type="hidden" name="id_usuario" value="<?php echo '.$id.'?>">
@@ -285,7 +285,7 @@ $id_anuncio = $_GET['id_anuncio'];
                                     <label for="web">Web de tu negocio</label>
                                    <div class="input-group">
                                         <span class="input-group-addon primary"><span>http://</span></span>
-                                        <input type="text" class="form-control" name="web" id="web" placeholder="Url de mi web">
+                                        <input type="text" class="form-control" id="url" placeholder="Url de mi web" />
                                         <span class="input-group-addon primary"><span class="fa fa-link"></span></span>
                                    </div>
                                 </div>
@@ -293,19 +293,19 @@ $id_anuncio = $_GET['id_anuncio'];
                                     <label for="web">Redes sociales</label>
                                    <div class="input-group">
                                         <span class="input-group-addon primary"><span>@</span></span>
-                                        <input type="text" class="form-control" name="twitter" id="twitter" placeholder="Twitter">
+                                        <input type="text" class="form-control" id="twit" placeholder="Twitter" />
                                         <span class="input-group-addon primary"><span class="fa fa-twitter"></span></span>
                                    </div>
                                     
                                     <div class="input-group">
                                         <span class="input-group-addon primary"><span>@</span></span>
-                                        <input type="text" class="form-control" name="instagram" id="instagram" placeholder="Instagram">
+                                        <input type="text" class="form-control" id="insta" placeholder="Instagram" />
                                         <span class="input-group-addon primary"><span class="fa fa-instagram"></span></span>
                                     </div>
                                     
                                     <div class="input-group">
                                         <span class="input-group-addon primary"><span>facebook.com/</span></span>
-                                        <input type="text" name="facebook" class="form-control" id="facebook" placeholder="Facebook">
+                                        <input type="text" class="form-control" id="fb" placeholder="Facebook">
                                         <span class="input-group-addon primary"><span class="fa fa-facebook"></span></span>
                                    </div>
                                   
@@ -319,11 +319,12 @@ $id_anuncio = $_GET['id_anuncio'];
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-md-4" id="imagenprevia">
-                                    <img class="img-responsive" id="vistaprevia" src="images/noimage.png" width="100%" />
+                                <div class="col-md-4">
+                                    <img class="img-responsive" src="images/noimage.png" id="img" width="50%" />
                                 </div>
                             </div>
-                        </div>
+                            
+                        </div> <!-- FIN MODAL BODY -->
                         
                        <div class="modal-footer">
                             
