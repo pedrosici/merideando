@@ -11,7 +11,8 @@ if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"]==null){
 
 $nombre = $_SESSION['nombre'];
 $id = $_SESSION['user_id'];
-$id_anuncio = $_GET['id_anuncio'];
+
+
 
 ?>
 <!DOCTYPE html>
@@ -195,7 +196,6 @@ $id_anuncio = $_GET['id_anuncio'];
                                         <input type="text" name="facebook" class="form-control" id="facebook" placeholder="Facebook">
                                         <span class="input-group-addon primary"><span class="fa fa-facebook"></span></span>
                                    </div>
-                                  
                                 </div>
                                 
                             </div>
@@ -206,9 +206,10 @@ $id_anuncio = $_GET['id_anuncio'];
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-md-4" id="imagenprevia">
-                                    <img class="img-responsive" id="vistaprevia" src="images/noimage.png" width="100%" />
+                                <div class="col-md-4" id="imagen_previa">
+                                    <img class="img-responsive" id="vistaprevia" src="images/noimage.png" width="70%" />
                                 </div>
+                                <div id="error-img"></div>
                             </div>
                         </div>
                    <div class="modal-footer">
@@ -229,7 +230,7 @@ $id_anuncio = $_GET['id_anuncio'];
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                       <h3>Edita tu anuncio</h3>
                    </div>
-                    <form id="formulario" method="POST" role="form" enctype="multipart/form-data">
+                    <form id="formulario-editar" method="POST" role="form" enctype="multipart/form-data">
                         <div class="modal-body">
                            <div class="form-group row">
                                     <div class="col-md-6">
@@ -285,7 +286,7 @@ $id_anuncio = $_GET['id_anuncio'];
                                     <label for="web">Web de tu negocio</label>
                                    <div class="input-group">
                                         <span class="input-group-addon primary"><span>http://</span></span>
-                                        <input type="text" class="form-control" id="url" placeholder="Url de mi web" />
+                                        <input type="text" class="form-control" name="web" id="url" placeholder="Url de mi web" />
                                         <span class="input-group-addon primary"><span class="fa fa-link"></span></span>
                                    </div>
                                 </div>
@@ -293,19 +294,19 @@ $id_anuncio = $_GET['id_anuncio'];
                                     <label for="web">Redes sociales</label>
                                    <div class="input-group">
                                         <span class="input-group-addon primary"><span>@</span></span>
-                                        <input type="text" class="form-control" id="twit" placeholder="Twitter" />
+                                        <input type="text" class="form-control" name="twitter" id="twit" placeholder="Twitter" />
                                         <span class="input-group-addon primary"><span class="fa fa-twitter"></span></span>
                                    </div>
                                     
                                     <div class="input-group">
                                         <span class="input-group-addon primary"><span>@</span></span>
-                                        <input type="text" class="form-control" id="insta" placeholder="Instagram" />
+                                        <input type="text" class="form-control" name="instagram" id="insta" placeholder="Instagram" />
                                         <span class="input-group-addon primary"><span class="fa fa-instagram"></span></span>
                                     </div>
                                     
                                     <div class="input-group">
                                         <span class="input-group-addon primary"><span>facebook.com/</span></span>
-                                        <input type="text" class="form-control" id="fb" placeholder="Facebook">
+                                        <input type="text" class="form-control" name="facebook" id="fb" placeholder="Facebook">
                                         <span class="input-group-addon primary"><span class="fa fa-facebook"></span></span>
                                    </div>
                                   
@@ -315,19 +316,19 @@ $id_anuncio = $_GET['id_anuncio'];
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <label for="logo">Logo*</label>
-                                    <input type="file" name="logo" id="imagen" required />
+                                    <input type="file" name="logonuevo" id="logo" />
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-md-4">
-                                    <img class="img-responsive" src="images/noimage.png" id="img" width="50%" />
+                                <div class="col-md-4" id="imagen-previa">
+                                    <img class="img-responsive" src="images/noimage.png" id="img" width="70%" />
                                 </div>
                             </div>
-                            
+                            <!-- PASAMOS OCULTO EL ID DEL ANUNCIO QUE CREA EL ANUNCIO -->
+                                <input type="hidden" name="id_anuncio" value="<?php echo '.$id_anuncio.'?>">
                         </div> <!-- FIN MODAL BODY -->
                         
                        <div class="modal-footer">
-                            
                             <button type="submit" class="btn btn-success" value="Editar" id="Editar">Editar anuncio</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                        </div>

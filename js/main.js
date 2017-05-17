@@ -22,15 +22,16 @@ $(document).ready(function (e) {
     }));
 });
 
+
 $(function() {
     $("#imagen").change(function() {
-        $("#mensaje").empty(); // To remove the previous error message
+        $("#error-img").empty(); // To remove the previous error message
         var file = this.files[0];
         var imagefile = file.type;
         var match = ["image/jpeg","image/png","image/jpg"];
         if(!((imagefile == match[0]) || (imagefile == match[1]) || (imagefile == match[2]))){
             $('#vistaprevia').attr('src','noimage.png');
-            $("#mensaje").html("<p id='error'>Selecciona una imagen válida</p>"+"<h4>Nota</h4>"+"<span id='error_message'>Solo las extensiones jpeg, jpg and png son admitidas.</span>");
+            $("#error-img").html("<div class='col-sm-12'><p class='alert alert-warning alert-dismissible mg-bt-40 text-center'>¡Selecciona una imagen válida!</p>"+"<h4>Nota</h4>"+"<span>Sólo las extensiones jpeg, jpg and png son admitidas.</span></div>");
             return false;
         } else {
             var reader = new FileReader();
@@ -44,12 +45,11 @@ $(function() {
         $("#imagen").css("color","green");
         $('#imagen_previa').css("display", "block");
         $('#vistaprevia').attr('src', e.target.result);
-        $('#vistaprevia').attr('width', '80px');
-        $('#vistaprevia').attr('height', '80px');
+        $('#vistaprevia').attr('width', '70%');
     };
 
 
-
+//Funcion para las nuevas imágenes
 function editarAnuncio(id){
     $('#formulario')[0].reset();
     var url = '/merideando/php/editar_anuncio.php';
@@ -76,6 +76,7 @@ function editarAnuncio(id){
             $('#insta').val(datos[9]);
             $('#fb').val(datos[10]);
             $('#img').attr("src", 'images/' + datos[11]);
+           
             //Seleccionamos por defecto la categoría del anuncio que deseamos editar
             $('#id_cat option[value=' + datos[12] + ']').attr('selected', true);
         }
@@ -84,6 +85,59 @@ function editarAnuncio(id){
     });
     return false;
 }
+
+$(document).ready(function (e) {
+    $("#formulario-editar").on('submit',(function(e) {
+    e.preventDefault();
+    $("#mensaje").empty();
+    var url = '/merideando/php/editar_anuncio.php';
+    $.ajax({
+        url: url, // Url to which the request is send
+        type: "POST",             // Type of request to be send, called as method
+        data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+        contentType: false,       // The content type used when sending data to the server.
+        cache: false,             // To unable request pages to be cached
+        processData:false,        // To send DOMDocument or non processed data file it is set to false
+        success: function(nuevo){   // A function to be called if request succeeds
+                $('#mensaje').addClass('alert alert-success alert-dismissible mg-bt-40 text-center').html('<h4>¡Anuncio editado con éxito!</h4>').show(200).delay(3000).hide(200);
+			    $('#agrega-anuncio').html(nuevo);
+			return false;
+                return false;
+        }
+    });
+    }));
+});
+
+
+
+// Función para las imágenes que se editan
+$(function() {
+    $("#logo").change(function() {
+        $("#error_img").empty(); // To remove the previous error message
+        var file = this.files[0];
+        var imagefile = file.type;
+        var match = ["image/jpeg","image/png","image/jpg"];
+        if(!((imagefile == match[0]) || (imagefile == match[1]) || (imagefile == match[2]))){
+            $('#img').attr('src','noimage.png');
+            $("#error_img").html("<div class='col-sm-12'><p class='alert alert-warning alert-dismissible mg-bt-40 text-center'>¡Selecciona una imagen válida!</p>"+"<h4>Nota</h4>"+"<span>Sólo las extensiones jpeg, jpg and png son admitidas.</span></div>");
+            return false;
+        } else {
+            var reader = new FileReader();
+            reader.onload = imageIsLoad;
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+});
+
+    function imageIsLoad(e) {
+        $("#logo").css("color","green");
+        $('#imagen_previa').css("display", "block");
+        $('#img').attr('src', e.target.result);
+        $('#img').attr('width', '70%');
+    };
+
+
+
 
 
 //Guardamos id_anuncio para pasarlo al modal

@@ -12,17 +12,15 @@ if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"] == null){
     $id_usuario = $_SESSION['user_id'];
 }
 
-$id = $_POST['id'];
-
-// Obtenemos los datos del anuncio
-// Actualizamos los registros de nuestra BD
-
- $sql = "SELECT * FROM anuncios WHERE id_anuncio = ? ";
- $query = $con->prepare($sql);
- $query->execute(array($id));
- $resultado = $query->fetch(PDO::FETCH_ASSOC);
-
-
+if (isset($_POST['id'])){
+    $id = (int)$_POST['id'];
+    // Obtenemos los datos del anuncio
+    // Actualizamos los registros de nuestra BD
+     $sql = "SELECT * FROM anuncios WHERE id_anuncio = ? ";
+     $query = $con->prepare($sql);
+     $query->execute(array($id));
+     $resultado = $query->fetch(PDO::FETCH_ASSOC);
+    //Array con los datos a recargar en el editor de anuncios
     $anuncio = array (
         0 => $resultado['razon_soc'],
         1 => $resultado['cif'],
@@ -39,6 +37,55 @@ $id = $_POST['id'];
         12 => $resultado['categoria_id'],
     );
 
-echo json_encode($anuncio);
+    echo json_encode($anuncio);
+}
+
+if (isset($_POST['razon'])){
+    $id = $_POST['id_anuncio'];
+    if (isset($_FILES['logonuevo']['type'])){
+    //Comprobamos si la extension de la imagen es válida
+    $valido = array("jpeg", "jpg", "png");
+    $cadena = explode(".", $_FILES['logonuevo']['name']);
+    $extension = end($cadena);
+    
+    if (($_FILES['logonuevo']['type'] == "image/png") || ($_FILES['logonuevo']['type'] == "image/jpg") || ($_FILES['logonuevo']['type'] == "image/jpg") && ($_FILES['logonuevo']['size'] < 100000) && in_array($extension, $valido)){
+        
+        $ruta = $_FILES['logonuevo']['tmp_name'];
+    //  Ruta de la carpeta donde se guarda la imagen
+        $target = $_SERVER['DOCUMENT_ROOT'].'/merideando/images/'.$_FILES['logonuevo']['name'];
+    //  Movemos imagen de la carpeta temporal a la carpeta especificada en destino
+        move_uploaded_file($ruta, $target);
+    }
+    }
+    
+    $razon = $_POST['razon'];
+    $telefono = $_POST['telefono'];
+    $cif = $_POST['cif'];
+    $email = $_POST['email'];
+    $descripcion = $_POST['descripcion'];
+    $id_categoria = $_POST['categoria'];
+    $imagen = $_FILES['logonuevo']['name'];
+    $web = $_POST['web'];
+    $twitter = $_POST['twitter'];
+    $facebook = $_POST['facebook'];
+    $instagram = $_POST['instagram'];
+    
+    if (isset($_POST['direccion'])){
+        $direccion = $_POST['direccion'];
+        $maps_url = "https://maps.googleapis.com/maps/api/geocode/json?address=06800". urlencode($direccion) ."&key=AIzaSyCeJfZoJVH1ATfo04SXDIl7j765fGCvhRA";
+        $maps_json = file_get_contents($maps_url);
+        $maps_array = json_decode($maps_json, true);
+        $lat = $maps_array["results"][0]["geometry"]["location"]["lat"];
+        $lng = $maps_array["results"][0]["geometry"]["location"]["lng"];
+    }
+    
+     $sql = "UPDATE anuncios SET razon_soc = :razon_soc , cif = :cif, direccion = :direccion, latitud = :latitud, longitud = :longitud, telefono = :telefono, email = :email, descripcion = :descripcion, categoria = :categoria, web = :web, instagram = :instagram ,twitter = :twitter, facebook = :facebook, imagen = :imagen WHERE id_anuncio = :id_anuncio";
+    $query = $con->prepare($sql);
+    $query->execute(array(":razon_soc"=>$razon, ":cif"=>$cif, ":direccion"=>$direccion, ":latitud"=>$lat, ":longitud"=>$lng, ":telefono"=>$telefono, ":email"=>$email, ":descripcion"=>$descripcion,":categoria"=>$id_categoria, ":web"=>$web, ":twitter"=>$twitter, ":instagram"=>$instagram, ":facebook"=>$facebook, ":imagen"=>$imagen, ":id_anuncio"=>$id_anuncio));
+   
+}
+
+
+
 
 ?>

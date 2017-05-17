@@ -54,7 +54,7 @@ if (isset($_POST['direccion'])){
     $lng = $maps_array["results"][0]["geometry"]["location"]["lng"];
 }
 
-//Verificamos el modo en el que estamos, si es creación o edición de un anuncio
+//Lanzamos consulta
 
 $sql = "INSERT into ANUNCIOS (razon_soc, cif, direccion, latitud, longitud, telefono, email, descripcion, web, twitter, instagram, facebook, imagen, fecha, usuario_id, categoria_id) VALUE (:razon, :cif, :direccion, :lat, :lng, :telefono, :email, :descripcion ,:web, :twitter, :instagram ,:facebook, :imagen , :fecha, :usuario_id, :categoria_id)";
 $query = $con->prepare($sql);
