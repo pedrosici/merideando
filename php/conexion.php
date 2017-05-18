@@ -7,5 +7,5 @@ try {
     $con->exec("SET CHARACTER SET utf8");
     
 } catch(PDOException $e){
-    die('Error: ' . $e->getMessage());
+    die('Error conectando a la BD: ' . $e->getMessage());
 }

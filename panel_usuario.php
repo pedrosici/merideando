@@ -1,16 +1,21 @@
 <?php
 //Evitamos que nos salgan los NOTICES de PHP
 error_reporting(E_ALL ^ E_NOTICE);
-
 include('php/conexion.php');
 
+$sesion = false;
 session_start();
-if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"]==null){
+
+if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"] == null){
 	print "<script>alert(\"Acceso invalido!\");window.location='login.php';</script>";
 }
+else{
+    $sesion = true;
+    $nombre = $_SESSION['nombre'];
+    $id = $_SESSION['user_id'];
+}
 
-$nombre = $_SESSION['nombre'];
-$id = $_SESSION['user_id'];
+
 
 
 
@@ -325,7 +330,7 @@ $id = $_SESSION['user_id'];
                                 </div>
                             </div>
                             <!-- PASAMOS OCULTO EL ID DEL ANUNCIO QUE CREA EL ANUNCIO -->
-                                <input type="hidden" name="id_anuncio" value="<?php echo '.$id_anuncio.'?>">
+                                <input type="hidden" id="id_anuncio" name="anuncio"/>
                         </div> <!-- FIN MODAL BODY -->
                         
                        <div class="modal-footer">

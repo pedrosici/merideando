@@ -17,7 +17,7 @@ if (isset($_FILES['logo']['type'])){
     $cadena = explode(".", $_FILES['logo']['name']);
     $extension = end($cadena);
     
-    if (($_FILES['logo']['type'] == "image/png") || ($_FILES['logo']['type'] == "image/jpg") || ($_FILES['logo']['type'] == "image/jpg") && ($_FILES['logo']['size'] < 100000) && in_array($extension, $valido)){
+    if (($_FILES['logo']['type'] == "image/png") || ($_FILES['logo']['type'] == "image/jpg") || ($_FILES['logo']['type'] == "image/jpeg") && ($_FILES['logo']['size'] < 100000) && in_array($extension, $valido)){ 
         
         $ruta = $_FILES['logo']['tmp_name'];
     //  Ruta de la carpeta donde se guarda la imagen
