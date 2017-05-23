@@ -1,40 +1,31 @@
-with(document.registro){
-	onsubmit = function(e){
-		e.preventDefault();
-		ok = true;
-		if(ok && usuario.value==""){
-			ok=false;
-			alert("Debe escribir un nombre de usuario");
-			usuario.focus();
-		}
-		if(ok &&nombre.value==""){
-			ok=false;
-			alert("Debe escribir su nombre");
-			nombre.focus();
-		}
-		if(ok && email.value==""){
-			ok=false;
-			alert("Debe escribir su email");
-			email.focus();
-		}
-		if(ok && password.value==""){
-			ok=false;
-			alert("Debe escribir su password");
-			password.focus();
-		}
-		if(ok && confirm_password.value==""){
-			ok=false;
-			alert("Debe escribir su confirmacion de password");
-			confirm_password.focus();
-		}
+$(document).ready(function(){
+    $("#confirm_password").keyup(checkPasswordMatch);
+});
 
-		if(ok && password.value!= confirm_password.value){
-			ok=false;
-			alert("Los passwords no coinciden");
-			confirm_password.focus();
-		}
+$(document).ready(function(){
+    $("#password").keyup(checkPasswordMatch);
+});
 
 
-		if(ok){ submit(); }
-	}
+function checkPasswordMatch(){
+    var repetirPass = document.getElementById('confirm_password').value;
+    var tamañoPass = repetirPass.length;
+    var passvalido = false;
+    if (tamañoPass > 0){
+        var password = $("#password").val();
+        var confirmPassword = $("#confirm_password").val();
+        
+        if (password != confirmPassword){
+            $("#checkPassword").html("<div class='alert alert-danger col-sm-12 text-center'><i class='fa fa-close'></i> Las contraseñas introducidas no coinciden.</div>");
+            document.getElementById("submitRegistro").disabled = true;                         
+        } else {
+            $("#checkPassword").html("<div class='alert alert-success col-sm-12  text-center'><i class='fa fa-check'></i> Las contraseñas introducidas coinciden.</div>");
+            passvalido = true;
+            document.getElementById("submitRegistro").disabled = false;
+        }
+    }
 }
+
+
+
+

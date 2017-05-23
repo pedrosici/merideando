@@ -1,36 +1,47 @@
 <?php
 
- //Evitamos que nos salgan los NOTICES de PHP
-    error_reporting(E_ALL ^ E_NOTICE);
+//Evitamos que nos salgan los NOTICES de PHP
+error_reporting(E_ALL ^ E_NOTICE);
+include "conexion.php";
 
 if(!empty($_POST)){
-	if(isset($_POST["usuario"]) &&isset($_POST["nombre"]) &&isset($_POST["email"]) &&isset($_POST["password"]) &&isset($_POST["confirm_password"])){
-		if($_POST["usuario"]!=""&& $_POST["nombre"]!=""&&$_POST["email"]!=""&&$_POST["password"]!=""&&$_POST["password"]==$_POST["confirm_password"]){
-			include "conexion.php";
-            //Los usuarios de tipo 1 no tienen privilegios
-            //Los usuarios de tipo 2 son administradores
-			$tipo_usuario = 1;
-            //Encriptamos la contraseña a SHA1
-            $password = $_POST['password'];
-            $sha1_pass = sha1($password);
-			$enc=false;
-			$sql1= "SELECT * FROM usuarios WHERE usuario=\"$_POST[usuario]\" or email=\"$_POST[email]\"";
-			$query = $con->query($sql1);
-			while ($r=$query->fetch_array()) {
-				$enc=true;
-				break;
-			}
-			if($enc){
-				print "<script>alert(\"Nombre de usuario o email ya estan registrados.\");window.location='../registro.php';</script>";
-			}
-			$sql = "INSERT into usuarios(usuario,nombre,email,password,tipo_usuario,fecha_creacion) VALUE (\"$_POST[usuario]\",\"$_POST[nombre]\",\"$_POST[email]\",\"$sha1_pass\",\"$tipo_usuario\",NOW())";
-			$query = $con->query($sql);
-			if($query!=null){
-				print "<script>alert(\"Registro exitoso. Proceda a logearse\");window.location='../login.php';</script>";
-			}
-		}
-	}
+    //Los usuarios de tipo 1 no tienen privilegios
+    //Los usuarios de tipo 2 son administradores
+    $tipo_usuario = 1;
+    $usuario = $_POST['usuario'];
+    $nombre = $_POST['nombre'];
+    $email = $_POST['email'];
+    //Encriptamos la contraseña a SHA1
+    $password = $_POST['password'];
+    $sha1_pass = sha1($password);
+    $enc=false;
+    
+    try {
+        $query = $con->prepare('SELECT COUNT(*) usuario, email FROM usuarios WHERE email = :email OR usuario = :usuario');
+        $query->execute(array('email'=>$email, 'usuario'=>$usuario));
+        $num_filas = $query->fetchColumn();
+    }
+    catch (PDOException $e){
+        echo 'Error: ' . $e->getMessage();
+    }
+    
+    if ($num_filas > 0){
+        header("Location: ".$SERVER["HTTP_REFERER"]);
+        $status = "<div class='alert alert-danger'> ¡El registro no pudo completarse, vuelva a intentarlo!</div>";
+    } else if ($num_filas == 0){
+        //Insertamos el registro del nuevo usuario
+        $query = $con->prepare('INSERT INTO usuarios (nombre, usuario, email, password, fecha_creacion) VALUES (:nombre, :usuario, :email, :password, NOW())');
+        $query->execute(array('nombre'=>$nombre, 'usuario'=>$usuario, 'email'=>$email, 'password'=>$sha1_pass));
+        $status = "<div class='alert alert-success'>¡Usted ya es usuario de Merideando, ¡Gracias por registrarse!</div>";
+        
+    }
+    
+    if($query != null){
+        echo $status;
+    }
+		
 }
+
 
 
 

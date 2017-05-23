@@ -47,8 +47,9 @@
                                 <form role="form" name="registro" action="php/registrar.php" method="post" accept-charset="utf-8">
                                 <div class="form-group row">
                                     <div class="col-md-8 col-md-offset-2">
-                                        <input type="text" class="form-control col-md-6" name="usuario" id="usuario" placeholder="Tu nombre de usuario" required>
+                                        <input type="text" class="form-control col-md-6" name="usuario" id="usuario" placeholder="Tu nombre de usuario" minlength="4" maxlength="13" required>
                                     </div>
+                                    <div id="checkname" class="col-md-8 col-md-offset-2"></div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-8 col-md-offset-2">
@@ -59,6 +60,7 @@
                                     <div class="col-md-8 col-md-offset-2">
                                         <input type="email" class="form-control col-md-6" name="email" id="email" placeholder="Email de contacto" required>
                                     </div>
+                                    <div id="checkemail" class="col-md-8 col-md-offset-2"></div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-8 col-md-offset-2">
@@ -68,18 +70,18 @@
                                 <div class="form-group row">
                                     <div class="col-md-8 col-md-offset-2">
                                         <input type="password" class="form-control col-md-6" name="confirm_password" id="confirm_password" placeholder="Confirma contraseña" required>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-md-4 col-md-offset-4">
-                                        <button type="submit" class="btn btn-primary">Crear mi cuenta</button>
+                                    </div>                                   
+                                </div>                                   
+                                <div class="form-group row text-center">
+                                    <div class="col-md-4 col-md-offset-4 mg-bt-40">
+                                        <button type="submit" class="btn btn-primary" id="submitRegistro">Crear mi cuenta</button>
                                     </div>
                                     <div class="col-md-8 col-md-offset-2 text-center cuenta">
                                         <a href="login.php"><p>Ya soy usuario de Merideando</p></a>
                                     </div>
-                                </div>
+                                </div>                               
                                 </form>
-
+                                <div class="" id="checkPassword"></div>
                             </div>  <!-- FIN Formulario Registro -->
                         </div> <!-- fin ROW -->
                     </div> <!-- FIN container -->
