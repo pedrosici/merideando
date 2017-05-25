@@ -29,16 +29,9 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12 col-xs-12">
-
                                 <div class="slider_text text-center" id="titulo_registro">
-                                    <h2 class="titulo">Registra tu anuncio</h2>
+                                    <h2 class="titulo">Regístrate en Merideando</h2>
                                      <p>Antes de publicar tu anuncio debes registrar una cuenta de usuario en Merideando </p>
-                                     <!---<a class="btn-light-bg " href="#">Purchase Now</a> -->
-                                </div>
-                                
-                                <div class="slider_text text-center" id="titulo_login" style="display:none;">
-                                    <h2 class="titulo">Inicia sesión</h2>
-                                     <p>Identifícate para acceder a tu cuenta de Merideando </p>
                                      <!---<a class="btn-light-bg " href="#">Purchase Now</a> -->
                                 </div>
                             </div>  
@@ -76,12 +69,14 @@
                                     <div class="col-md-4 col-md-offset-4 mg-bt-40">
                                         <button type="submit" class="btn btn-primary" id="submitRegistro">Crear mi cuenta</button>
                                     </div>
-                                    <div class="col-md-8 col-md-offset-2 text-center cuenta">
-                                        <a href="login.php"><p>Ya soy usuario de Merideando</p></a>
-                                    </div>
-                                </div>                               
+                                    
+                                    <div id="checkPassword"></div>
+                                </div>
+                                    
                                 </form>
-                                <div class="" id="checkPassword"></div>
+                                <div class="col-md-8 col-md-offset-2 text-center cuenta">
+                                        <a href="login.php"><p>Ya soy usuario de Merideando</p></a>
+                                </div>
                             </div>  <!-- FIN Formulario Registro -->
                         </div> <!-- fin ROW -->
                     </div> <!-- FIN container -->

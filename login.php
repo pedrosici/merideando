@@ -15,6 +15,7 @@
         <title>Merideando</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1"> 
         <!-- Bootstrap -->
+        <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">  
         <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
@@ -36,8 +37,8 @@
                             <div class="col-md-12 col-xs-12">
 
                                 <div class="slider_text text-center" id="titulo_registro">
-                                    <h2 class="titulo">Registra tu anuncio</h2>
-                                     <p>Antes de publicar tu anuncio debes registrar una cuenta de usuario en Merideando </p>
+                                    <h2 class="titulo">Inicia Sesión en Merideando</h2>
+                                     <p>Antes de publicar tu anuncio debes loguearte si ya tienes una cuenta de usuario registrada en Merideando </p>
                                      <!---<a class="btn-light-bg " href="#">Purchase Now</a> -->
                                 </div>
                                 
@@ -50,7 +51,7 @@
                            
                             <!-- Formulario LOGIN -->
                             <div class="col-md-6 col-md-offset-3">
-                                <form role="form" name="login" action="php/loguear.php" method="POST" accept-charset="utf-8">
+                                <form role="form" id="login_form" action="php/loguear.php" method="POST" accept-charset="utf-8">
                                     <div class="form-group row">
                                           <div class="col-md-8 col-md-offset-2">
                                               <p><?php echo isset($error) ? utf8_decode($error) : '' ; ?></p> 
@@ -58,22 +59,22 @@
                                     </div>
                                     <div class="form-group row">
                                           <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2">
-                                                <input type="text" class="form-control col-md-6" name="usuario" id="usuario" placeholder="Usuario" required>
+                                                <input type="text" class="form-control col-md-6" name="usuario" id="usuario" pattern="[A-Za-z0-9_-]{1,15}" placeholder="Usuario" required />
                                          </div>
                                     </div>
                                     <div class="form-group row">
                                           <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2">
-                                                <input type="password" class="form-control col-md-6" name="password" id="password" placeholder="Contraseña" required>
+                                                <input type="password" class="form-control col-md-6" name="password" id="password" pattern="[A-Za-z0-9_-]{1,15}" placeholder="Contraseña" required />
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        
                                           <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 mg-bt-40 text-center">
-                                              <button type="submit" class="btn btn-primary">Entrar a mi cuenta</button>
+                                              <input type="submit" id="login_btn" class="btn btn-primary" value="Iniciar Sesión"/>
                                         </div>
                                         <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3 text-center cuenta">
                                             <a href="registro.php"><p>No tengo cuenta en Merideando</p></a>
                                         </div>
+                                        <div id="checkLogin" style="display:none;"><p>Login Incorrecto</p></div>
                                     </div>
                                 </form>
                             </div>
@@ -94,7 +95,7 @@
        
         
       <!--Import jQuery before materialize.js-->
-      <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+      
       <script src="js/bootstrap.min.js"></script>
        <script src="js/jquery.vide.min.js"></script>
         <script src="js/valida_login.js"></script>
