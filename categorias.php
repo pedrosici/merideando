@@ -39,7 +39,7 @@
 				    </div>
                     <div class="col-md-12 text-center">
             <?php
-                $sql = "SELECT COUNT(a.id_anuncio) as cantidad, c.nombre_cat, c.icono, c.id_categoria FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria GROUP BY c.id_categoria";
+                $sql = "SELECT categorias.nombre_cat, categorias.id_categoria, categorias.icono, COUNT(anuncios.id_anuncio) AS 'cantidad' FROM categorias LEFT JOIN anuncios ON categorias.id_categoria = anuncios.categoria_id GROUP BY categorias.id_categoria";
                     
                 $query = $con->prepare($sql);
                 $query->execute();

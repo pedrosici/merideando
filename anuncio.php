@@ -5,12 +5,10 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 session_start();
 include('php/conexion.php');
-$sesion = false;
-session_start();
 
-if(isset($_SESSION["user_id"]) || $_SESSION["user_id"] != null){
-    $sesion = true;  
-}
+$sesion = false;
+if(isset($_SESSION["user_id"]) || $_SESSION["user_id"] != null){ $sesion = true; }
+
 
 $id_anuncio = $_GET['id'];
 
@@ -147,7 +145,10 @@ $id_anuncio = $_GET['id'];
             <div id="map"></div>
         </div>  
    
-        <div class="col-sm-12">
+        <div class="col-sm-12 mg-bt-40">
+            <div class="mg-bt-40 text-center">
+                <h3>Opiniones del anuncio</h3>
+            </div>
             <div id="listaComentarios">
                 
         <?php
@@ -161,7 +162,7 @@ $id_anuncio = $_GET['id'];
                     echo '<div class="col-md-6">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <i class="fa fa-user-circle-o" aria-hidden="true"></i> <strong>'.$resultado['nick'].'</strong>  <span class="text-muted"><i class="fa fa-clock-o" aria-hidden="true"></i> '.$resultado['fecha_comentario'].'</span>
+                                    <i class="fa fa-user-circle-o" aria-hidden="true"></i> <strong>'.$resultado['nick'].'</strong>  <span style="float:right"; class="text-muted"><i class="fa fa-clock-o" aria-hidden="true"></i> '.$resultado['fecha_comentario'].'</span>
                                 </div>
                                 <div class="panel-body">'.$resultado['comentario'].'</div>
                             </div>
@@ -172,44 +173,54 @@ $id_anuncio = $_GET['id'];
             
             </div>
         </div><!-- /col-sm-5 -->
-         
-        <div class="col-sm-12 text-center mg-tp-40 mg-bt-40">
-            <?php 
-                 if ($sesion){
-                     echo '<form role="form" name="comentario" id="comentarios_ajax" method="POST" class="col-md-6 col-md-offset-3 text-center">
-                            <h3>Escribe tu opinión</h3>
-                            <p>Tu opinión es importante, intenta ser justo y sincero con tu aportación.</p>
-                         <div class="col-sm-6 form-group">
-                            <label for="name">Tu nombre</label>
-                             <input id="autor_id" name="name" type="text" class="form-control" placeholder="Autor del comentario" required>
-                          </div>
-                          <div class="col-sm-6 form-group">
-                            <label for="email">E-mail (No será publicado)</label>
-                             <input id="email" name="email" type="text" class="form-control" placeholder="Correo electrónico" required>
-                          </div>
-                            <div class="col-sm-12 form-group">
-                                <label for="message">Mensaje</label>
-                                <textarea id="comentario" name="comentario" class="form-control" placeholder="Escribe tu comentario acerca del anuncio" required></textarea>
-                            </div>
-                            <input type="hidden" id="id_anuncio" value="<?php echo $id_anuncio; ?>">
-                            <div class="form-group col-sm-12">
-                                <input type="submit" class="btn btn-primary" value="Comentar">
-                            </div>
-                            <div class="col-sm-12" id="resultado"></div>
-                        </form>';
-                 } else {
-                    echo '<div class="col-sm-12 text-center">
-                            <h4>Solo pueden opinar los usuarios registrados. Haz <a href="login.php">Login o  <a href="registro.php">Regístrate</a></h4>';                     
-                 }   
-            ?>
-            
-            
-        </div>
+        <?php
+            if ($sesion){
+                echo '<div class="col-sm-12 text-center mg-tp-40 mg-bt-40">
+                <form role="form" name="comentario" id="comentarios_ajax" method="POST" class="col-md-6 col-md-offset-3 text-center">
+                    <h3>Escribe tu opinión</h3>
+                    <p>Tu opinión es importante, intenta ser justo y sincero con tu aportación.</p>
+                 <div class="form-group col-sm-6">
+                    <label for="name">Tu nombre</label>
+                     <input id="autor_id" name="name" type="text" class="form-control" placeholder="Autor del comentario" required>
+                  </div>
+                  <div class="form-group col-sm-6">
+                    <label for="email">E-mail</label>
+                     <input id="email" name="email" type="email" class="form-control" placeholder="Correo electrónico" required>
+                  </div>
+                  <div class="form-group col-sm-12">
+                        <label for="message">Mensaje</label>
+                        <textarea id="comentario" name="comentario" class="form-control" placeholder="Escribe tu comentario acerca del anuncio" required></textarea>
+                  </div>
+                  <div class="form-group col-sm-12 text-center">
+                        <label for="valoracion">Valoración 
+                            <ul class="stars stars-24">
+                                <li>1</li>
+                                <li>2</li>
+                                <li>3</li>
+                                <li>4</li>
+                                <li>5</li>
+                            </ul>
+                        </label> 
+                  </div>
+                  <input type="hidden" id="id_anuncio" value="'.$id_anuncio.'">
+                  <div class="form-group col-sm-12">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Publicar Opinión</button>
+                  </div>
+                    <div class="col-sm-12" id="resultado"></div>
+              </form>
+            </div>';
+            }
+            else {
+                echo '<div class="col-sm-12 mg-tp-40 mg-bt-40 text-center">
+                        <h4>Solo pueden opinar los usuarios registrados. Haz <a href="login.php">Login o <a href="registro.php">Regístrate</a></h4>
+                      </div>';
+            }
+        
   
          
-    <?php
-                } //FIN WHILE
-             } //FIN IF
+   
+                } //FIN IF
+             } //FIN WHILE
         else {
             echo '<div class="col-md-12 mg-bt-80 mg-tp-80 text-center"><h3>¡ERROR! El anuncio que intenta ver no existe.</h3></div>';
         }
@@ -248,9 +259,10 @@ $id_anuncio = $_GET['id'];
             $("#comentarios_ajax").submit(function() {
                 var autor_id = $("#autor_id").val();
                 var comentario = $("#comentario").val();
+                var email = $("#email").val();
                 var id_anuncio = $("#id_anuncio").val();
                 
-                var cadena = '&id_anuncio='+id_anuncio+'&autor_id='+autor_id+'&comentario='+encodeURIComponent(comentario);
+                var cadena = '&id_anuncio='+id_anuncio+'&autor_id='+autor_id+'&email='+email+'&comentario='+encodeURIComponent(comentario);
                 
                 $.ajax({ type: "POST", 
                          url: "php/comentarios_anuncio.php", 

@@ -7,21 +7,22 @@ require_once('conexion.php');
         $autor_id = $_POST['autor_id'];
         $comentario = $_POST['comentario'];
         $id_anuncio = $_POST['id_anuncio'];
-        //$fecha = date("d/m/Y");
+        $email = $_POST['email'];
+        $fecha = 'NOW()';
         $comentario = trim($comentario);
         $comentario = htmlentities($comentario);
 
-        $sql = "INSERT INTO comentarios (comentario, nick, fecha_comentario, anuncio_id) VALUES (:comentario, :autor_id, NOW() , :id_anuncio)";
+        $sql = "INSERT INTO comentarios (comentario, nick, email, fecha_comentario, anuncio_id) VALUES (:comentario, :autor_id, :email, NOW(), :id_anuncio)";
         $query = $con->prepare($sql);
 
-        $query->execute(array(":comentario"=>$comentario,":autor_id"=>$autor_id, ":id_anuncio"=>$id_anuncio));
+        $query->execute(array(":comentario"=>$comentario,":autor_id"=>$autor_id, ":email"=>$email, ":id_anuncio"=>$id_anuncio));
         
         if ($query) {
-            
+            date_default_timezone_set('UTC');
             echo '<div class="col-sm-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-user-circle-o" aria-hidden="true"></i> <strong>'.$autor_id.'</strong>  <span class="text-muted"><i class="fa fa-clock-o" aria-hidden="true"></i> '.$fecha.'</span>
+                            <i class="fa fa-user-circle-o" aria-hidden="true"></i> <strong>'.$autor_id.'</strong>  <span class="text-muted"><i class="fa fa-clock-o" aria-hidden="true"></i>'.NOW().'</span>
                         </div>
                         <div class="panel-body">'.$comentario.'</div>
                      </div>

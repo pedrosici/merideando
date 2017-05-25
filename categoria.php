@@ -86,10 +86,10 @@
                     </div>
                 </div>
 
-        <section class="col-sm-9 col-md-9">
+        <section class="col-sm-6 col-md-6">
             <?php
             // Consulta SQL
-                $sql= "SELECT * FROM anuncios WHERE categoria_id = ?";
+                $sql= "SELECT anuncios.*, COUNT(comentarios.id_comentario) AS 'num_comentarios' FROM anuncios LEFT JOIN comentarios ON anuncios.id_anuncio = comentarios.anuncio_id WHERE anuncios.categoria_id = ? GROUP BY anuncios.id_anuncio";
                 $query = $con->prepare($sql);
                 $query->execute(array($id_cat));
                 //Comprobamos si existen resultados
@@ -100,13 +100,21 @@
                                     <div class="item-list">
                                         <div class="col-sm-4 col-xs-3">
                                             <a href="anuncio.php?id='.$resultado['id_anuncio'].'">
-                                                <img class="img-rounded" src="images/'.$resultado['imagen'].'" alt="logo" width="80">
+                                                <img class="img-rounded" src="images/'.$resultado['imagen'].'" alt="logo" width="120">
                                             </a>
                                         </div>
                                         <div class="col-sm-6 col-xs-7">
                                             <a href="anuncio.php?id='.$resultado['id_anuncio'].'"><h4 class="title">'.$resultado['razon_soc'].'</h4></a>
-                                            <h5 class="subtitulo"><i class="fa fa-map-marker"></i> '.$resultado['direccion'].'</h5>
-                                        </div>
+                                            <h5 class="subtitulo"><i class="fa fa-map-marker"></i> '.$resultado['direccion'].'</h5>';
+                                        
+                                        if ($resultado['num_comentarios'] == 1){
+                                            echo '<h5><i class="fa fa-comment-o" aria-hidden="true"></i> '.$resultado['num_comentarios'].' opinión</h5>';
+                                        } else {
+                                            echo '<h5> <i class="fa fa-comments-o" aria-hidden="true"></i> '.$resultado['num_comentarios'].' opiniones</h5>';
+                                        }
+                                            
+                                            
+                                        echo '</div>
                                         <div class="col-sm-2 col-xs-2">
                                               <a href="anuncio.php?id='.$resultado['id_anuncio'].'" class="btn btn-primary btn-sm"><i class="fa fa-eye fa-2x"></i> Ver</a>
                                         </div>
@@ -122,6 +130,15 @@
             ?>
            
         </section>
+            <div class="col-sm-3 col-md-3 pull-left">
+                <div class="section_title text-center mg-bt-40">
+                    <h3><i class="fa fa-align-justify"></i> Actividad Reciente</h3>
+                </div>
+                <div class="list-group">
+                    <a href="categoria.php" class="list-group-item list-group-item-action"><i class="fa fa-plus-circle" aria-hidden="true"></i>   Nuevo anuncio en "Comer y Beber" hace 2 horas</a>
+                    <a href="categoria.php" class="list-group-item list-group-item-action"><i class="fa fa-comments-o" aria-hidden="true"></i>     Nueva opinión en "Pirron Sport" hace 3 días</a>
+                </div>
+           </div>
     </section>
                 
         <!-- Incluimos el footer o pie de página -->       
