@@ -16,12 +16,10 @@ function checkPasswordMatch(){
         var confirmPassword = $("#confirm_password").val();
         
         if (password != confirmPassword){
-            document.getElementById('checkPassword').className = 'alert alert-danger alert-xs col-md-8 col-md-offset-2  text-center';   - 
-            $("#checkPassword").html("<p><i class='fa fa-close'></i> Las contraseñas introducidas no coinciden</p>");
+            $("#checkPassword").html("<div class='col-md-6 col-md-offset-3 aviso aviso-error text-center'><i class='fa fa-close'></i> Las contraseñas no coinciden</div>");
             document.getElementById("submitRegistro").disabled = true;                         
         } else {
-            $("#checkPassword").html("<div class='alert alert-success col-sm-12  text-center'><i class='fa fa-check'></i> Las contraseñas introducidas coinciden.</div>");
-            passvalido = true;
+            $("#checkPassword").html("<div class='col-md-6 col-md-offset-3 aviso aviso-exito text-center'><i class='fa fa-check'></i> Las contraseñas coinciden</div>");
             document.getElementById("submitRegistro").disabled = false;
         }
     }

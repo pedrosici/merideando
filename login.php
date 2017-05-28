@@ -59,24 +59,32 @@
                                     </div>
                                     <div class="form-group row">
                                           <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2">
+                                              <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-user-circle-o"></i></span>
                                                 <input type="text" class="form-control col-md-6" name="usuario" id="usuario" pattern="[A-Za-z0-9_-]{1,15}" placeholder="Usuario" required />
+                                              </div>
                                          </div>
                                     </div>
                                     <div class="form-group row">
-                                          <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2">
+                                        <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
                                                 <input type="password" class="form-control col-md-6" name="password" id="password" pattern="[A-Za-z0-9_-]{1,15}" placeholder="Contraseña" required />
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                           <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 mg-bt-40 text-center">
                                               <input type="submit" id="login_btn" class="btn btn-primary" value="Iniciar Sesión"/>
-                                        </div>
-                                        <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3 text-center cuenta">
-                                            <a href="registro.php"><p>No tengo cuenta en Merideando</p></a>
-                                        </div>
-                                        <div id="checkLogin" style="display:none;"><p>Login Incorrecto</p></div>
+                                         </div>
+                                         <div id="checklogin"></div>
+                                        
+                                        
                                     </div>
                                 </form>
+                                <div class="col-md-8 col-md-offset-2 col-sm-6 col-sm-offset-3 text-center cuenta">
+                                            <a href="registro.php"><p>No tengo cuenta en Merideando</p></a>
+                                        </div>
                             </div>
                             
                             

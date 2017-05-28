@@ -19,7 +19,7 @@ if(!empty($_POST)){
 			$query->execute(array($usuario, $sha1_pass));
             if ($resultado = $query->rowCount() == 1):
                 session_start();
-                $resultado = $query->fetch(PDO::FETCH_ASSOC))
+                $resultado = $query->fetch(PDO::FETCH_ASSOC);
                 $_SESSION["user_id"] = $resultado["id"];
                 $_SESSION["nombre"] = $resultado["nombre"];
                 echo json_encode(array('error' => false));

@@ -505,5 +505,24 @@ line-height: 36px;
             border: 0;
         }
 
-/*----- CATEGORIAS ---*/
+/*----- Login y Registro ---*/
+
+.aviso-error {
+    color: darkred;
+    background-color: #e29090;
+    border-color: black;
+}
+
+.aviso-exito {
+    color: darkolivegreen;
+    background-color: darkseagreen;
+    border-color: black;
+}
+
+.aviso {
+    padding: 5px;
+    margin-top:10px;
+    margin-bottom: 10px;
+    border: 1px solid transparent;
+    border-radius: 4px
 
