@@ -125,17 +125,11 @@ else{
                     <form id="formulario" method="post" role="form" enctype="multipart/form-data">
                         <div class="modal-body">
                            <div class="form-group row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <label for="razon">Razón Social*</label>
                                         <input type="text" class="form-control col-md-6" name="razon" placeholder="Introduce un nombre" required>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="direccion">Dirección física</label> (Ej: John Lennon, 36)
-                                        <input type="text" class="form-control" name="direccion" id="direccion" placeholder="Dirección">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <label for="cif">CIF*</label>
                                         <input type="text" class="form-control col-md-6" name="cif" id="cif" placeholder="Introduce un CIF" required>
                                     </div>
@@ -144,10 +138,22 @@ else{
                                         <input type="text" class="form-control" name="telefono" placeholder="Teléfono de contacto" required>
                                     </div>
                                 </div>
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <label for="direccion">Dirección física</label> (Ej: John Lennon, 36)
+                                        <input type="text" class="form-control" name="direccion" id="direccion" placeholder="Dirección">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="email">E-mail*</label>
+                                        <input type="text" class="form-control" name="email" placeholder="E-mail de contacto" required>
+                                    </div>
+                                    
+                                </div>
                             <div class="form-group row">
                                     <div class="col-md-6">
                                         <label for="categoria">Categoría</label>
-                                        <select class="form-control" name="categoria">
+                                        <select class="form-control" name="categoria" id="categoria">
+                                            <option value="0">Elige la categoría de tu anuncio</option>
                                     <?php
                                         $sql = "SELECT * FROM categorias ORDER BY nombre_cat ASC";
                                         $query = $con->prepare($sql);
@@ -160,10 +166,14 @@ else{
                                         </select>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="email">E-mail*</label>
-                                        <input type="text" class="form-control" name="email" placeholder="E-mail de contacto" required>
+                                        <label for="categoria">Subcategoría</label>
+                                        <select class="form-control" name="subcategoria" id="subcategoria">
+                                           <option value="0">Elige una categoría</option>
+                                        </select>
                                     </div>
+                                    
                              </div>
+                            
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <label for="descripcion">Descripción*</label>
@@ -373,6 +383,23 @@ else{
             $('[data-toggle="popover"]').popover({ html: true});
         })
         </script>
-         
+       <!-- Rellenar combobox subcategorías -->    
+         <script>
+             $(document).ready(function(){
+                 //Cuando el combo de categorias cambie de valor
+                $("#categoria").change(function(){
+                    $("#categoria option:selected").each(function(){
+                        //Guardamos la seleccion de la categoria
+                        id_cat = $(this).val();
+                        //Llamamos al archivo que manda el id de la subcategoría
+                        $.post("php/crear_anuncio.php", {id_categoria: id_cat}, function(data){
+                            //Le devolvemos ese id_subcat al option del combobox de subcategorias
+                            $("#subcategoria").html(data);
+                        });
+                    });
+                })
+            });
+        
+        </script>
     </body>
   </html>
