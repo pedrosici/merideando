@@ -43,20 +43,37 @@ include('php/conexion.php');
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Inicio<span class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="#"><i class="fa fa-home" aria-hidden="true"></i> Inicio<span class="sr-only">(current)</span></a></li>
                 <!-- Mostramos las opciones de cuenta segun la sesión del usuario -->
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nosotros <span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users" aria-hidden="true"></i> Nosotros <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     <li><a href="#nosotros">Servicio</a></li>
                     <li><a href="#anunciate">Anúnciate</a></li>
                     <li><a href="#contacto">Contacto</a></li>
                   </ul>
-                </li>
-                <li><a href="categorias.php">Categorías</a></li>
+                </li>     
+                 <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars" aria-hidden="true"></i> Categorías <span class="caret"></span></a>
+                      <ul class="dropdown-menu">
+                    <?php
+
+                        $sql = "SELECT * FROM categorias ORDER BY nombre_cat ASC";
+                        $query = $con->prepare($sql);
+                        $query->execute();
+                        while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
+                            
+                            echo '<li><a href="categoria.php?id='.$resultado['id_categoria'].'"><i class="fa '.$resultado['icono'].'"></i> '.$resultado['nombre_cat'].'</a></li>';
+                            echo '<li role="separator" class="divider"></li>';
+                        }
+                          echo '<li><a href="categorias.php"><i class="fa fa-bars" aria-hidden="true"></i> Todas las categorias</a></li>';
+                      ?>
+                      </ul>
+                  </li>
               </ul>
                 
               <ul class="nav navbar-nav navbar-right">
+                  <li><a href="faq.html"><i class="fa fa-question-circle" aria-hidden="true"></i> FAQ / Ayuda</a></li>
                   <!-- Mostramos las opciones de cuenta segun la sesión del usuario -->
                   <?php if(!isset($_SESSION["user_id"])):?>
                   <li class="dropdown">
@@ -96,7 +113,7 @@ include('php/conexion.php');
                                      <!---<a class="btn-light-bg " href="#">Purchase Now</a> -->
                                 </div>
                             </div>
-                            <div class="col-md-12 text-center">
+                            <div class="col-md-6 col-md-offset-3 text-center">
                                 <div class="form-group">
                                 <form>
                                     <div class="input-group">
@@ -270,9 +287,9 @@ include('php/conexion.php');
 
     
     <script type="text/javascript" src="js/main.js"></script>
-     
-       
-        
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <script src="js/bootstrap.min.js"></script>
      <script>   
          $(document).ready(function(){
