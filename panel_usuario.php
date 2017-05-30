@@ -63,11 +63,10 @@ else{
                                 </table>
                                 </div>
                             </div>
-                                
                             
                             <div class="col-md-12 col-xs-12 ">
                                 <div class="registros" id="agrega-anuncio">
-                                   
+                                   <table class="table table-striped table-condensed table-hover table-bordered text-center">
                             <?php
                             
                             $sql = "SELECT a.id_anuncio, a.razon_soc, a.cif, a.direccion, a.telefono, a.email, a.descripcion, a.imagen, a.likes, a.hates, c.nombre_cat FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE a.usuario_id = ?";
@@ -76,8 +75,7 @@ else{
                             
                             // Comprobamos existencia del anuncio
                              if ($query->rowCount() > 0){
-                                 echo '<table class="table table-striped table-condensed table-hover table-bordered text-center">
-                                        <thead>
+                                 echo '<thead>
                                         <tr>
                                             <th class="text-center" width="150">Razón social</th>
                                             <th class="text-center" width="50">Logo</th>
@@ -97,8 +95,9 @@ else{
                                         <td><a href="anuncio.php?id='.$resultado['id_anuncio'].'" target="_blank"><i class="fa fa-link fa-2x" aria-hidden="true"></i></a>
                                         <td><a href="#editar-anuncio" class="fa fa-pencil fa-2x" data-toggle="modal" onClick="editarAnuncio('.$resultado['id_anuncio'].');" title="Editar Anuncio"></a> <a  href="#eliminar-anuncio" data-toggle="modal" onClick="setIdAnuncio('.$resultado['id_anuncio'].')" class="fa fa-trash fa-2x" title="Eliminar anuncio"></a></td>
                                      </tr>'; 
-                                } echo '</table>'; ?> 
-                                 
+                                }  ?> 
+                                       
+                                </table>
                             <?php
                                 
                             } else {  
@@ -130,12 +129,12 @@ else{
                                         <input type="text" class="form-control col-md-6" name="razon" placeholder="Introduce un nombre" required>
                                     </div>
                                     <div class="col-md-3">
-                                        <label for="cif">CIF*</label>
-                                        <input type="text" class="form-control col-md-6" name="cif" id="cif" placeholder="Introduce un CIF" required>
+                                        <label for="cif">NIF*</label>
+                                         <input type="text" class="form-control col-md-6" name="cif" id="identidad" placeholder="Introduce un NIF" pattern="^(([A-Z])|\d)?\d{8}(\d|[A-Z])?$" title="Introduce un NIF válido" required />
                                     </div>
                                     <div class="col-md-6">
                                         <label for="telefono">Teléfono*</label>
-                                        <input type="text" class="form-control" name="telefono" placeholder="Teléfono de contacto" required>
+                                        <input type="tel" class="form-control" name="telefono" id="telef" pattern="[0-9]{9}" title="Introduce sólo números y máximo 9" placeholder="Teléfono de contacto" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -152,6 +151,7 @@ else{
                             <div class="form-group row">
                                     <div class="col-md-6">
                                         <label for="categoria">Categoría</label>
+                                        
                                         <select class="form-control" name="categoria" id="categoria">
                                             <option value="0">Elige la categoría de tu anuncio</option>
                                     <?php
@@ -176,8 +176,9 @@ else{
                             
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <label for="descripcion">Descripción*</label>
-                                    <textarea class="form-control" rows="5" name="descripcion" placeholder="Describe tu negocio" required></textarea>
+                                    <label for="descripcion">Descripción* (Máximo 500 caracteres)</label>
+                                    <textarea class="form-control" rows="5" name="descripcion" id="descripcion" maxlength="500" onKeyDown="contarCaracteres()" onKeyUp="contarCaracteres()" placeholder="Describe tu negocio" required></textarea>
+                                    <input type="text"  style=" border:none" value="0 caracteres introducidos"  id="result" readonly>
                                 </div>
                                 <!-- PASAMOS OCULTO EL ID DEL USUARIO QUE CREA EL ANUNCIO -->
                                 <input type="hidden" name="id_usuario" value="<?php echo '.$id.'?>">
@@ -217,17 +218,21 @@ else{
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <label for="logo">Logo*</label>
-                                    <input type="file" name="logo" id="imagen" required />
+                                    <input type="file" name="logo" id="imagen" />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-4" id="imagen_previa">
-                                    <img class="img-responsive" id="vistaprevia" src="images/noimage.png" width="70%" />
+                                    <img class="img-responsive col-xs-6" id="vistaprevia" src="images/noimage.png" width="100%" />
                                 </div>
                                 <div id="error-img"></div>
                             </div>
+                            <div class="form-group row">
+                                
+                            </div>
                         </div>
                    <div class="modal-footer">
+                        <p style="float:left;">* Campos Obligatorios</p>
                         <button type="submit" class="btn btn-success" value="crear" id="crear">Crear anuncio</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                    </div>
@@ -259,12 +264,12 @@ else{
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-6">
-                                        <label for="cif">CIF*</label>
-                                        <input type="text" class="form-control col-md-6" name="cif" id="identidad" placeholder="Introduce un CIF" required />
+                                        <label for="cif">NIF*</label>
+                                        <input type="text" class="form-control col-md-6" name="cif" id="identidad" placeholder="Introduce un NIF" pattern="^(([A-Z])|\d)?\d{8}(\d|[A-Z])?$" required />
                                     </div>
                                     <div class="col-md-6">
                                         <label for="telefono">Teléfono*</label>
-                                        <input type="text" class="form-control" name="telefono" id="telef" placeholder="Teléfono de contacto" required>
+                                        <input type="tel" class="form-control" name="telefono" id="telef" pattern="[0-9]{9}" placeholder="Teléfono de contacto" required>
                                     </div>
                                 </div>
                             <div class="form-group row">
@@ -289,7 +294,7 @@ else{
                              </div>
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <label for="descripcion">Descripción*</label>
+                                    <label for="descripcion">Descripción* (Máximo 500 caracteres)</label>
                                     <textarea class="form-control" rows="5" name="descripcion" placeholder="Describe tu negocio" id="descripcion" required></textarea>
                                 </div>
                                 <!-- PASAMOS OCULTO EL ID DEL USUARIO QUE CREA EL ANUNCIO -->
@@ -398,8 +403,17 @@ else{
                         });
                     });
                 })
+                 
+                 
             });
-        
+            
+            
         </script>
+        <script>
+             function contarCaracteres(){
+                $("#result").val($("#descripcion").val().length + " caracteres introducidos "); 
+             }
+        </script>
+        
     </body>
   </html>

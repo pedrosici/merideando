@@ -25,16 +25,7 @@
 
     if ($query->rowCount() > 0 ){
         while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
-            echo '<table class="table table-striped table-condensed table-hover table-bordered text-center">
-                   <tr>
-                     <th width="150">Razón social</th>
-                     <th width="50">Logo</th>
-                     <th width="50">Categoría</th>
-                     <th width="25">Votos</th>
-                     <th width="50">Enlace</th>
-                     <th width="50">Acción</th>
-                    </tr>
-                    <tr>
+            echo '<tr>
                       <td>'.$resultado['razon_soc'].'</td>
                       <td><img src="images/'.$resultado['imagen'].'" height="50"/></td>
                       <td>'.$resultado['nombre_cat'].'</td>
@@ -42,7 +33,7 @@
                       <td><a href="anuncio.php?id='.$resultado['id_anuncio'].'" target="_blank"><i class="fa fa-link fa-2x" aria-hidden="true"></i></a>
                       <td><a href="#editar-anuncio" class="fa fa-pencil fa-2x" data-toggle="modal" onClick="editarAnuncio('.$resultado['id_anuncio'].');" title="Editar Anuncio"></a> <a href="#eliminar-anuncio" data-toggle="modal" onClick="setIdAnuncio('.$resultado['id_anuncio'].')" class="fa fa-trash fa-2x" title="Eliminar anuncio"></a></td>
                      </tr>
-                    </table>';    
+                    ';    
         } // fin WHILE
     } else {  
         echo '<div class="slider_text text-center"><h3>No tienes ningún anuncio creado todavía</h3></div>';
