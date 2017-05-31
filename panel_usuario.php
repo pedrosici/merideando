@@ -53,65 +53,181 @@ else{
                                 </div>
                             </div>
                             
-                            <div class="col-md-12">
-                               	<div class="registros text-center">
-                                <table border="0" align="center">
-                                    <tr>
-                                        <td width="335"><input type="text" placeholder="Busca un anuncio" id="bs-prod"/></td>
-                                        <td width="100"><a href="#crear-anuncio" class="btn btn-primary" data-toggle="modal">Crear nuevo anuncio</a></td>
-                                    </tr>
-                                </table>
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-12 col-xs-12 ">
-                                <div class="registros" id="agrega-anuncio">
-                                   <table class="table table-striped table-condensed table-hover table-bordered text-center">
-                            <?php
-                            
-                            $sql = "SELECT a.id_anuncio, a.razon_soc, a.cif, a.direccion, a.telefono, a.email, a.descripcion, a.imagen, a.likes, a.hates, c.nombre_cat FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE a.usuario_id = ?";
-                             $query = $con->prepare($sql);
-                             $query->execute(array($id));
-                            
-                            // Comprobamos existencia del anuncio
-                             if ($query->rowCount() > 0){
-                                 echo '<thead>
-                                        <tr>
-                                            <th class="text-center" width="150">Razón social</th>
-                                            <th class="text-center" width="50">Logo</th>
-                                            <th class="text-center" width="50">Categoría</th>
-                                            <th class="text-center" width="25">Votos</th>
-                                            <th class="text-center" width="50">Enlace</th>
-                                            <th class="text-center" width="50">Acción</th>
-                                        </tr>
-                                        </thead>'; 
-                                while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
+                            <div class="col-md-8 col-md-offset-2 mg-bt-40" role="tablist">
+                                <ul id="tabs" class="nav nav-tabs">
+                                    <li role="presentation" class="active"><a href="#anuncios" role="tab" data-toggle="tab"><i class="fa fa-bullhorn" aria-hidden="true"></i> Mis Anuncios</a></li>
+                                    <li role="presentation"><a href="#perfil" role="tab" data-toggle="tab"><i class="fa fa-user" aria-hidden="true"></i> Mi perfil</a></li>
+                                    <li role="presentation"><a href="#opiniones" role="tab" data-toggle="tab"><i class="fa fa-comments-o" aria-hidden="true"></i> Mis Opiniones</a></li>
+                                    <li role="presentation"><a href="#favoritos" role="tab" data-toggle="tab"><i class="fa fa-star" aria-hidden="true"></i> Mis Favoritos</a></li> 
+                                    <li role="presentation"><a href="#ayuda" role="tab" data-toggle="tab"><i class="fa fa-info-circle" aria-hidden="true"></i> Ayuda</a></li>  
+                                </ul>
                                 
-                                    echo '<tr>
-                                        <td>'.$resultado['razon_soc'].'</td>
-                                        <td><img src="images/'.$resultado['imagen'].'" height="50"/></td>
-                                        <td>'.$resultado['nombre_cat'].'</td>
-                                        <td>'.$resultado['likes'].'</td>
-                                        <td><a href="anuncio.php?id='.$resultado['id_anuncio'].'" target="_blank"><i class="fa fa-link fa-2x" aria-hidden="true"></i></a>
-                                        <td><a href="#editar-anuncio" class="fa fa-pencil fa-2x" data-toggle="modal" onClick="editarAnuncio('.$resultado['id_anuncio'].');" title="Editar Anuncio"></a> <a  href="#eliminar-anuncio" data-toggle="modal" onClick="setIdAnuncio('.$resultado['id_anuncio'].')" class="fa fa-trash fa-2x" title="Eliminar anuncio"></a></td>
-                                     </tr>'; 
-                                }  ?> 
-                                       
-                                </table>
-                            <?php
-                                
-                            } else {  
-                                echo '<div class="slider_text text-center"><h3>No tienes ningún anuncio creado todavía</h3></div>';
-                            }                                
-                            ?>
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade in active" id="anuncios">
+                                        <div class="col-md-12 mg-tp-40">
+                                            <div class="registros text-center">
+                                            <table border="0" align="center">
+                                                <tr>
+                                                    <td width="335"><input type="text" placeholder="Busca un anuncio" id="bs-prod"/></td>
+                                                    <td width="100"><a href="#crear-anuncio" class="btn btn-primary" data-toggle="modal">Crear nuevo anuncio</a></td>
+                                                </tr>
+                                            </table>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 col-xs-12 ">
+                                            <div class="registros" id="agrega-anuncio">
+                                               <table class="table table-striped table-condensed table-hover table-bordered text-center">
+                                        <?php
+
+                                        $sql = "SELECT a.id_anuncio, a.razon_soc, a.cif, a.direccion, a.telefono, a.email, a.descripcion, a.imagen, a.likes, a.hates, c.nombre_cat FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE a.usuario_id = ?";
+                                         $query = $con->prepare($sql);
+                                         $query->execute(array($id));
+
+                                        // Comprobamos existencia del anuncio
+                                         if ($query->rowCount() > 0){
+                                             echo '<thead>
+                                                    <tr>
+                                                        <th class="text-center" width="150">Razón social</th>
+                                                        <th class="text-center" width="50">Logo</th>
+                                                        <th class="text-center" width="50">Categoría</th>
+                                                        <th class="text-center" width="25">Votos</th>
+                                                        <th class="text-center" width="50">Enlace</th>
+                                                        <th class="text-center" width="50">Acción</th>
+                                                    </tr>
+                                                    </thead>'; 
+                                            while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
+
+                                                echo '<tr>
+                                                    <td>'.$resultado['razon_soc'].'</td>
+                                                    <td><img src="images/'.$resultado['imagen'].'" height="50"/></td>
+                                                    <td>'.$resultado['nombre_cat'].'</td>
+                                                    <td>'.$resultado['likes'].'</td>
+                                                    <td><a href="anuncio.php?id='.$resultado['id_anuncio'].'" target="_blank"><i class="fa fa-link fa-2x" aria-hidden="true"></i></a>
+                                                    <td><a href="#editar-anuncio" class="fa fa-pencil fa-2x" data-toggle="modal" onClick="editarAnuncio('.$resultado['id_anuncio'].');" title="Editar Anuncio"></a> <a  href="#eliminar-anuncio" data-toggle="modal" onClick="setIdAnuncio('.$resultado['id_anuncio'].')" class="fa fa-trash fa-2x" title="Eliminar anuncio"></a></td>
+                                                 </tr>'; 
+                                            }  ?> 
+
+                                            </table>
+                                        <?php
+
+                                        } else {  
+                                            echo '<div class="slider_text text-center"><h3>No tienes ningún anuncio creado todavía</h3></div>';
+                                        }                                
+                                        ?>
+
+                                            </div>
+                                            <div id="mensaje"></div>
+                                        </div>
+                                    </div>
                                     
+                                    <?php
+                                        $sql ="SELECT nombre, usuario, email, fecha_creacion, password,
+                                            (SELECT COUNT(id_anuncio)
+                                             FROM  anuncios WHERE anuncios.usuario_id = usuarios.id) AS num_anuncios,
+                                            (SELECT COUNT(id_comentario)
+                                            FROM  comentarios 
+                                             WHERE comentarios.usuario_id = usuarios.id
+                                            ) AS num_comentarios,
+                                            (SELECT COUNT(id_fav) 
+                                             FROM favoritos 
+                                            WHERE favoritos.usuario_id = usuarios.id 
+                                            ) AS num_favoritos
+                                            FROM usuarios 
+                                             WHERE usuarios.id = ?";
+                   
+                                        $query = $con->prepare($sql);
+                                        $query->execute(array($id));
+                                         if ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
+
+                                    ?>
+                                    <div role="tabpanel" class="tab-pane fade in" id="perfil">
+                                        <div class="panel panel-info mg-tp-40">
+                                            <div class="panel-heading">
+                                              <h3 class="panel-title"><?php echo $resultado['nombre'];?></h3>
+                                            </div>
+                                            <div class="panel-body">
+                                              <div class="row">
+                                                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="images/avatar_unknown.png" class="img-circle img-responsive"> </div>
+
+                                                <!--<div class="col-xs-10 col-sm-10 hidden-md hidden-lg"> <br>
+                                                  <dl>
+                                                    <dt>DEPARTMENT:</dt>
+                                                    <dd>Administrator</dd>
+                                                    <dt>HIRE DATE</dt>
+                                                    <dd>11/12/2013</dd>
+                                                    <dt>DATE OF BIRTH</dt>
+                                                       <dd>11/12/2013</dd>
+                                                    <dt>GENDER</dt>
+                                                    <dd>Male</dd>
+                                                  </dl>
+                                                </div>-->
+                                                <div class=" col-md-9 col-lg-9 "> 
+                                                  <table class="table table-user-information">
+                                                    <tbody>
+                                                      <tr>
+                                                        <td>Usuario:</td>
+                                                        <td><?php echo $resultado['usuario']; ?></td>
+                                                      </tr>
+                                                        <tr>
+                                                        <td>Email</td>
+                                                        <td><a href="<?php echo $resultado['email']; ?>"><?php echo $resultado['email']; ?></a></td>
+                                                       </tr>
+                                                       <tr>
+                                                        <td>Contraseña:</td>
+                                                           <td><a href="#">Cambiar contraseña</a></td>
+                                                        </tr>
+                                                      <tr>
+                                                        <td>Fecha Creación Cuenta:</td>
+                                                        <td><?php echo $resultado['fecha_creacion']; ?></td>
+                                                      </tr>
+                                                        
+                                                      <tr>
+                                                        <td>Anuncios Publicados:</td>
+                                                        <td><?php echo $resultado['num_anuncios']; ?> anuncios creados</td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>Opiniones Publicadas:</td>
+                                                        <td><?php echo $resultado['num_comentarios']; ?> opiniones</td>
+                                                      </tr>
+                                                      <tr>
+                                                        <td>Anuncios Favoritos:</td>
+                                                        <td><?php echo $resultado['num_favoritos']; ?> anuncios favoritos </td>
+                                                      </tr>
+                                                        
+                                                    </tbody>
+                                                  </table>
+
+                                                  
+                                                </div>
+                                              </div>
+                                            </div>
+                                                 <div class="panel-footer">
+                                                        <span>Perfil de Usuario de Merideando</span>
+                                                        <span class="pull-right">
+                                                            <a href="edit.html" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Editar Mi Perfil</a>
+                                                            
+                                                        </span>
+                                                    </div>
+
+                                          </div>
+                                    </div>
+                                    <?php } 
                                     
-                                         
-                            </div>
-                            <div id="mensaje"></div>
+                                    $sql = "SELECT comentarios.id_comentario, comentarios.fecha_comentario, comentarios.anuncio_id, comentarios.comentario
+                                    FROM comentarios, usuarios
+                                    WHERE comentarios.usuario_id = usuarios.id AND usuarios.id = ?";
+                                    
+                                    ?>
+                                    <div role="tabpanel" class="tab-pane fade in" id="opiniones">
+
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade in" id="favoritos">
+                                        <p>Estos son tus anuncios favoritos</p>
+                                    </div>
+                                </div> <!-- FIN TAB CONTENT -->
+                            </div>   
                         </div>
                     </div>
-                </div>
    <!-- MODAL PARA CREAR ANUNCIOS -->     
 
         <div class="modal fade" data-backdrop="false" id="crear-anuncio" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
