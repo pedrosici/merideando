@@ -505,5 +505,49 @@ line-height: 36px;
             border: 0;
         }
 
-/*----- CATEGORIAS ---*/
+/*----- Login y Registro ---*/
 
+.aviso-error {
+    color: darkred;
+    background-color: #e29090;
+    border-color: black;
+}
+
+.aviso-exito {
+    color: darkolivegreen;
+    background-color: darkseagreen;
+    border-color: black;
+}
+
+.aviso {
+    padding: 5px;
+    margin-top:10px;
+    margin-bottom: 10px;
+    border: 1px solid transparent;
+    border-radius: 4px
+}
+
+/*----- VALORACIONES ---*/
+
+.stars{list-style:none;position:relative;margin:0;padding:0}
+	.voted{cursor:default !important}
+	.stars-16{width:70px}
+	.stars-24{width:110px}
+	.stars-32{width:140px}
+	
+.stars:hover div{display:none}
+.ul_voted:hover div{display:block !important}
+	
+.stars li {display:block;float:left;background-repeat:no-repeat;cursor:pointer;text-indent:-9999em;margin:0;padding:0;}
+.stars-16 li{background-image:url(../images/stars-16.png);width:14px;height:15px;}
+.stars-16 li:hover{width:14px;height:15px;background-position:0 -15px}
+.stars-24 li{background-image:url(../images/stars-24.png);width:22px;height:21px;background-position:0 0}
+.stars-24 li:hover{width:22px;height:21px;background-position:0 -21px}
+
+			
+.stars div{display:block;background-repeat:repeat-x;position:absolute;left:0;top:0;z-index:102}
+.votes-16{background-image:url(stars-16.png);background-position:0 -15px;height:15px}
+.votes-24{background-image:url(stars-24.png);background-position:0 -21px;height:21px}
+.votes-32{background-image:url(stars-32.png);background-position:0 -27px;height:27px}
+		
+.stars span{float:left;font-size:11px;padding:2px 0 0 0;text-align:center;font-family:sans-serif;width:100%}

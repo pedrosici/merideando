@@ -8,6 +8,24 @@ session_start();
 if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"] == null){
 	print "<script>alert(\"Acceso invalido!\");window.location='login.php';</script>";
 }
+   
+if (isset($_POST['id_categoria'])){
+    $id_subcat = $_POST['id_categoria'];
+   
+    $sql = "SELECT * FROM subcategorias WHERE categoria_id = ? ORDER BY nombre_subcat ASC";
+   
+    $query = $con->prepare($sql);
+    $query->execute(array($id_subcat));
+   
+    
+    if ($query->rowCount() > 0 ){
+        while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
+            $html = "<option value='".$resultado['id_subcategoria']."'>".$resultado['nombre_subcat']."</option>";
+            echo $html;
+        }
+    }
+    
+}
 
 //Recibimos datos de la imagen
 
@@ -37,6 +55,7 @@ $cif = $_POST['cif'];
 $email = $_POST['email'];
 $descripcion = $_POST['descripcion'];
 $id_categoria = $_POST['categoria'];
+$id_subcat = $_POST['subcategoria'];
 $imagen = $_FILES['logo']['name'];
 $web = $_POST['web'];
 $twitter = $_POST['twitter'];
@@ -56,9 +75,9 @@ if (isset($_POST['direccion'])){
 
 //Lanzamos consulta
 
-$sql = "INSERT into ANUNCIOS (razon_soc, cif, direccion, latitud, longitud, telefono, email, descripcion, web, twitter, instagram, facebook, imagen, fecha, usuario_id, categoria_id) VALUE (:razon, :cif, :direccion, :lat, :lng, :telefono, :email, :descripcion ,:web, :twitter, :instagram ,:facebook, :imagen , :fecha, :usuario_id, :categoria_id)";
+$sql = "INSERT into ANUNCIOS (razon_soc, cif, direccion, latitud, longitud, telefono, email, descripcion, web, twitter, instagram, facebook, imagen, fecha, usuario_id, categoria_id, subcategoria_id) VALUE (:razon, :cif, :direccion, :lat, :lng, :telefono, :email, :descripcion ,:web, :twitter, :instagram ,:facebook, :imagen , :fecha, :usuario_id, :categoria_id, :subcategoria_id)";
 $query = $con->prepare($sql);
-$query->execute(array(":razon"=>$razon,":cif"=>$cif,":direccion"=>$direccion,":lat"=>$lat,":lng"=>$lng,":telefono"=>$telefono,":email"=>$email,":descripcion"=>$descripcion,":web"=>$web,":twitter"=>$twitter,":instagram"=>$instagram,":facebook"=>$facebook,":imagen"=>$imagen,":fecha"=>$fecha,"usuario_id"=>$id_usuario,"categoria_id"=>$id_categoria));
+$query->execute(array(":razon"=>$razon,":cif"=>$cif,":direccion"=>$direccion,":lat"=>$lat,":lng"=>$lng,":telefono"=>$telefono,":email"=>$email,":descripcion"=>$descripcion,":web"=>$web,":twitter"=>$twitter,":instagram"=>$instagram,":facebook"=>$facebook,":imagen"=>$imagen,":fecha"=>$fecha,"usuario_id"=>$id_usuario,"categoria_id"=>$id_categoria, "subcategoria_id"=>$id_subcat));
 
 //$sql = "UPDATE ANUNCIOS set razon_soc = '$razon', cif = '$cif', direccion = '$direccion', telefono = '$telefono', email = '$email', descripcion = '$descripcion', imagen = '$imagen', fecha = NOW(), categoria_id = '$id_categoria' WHERE id_anuncio = '$id'";
 //$query = $con->query($sql);

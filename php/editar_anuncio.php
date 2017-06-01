@@ -47,7 +47,7 @@ if (isset($_POST['id'])){
 }
 
 if (isset($_POST['razon'])){
-    var_dump($_FILES['logonuevo']);
+   
     $id_anuncio = $_POST['anuncio'];
     if (isset($_FILES['logonuevo']['type'])){
     //Comprobamos si la extension de la imagen es válida
@@ -58,11 +58,11 @@ if (isset($_POST['razon'])){
     if (($_FILES['logonuevo']['type'] == "image/png") || ($_FILES['logonuevo']['type'] == "image/jpg") || ($_FILES['logonuevo']['type'] == "image/jpeg") && ($_FILES['logonuevo']['size'] < 100000) && in_array($extension, $valido)){
         
         $ruta = $_FILES['logonuevo']['tmp_name'];
-        var_dump($ruta);
+        
     //  Ruta de la carpeta donde se guarda la imagen
         $target = $_SERVER['DOCUMENT_ROOT'].'/merideando/images/'.$_FILES['logonuevo']['name'];
     //  Movemos imagen de la carpeta temporal a la carpeta especificada en destino
-        var_dump($target);
+       
         move_uploaded_file($ruta, $target);
     }
     }

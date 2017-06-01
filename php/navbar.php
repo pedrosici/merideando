@@ -1,5 +1,7 @@
 <?php
     $current_page = basename($_SERVER['PHP_SELF']);
+var_dump($current_page);
+// if(!isset($_SESSION["user_id"]))
 ?>
 
 <nav class="navbar navbar-default">
@@ -18,23 +20,18 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
-                <li class="<?php if ($current_page == "index.php"){ echo "active "; }?>"><a href="index.php">Inicio<span class="sr-only">(current)</span></a></li>
-                  <!-- Mostramos las opciones de cuenta segun la sesión del usuario -->
-                  <?php if(!isset($_SESSION["user_id"])):?>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nosotros <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#nosotros">Servicio</a></li>
-                    <li><a href="#anunciate">Anúnciate</a></li>
-                    <li><a href="#contacto">Contacto</a></li>
-                  </ul>
-                </li>
-                <li class="<?php if ($current_page == "categorias.php"){ echo "active "; }?> item"><a href="categorias.php">Categorías</a></li>
-                 <?php else:?>
-                  <li class="<?php if ($current_page == "panel_usuario.php"){ echo "active "; }?> item"><a href="panel_usuario.php">Mis anuncios</a></li>
-                  <li><a href="categorias.php">Categorías</a></li>
-                  
-                <?php endif;?>
+                    <li class="<?php if ($current_page == "index.php"){ echo "active "; }?>"><a href="index.php">Inicio<span class="sr-only">(current)</span></a></li>
+                      <!-- Mostramos las opciones del menú según la página en la que esté -->
+                      <!-- CATEGORIAS.PHP -->
+                 <?php 
+                    if ($current_page == "categorias.php"){ 
+                        echo '<li class="active item"><a href="categorias.php">Categorías</a></li>';
+                    }
+                    else if ($current_page == "panel_usuario.php"){ 
+                        echo '<li class="active item"><a href="panel_usuario.php">Mis anuncios</a></li>';
+                    } 
+                  ?>
+                  <li><a href="panel_usuario.php">Crear anuncio</a></li>
               </ul>
                 
               <ul class="nav navbar-nav navbar-right">
