@@ -5,10 +5,13 @@
 
     session_start();
     $id = $_SESSION['user_id'];
-
-    //Seleccionamos los datos referentes a la categoría elegida 
-    $sql = "SELECT * FROM categorias WHERE id_categoria='{$_GET['id']}'";
-    $id_cat = $_GET['id'];
+    if (isset($_GET['id'])){
+         $id_cat = $_GET['id'];
+         //Seleccionamos los datos referentes a la categoría elegida 
+        $sql = "SELECT * FROM categorias WHERE id_categoria='{$_GET['id']}'";
+    }
+   
+   
     
   
 ?>
@@ -41,7 +44,7 @@
                <?php
                    //Comprobamos si existen resultados
                    $query = $con->prepare($sql);
-                    $query->execute(array($busqueda));
+                    $query->execute(array());
                         //Comprobamos si existen resultados
                            if ($query->rowCount() > 0){
                             while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
@@ -59,37 +62,43 @@
         </section> 
         
         <section class="main container-fluid mg-bt-40"> 
-                 <div class="col-sm-3 col-md-3 pull-left">
-                    <div class="section_title text-center mg-bt-40">
-                        <h3><i class="fa fa-align-justify"></i> Categorias</h3>
-                     </div>
+            <div class="col-sm-3 col-md-3 mg-bt-40 pull-left">
+                <div class="section_title text-center mg-bt-40">
+                    <h3><i class="fa fa-align-justify"></i> Categorias</h3>
+                </div>
         <!-- Script php para las categorias -->
-                     
-                    <div class="list-group">
-                    
-                <?php  $current_page = $_SERVER['REQUEST_URI'];
-                        // Consulta SQL
-                        $sql= "SELECT * FROM categorias ORDER BY id_categoria DESC";
+                <div class="mg-bt-40">     
+                    <select class="form-control" name="categoria" id="categoria"> 
+                    <?php
+                        $sql = "SELECT * FROM categorias ORDER BY nombre_cat ASC";
                         $query = $con->prepare($sql);
                         $query->execute();
-                        //Comprobamos si existen resultados
-                        if ($query->rowCount() > 0){
-                            while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
-                                echo '<a href="categoria.php?id='.$resultado['id_categoria'].'" class="list-group-item list-group-item-action ';
-                                if ($current_page == "/merideando/categoria.php?id=".$resultado['id_categoria']){ echo 'active'; }
-                                echo '"><i class="fa '.$resultado['icono'].'"></i> '.$resultado['nombre_cat'].'</a>';            
-                                } //end while
-                            }     //end if
- 
-                            ?>
-                          
-                    </div>
+                        while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
+                            if ($resultado['id_categoria'] == $id_cat){
+                                echo '<option selected value="'.$resultado['id_categoria'].'>">'.$resultado['nombre_cat'].'</option>';
+                            }
+                            else{
+                                echo '<option value="'.$resultado['id_categoria'].'">'.$resultado['nombre_cat'].'</option>';
+                                }
+                        ?>
+                                
+                            <?php   } ?>
+                    </select>
+                </div>     
+                <div class="section_title text-center mg-bt-40">
+                    <h3><i class="fa fa-align-justify"></i> Subcategorías</h3>
                 </div>
+                <div class="mg-bt-40">
+                    <select class="form-control" name="subcategoria" id="subcategoria">
+                        <option value="0">Todas las subcategorías</option>
+                    </select>
+                </div>
+            </div>
 
-        <section class="col-sm-6 col-md-6">
+        <section class="col-sm-8 col-md-8">
             <?php
             // Consulta SQL
-                $sql= "SELECT anuncios.*, COUNT(comentarios.id_comentario) AS 'num_comentarios' FROM anuncios LEFT JOIN comentarios ON anuncios.id_anuncio = comentarios.anuncio_id WHERE anuncios.categoria_id = ? GROUP BY anuncios.id_anuncio";
+                $sql= "SELECT anuncios.*, COUNT(comentarios.id_comentario) AS 'num_comentarios', subcategorias.nombre_subcat FROM anuncios LEFT JOIN comentarios ON anuncios.id_anuncio = comentarios.anuncio_id LEFT JOIN subcategorias ON anuncios.subcategoria_id = subcategorias.id_subcategoria WHERE anuncios.categoria_id = ? GROUP BY anuncios.id_anuncio";
                 $query = $con->prepare($sql);
                 $query->execute(array($id_cat));
                 //Comprobamos si existen resultados
@@ -97,18 +106,17 @@
                     while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){         
                         echo '<div class="col-sm-12 list-group">
                                 <div class="wrapper">
+                                <a href="anuncio.php?id='.$resultado['id_anuncio'].'">
                                     <div class="item-list">
                                         <div class="col-sm-4 col-xs-3">
-                                            <a href="anuncio.php?id='.$resultado['id_anuncio'].'">
-                                                <img class="img-rounded" src="images/'.$resultado['imagen'].'" alt="logo" width="120">
-                                            </a>
+                                            <img class="img-rounded" src="images/'.$resultado['imagen'].'" alt="logo" width="200">
                                         </div>
-                                        <div class="col-sm-6 col-xs-7">
+                                        <div class="info-list col-sm-6 col-xs-7">
                                             <a href="anuncio.php?id='.$resultado['id_anuncio'].'"><h4 class="title">'.$resultado['razon_soc'].'</h4></a>
-                                            <h5 class="subtitulo"><i class="fa fa-map-marker"></i> '.$resultado['direccion'].'</h5>';
+                                            <h5 class="subtitulo"><i class="fa fa-map-marker"></i> '.$resultado['direccion'].' <i class="fa fa-align-justify"></i> '.$resultado['nombre_subcat'].'</h5>';
                                         
                                         if ($resultado['num_comentarios'] == 1){
-                                            echo '<h5><i class="fa fa-comment-o" aria-hidden="true"></i> '.$resultado['num_comentarios'].' opinión</h5>';
+                                            echo '<h5><i class="fa fa-comment-o" aria-hidden="true"></i> '.$resultado['num_comentarios'].' opinión </h5>';
                                         } else {
                                             echo '<h5> <i class="fa fa-comments-o" aria-hidden="true"></i> '.$resultado['num_comentarios'].' opiniones</h5>';
                                         }
@@ -118,7 +126,9 @@
                                         <div class="col-sm-2 col-xs-2">
                                               <a href="anuncio.php?id='.$resultado['id_anuncio'].'" class="btn btn-primary btn-sm"><i class="fa fa-eye fa-2x"></i> Ver</a>
                                         </div>
+                                        </a>
                                     </div>
+                                    
                                 </div>';
                         }
                     } else {
@@ -130,15 +140,7 @@
             ?>
            
         </section>
-            <div class="col-sm-3 col-md-3 pull-left">
-                <div class="section_title text-center mg-bt-40">
-                    <h3><i class="fa fa-align-justify"></i> Actividad Reciente</h3>
-                </div>
-                <div class="list-group">
-                    <a href="categoria.php" class="list-group-item list-group-item-action"><i class="fa fa-plus-circle" aria-hidden="true"></i>   Nuevo anuncio en "Comer y Beber" hace 2 horas</a>
-                    <a href="categoria.php" class="list-group-item list-group-item-action"><i class="fa fa-comments-o" aria-hidden="true"></i>     Nueva opinión en "Pirron Sport" hace 3 días</a>
-                </div>
-           </div>
+           
     </section>
                 
         <!-- Incluimos el footer o pie de página -->       
@@ -148,5 +150,27 @@
         <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
        <script src="js/jquery.vide.min.js"></script>
+        
+        <!-- Rellenar combobox subcategorías -->    
+        <script>
+             $(document).ready(function(){
+                  
+                 
+                 //Cuando el combo de categorias cambie de valor
+                $("#categoria").change(function(){
+                    $("#categoria option:selected").each(function(){
+                        //Guardamos la seleccion de la categoria
+                        id_cat = $(this).val();
+                        //Llamamos al archivo que manda el id de la subcategoría
+                        $.post("php/crear_anuncio.php", {id_categoria: id_cat}, function(data){
+                            //Le devolvemos ese id_subcat al option del combobox de subcategorias
+                            $("#subcategoria").html(data);
+                        });
+                    });
+                })
+                 
+                 
+            }); 
+        </script>
      </body>
 </html>

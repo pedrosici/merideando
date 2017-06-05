@@ -1,6 +1,6 @@
 <?php
     $current_page = basename($_SERVER['PHP_SELF']);
-var_dump($current_page);
+
 // if(!isset($_SESSION["user_id"]))
 ?>
 

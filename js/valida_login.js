@@ -25,7 +25,5 @@ jQuery(document).on('submit', '#login_form', function(event){
     .fail(function(resp){
         console.log(resp.responseText);
     })
-    .always(function(){
-        console.log("complete");
-    });
+    
 });
