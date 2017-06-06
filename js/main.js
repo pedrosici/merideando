@@ -14,9 +14,9 @@ $(document).ready(function (e) {
         processData:false,        // To send DOMDocument or non processed data file it is set to false
         success: function(nuevo){   // A function to be called if request succeeds
                 $('#mensaje').addClass('alert alert-success alert-dismissible mg-bt-40 text-center').html('<h4>¡Anuncio creado con exito!</h4>').show(200).delay(3000).hide(200);
-			    $('#agrega-anuncio').html(nuevo);
+			    $('#mis_anuncios').DataTable().ajax.reload();
+                
 			return false;
-                return false;
         }
     });
     }));
@@ -30,7 +30,7 @@ $(function() {
         var imagefile = file.type;
         var match = ["image/jpeg","image/png","image/jpg"];
         if(!((imagefile == match[0]) || (imagefile == match[1]) || (imagefile == match[2]))){
-            $('#vistaprevia').attr('src','noimage.png');
+            $('#vistaprevia').attr('src','images/noimage.png');
             $("#error-img").html("<div class='col-sm-12'><p class='alert alert-warning alert-dismissible mg-bt-40 text-center'>¡Selecciona una imagen válida!</p>"+"<h4>Nota</h4>"+"<span>Sólo las extensiones jpeg, jpg and png son admitidas.</span></div>");
             return false;
         } else {
@@ -160,6 +160,7 @@ function eliminarAnuncio(){
         url: url,
         data: 'id=' + id_anuncio,
         success: function(nuevo){
+            $('#mis_anuncios').DataTable().ajax.reload();
             $('#mensaje').addClass('alert alert-success alert-dismissible mg-bt-40 text-center').html('<h4>Anuncio eliminado con exito</h4>').show(200).delay(3000).hide(200);
 			$('#agrega-anuncio').html(nuevo);
 			return false;

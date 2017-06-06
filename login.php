@@ -75,7 +75,7 @@
                                     </div>
                                     <div class="form-group row">
                                           <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 mg-bt-40 text-center">
-                                              <input type="submit" id="login_btn" class="btn btn-primary" value="Iniciar Sesión"/>
+                                              <button type="submit" id="login_btn" class="btn btn-primary">Iniciar Sesión</button>
                                          </div>
                                          <div id="checklogin"></div>
                                         

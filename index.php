@@ -148,7 +148,7 @@ include('php/conexion.php');
         </section>
         
         
-    <section class="section-padding" id="nosotros">
+    <section class="fondo section-padding" id="nosotros">
         <div class="container">
             <div class="row">
                 <div class="section_title text-center">					<h2>¿Qué necesitas hoy?</h2>
@@ -165,8 +165,8 @@ include('php/conexion.php');
             if ($query->rowCount() > 0){
                 while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
                 echo '<div class="col-md-4 cuadro-categoria">
-                        <a href="categoria.php?id='.$resultado['id_categoria'].'" class="hover-grow">
-                        <span class="fa-stack fa-lg">
+                        <a href="categoria.php?id='.$resultado['id_categoria'].'" >
+                        <span class="fa-stack fa-lg hover-grow">
                             <i class="fa fa-circle fa-stack-2x"></i>
                             <i class="fa '.$resultado['icono'].' fa-stack-1x fa-inverse"></i>
                         </span>
@@ -184,41 +184,59 @@ include('php/conexion.php');
         
         
         
-    <section class="fondo section-padding">
-            <div class="container">
-                <div class="row">
-                    <div class="section_title text-center">						
-							<h2>Novedades</h2>
-							<h4>Conoce los anuncios más relevantes</h4>
-							<div class="icon_wrap"><i class="fa fa-search"></i></div>
-				    </div>
+    <section class="section-padding">
+        <div class="container">
+            <div class="section_title text-center mg-bt-40">						
+				<h2>Novedades</h2>
+				<h4>Conoce los anuncios más relevantes</h4>
+				<div class="icon_wrap"><i class="fa fa-search"></i></div>
+            </div>
+               
+                <?php
+                //Consulta para sacar ultimos anuncios publicados
+                $sql = "SELECT a.razon_soc,a.id_anuncio, a.direccion, a.imagen, a.categoria_id, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE id_anuncio = a.id_anuncio ORDER BY fecha DESC LIMIT 5";
+                $query = $con->prepare($sql);
+                $query->execute();
+                //Comprobamos si existen resultados
+                if ($query->rowCount() > 0){
+                  while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
+                   ?>   
+                    <div class="listado-anuncios">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <img class="img-responsive" src="images/anuncios/<?php echo $resultado['imagen']; ?>" alt="<?php echo $resultado['razon_soc']; ?>">
+                                    </div>
+                                    <div class="col-xs-9">
+                                        <h3 class="listado-titulo"><a href="anuncio.php?id='.$resultado['id_anuncio'].'"><?php echo $resultado['razon_soc']; ?></a></h3>
+                                        <p class="listado-categoria"><i class="fa <?php echo $resultado['icono']; ?>"></i> <?php echo $resultado['nombre_cat']; ?></p>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-2 col-md-2 col-md-offset-0"><i class="fa fa-map-marker listado-ubicacion"></i> <?php echo $resultado['direccion']; ?></div>
+                            
+                            <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-3">
+                                <p>Posteado hace 5 días</p>
+                            </div>
+                            
+                            <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
+                                <div class="listado-favorito">
+                                    <a href="#" data-toggle="tooltip" data-placement="top" title="" class="estrella" data-original-title=">Guardar como favorito"><i class="fa fa-star fa-2x"></i></a>
+                                 </div>
+                            </div>
+                                
+                            </div>
+                        </div> 
+                   
+            
+                    <?php  
+                  } // FIN while
+                } //FIN if
+                    ?> 
                     
-                     <?php
-                        //Consulta para sacar ultimos anuncios publicados
-                            $sql = "SELECT a.razon_soc,a.id_anuncio, a.direccion, a.imagen, a.categoria_id, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE id_anuncio = a.id_anuncio ORDER BY fecha DESC LIMIT 3";
-                            $query = $con->prepare($sql);
-                            $query->execute();
-                        //Comprobamos si existen resultados
-                           if ($query->rowCount() > 0){
-                            while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
-    
-                            echo '<div class="col-sm-4 col-xs-12 media">
-                              <div class="media-left media-middle">
-                                <a href="anuncio.php?id='.$resultado['id_anuncio'].'">
-                                  <img class="media-object img-rounded" src="images/'.$resultado['imagen'].'" alt="logo" width="150">
-                                </a>
-                              </div>
-                              <div class="media-body">
-                                <a href="anuncio.php?id='.$resultado['id_anuncio'].'"><h4 class="media-heading">'.$resultado['razon_soc'].'</h4></a>
-                                <a href="categoria.php?id='.$resultado['categoria_id'].'"><i class="fa '.$resultado['icono'].'" aria-hidden="true"></i> <span>'.$resultado['nombre_cat'].'</span></a><br>
-                                <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                '.$resultado['direccion'].'
-                              </div>
-                            </div>';
-                            } // FIN while
-                           } //FIN if
-                        ?> 
-                    </div>
                 </div>
             
         </section>

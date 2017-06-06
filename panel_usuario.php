@@ -95,7 +95,8 @@ else{
                                                 <tbody>
                                                 </tbody>
                                                 
-                                            </table>        
+                                            </table> 
+                                            <div id="mensaje"></div>
                                         </div>
                                     </div>
                                     
@@ -128,18 +129,6 @@ else{
                                               <div class="row">
                                                 <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="images/avatar_unknown.png" class="img-circle img-responsive"> </div>
 
-                                                <!--<div class="col-xs-10 col-sm-10 hidden-md hidden-lg"> <br>
-                                                  <dl>
-                                                    <dt>DEPARTMENT:</dt>
-                                                    <dd>Administrator</dd>
-                                                    <dt>HIRE DATE</dt>
-                                                    <dd>11/12/2013</dd>
-                                                    <dt>DATE OF BIRTH</dt>
-                                                       <dd>11/12/2013</dd>
-                                                    <dt>GENDER</dt>
-                                                    <dd>Male</dd>
-                                                  </dl>
-                                                </div>-->
                                                 <div class=" col-md-9 col-lg-9 "> 
                                                   <table class="table table-user-information">
                                                     <tbody>
@@ -330,7 +319,7 @@ else{
                         </div>
                    <div class="modal-footer">
                         <p style="float:left;">* Campos Obligatorios</p>
-                        <button type="submit" class="btn btn-success" value="crear" id="crear">Crear anuncio</button>
+                        <button type="submit" name="submit" class="btn btn-success" id="crear">Crear anuncio</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                    </div>
                 </form>
@@ -476,11 +465,10 @@ else{
     <!-- Incluimos el footer o pie de página -->       
       <?php include "php/footer.php"; ?>
         
-    <!--Import jQuery before materialize.js-->
+    <!--Import jQuery -->
     <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
     <script src="js/main.js"></script>  
     <script src="js/bootstrap.min.js"></script>
-        
     <script src="js/jquery.dataTables.min.js"></script>
     <script src="js/dataTables.bootstrap.min.js"></script>          
     <script src="js/lenguajeusuario.js"></script>   

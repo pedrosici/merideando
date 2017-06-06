@@ -44,8 +44,7 @@ include('php/conexion.php');
         <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-         <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
         
 
     </head>
@@ -161,5 +160,12 @@ include('php/conexion.php');
                     </div> <!-- FIN ROW -->
                 </div><!-- FIN CONTAINER -->
     </section><!-- FIN SECTION -->
+        
+    <!-- Incluimos el footer o pie de página -->       
+    <?php include "php/footer.php"; ?>
+     
+    <script type="text/javascript" src="js/main.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+        
     </body>
 </html>

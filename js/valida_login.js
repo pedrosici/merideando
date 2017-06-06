@@ -7,7 +7,7 @@ jQuery(document).on('submit', '#login_form', function(event){
         data: $(this).serialize(),
         beforeSend: function(){
             $('#checklogin').html("");
-            $('#login_btn').val('Validando...');
+            $('#login_btn').html("<i class='fa fa-spinner fa-spin fa-fw'></i> Validando...");
         }
     })
     .done(function(respuesta){
@@ -16,7 +16,7 @@ jQuery(document).on('submit', '#login_form', function(event){
              $("#checklogin").html("<div class='col-md-8 col-md-offset-2 aviso aviso-exito text-center'><i class='fa fa-check'></i> Login correcto</div>"); 
             location.href = 'panel_usuario.php';
         } else {
-           $("#login_btn").val("Iniciar Sesión");
+           $("#login_btn").html("Iniciar Sesión");
            $("#checklogin").html("<div class='col-md-8 col-md-offset-2 aviso aviso-error text-center'><i class='fa fa-close'></i> Login incorrecto</div>"); 
         }
         
@@ -25,5 +25,7 @@ jQuery(document).on('submit', '#login_form', function(event){
     .fail(function(resp){
         console.log(resp.responseText);
     })
-    
+    .always(function(){
+        console.log("complete");
+    });
 });

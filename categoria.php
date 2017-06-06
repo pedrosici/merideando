@@ -10,9 +10,6 @@
          //Seleccionamos los datos referentes a la categoría elegida 
         $sql = "SELECT * FROM categorias WHERE id_categoria='{$_GET['id']}'";
     }
-   
-   
-    
   
 ?>
 
@@ -95,7 +92,7 @@
                 </div>
             </div>
 
-        <section class="col-sm-8 col-md-8">
+        <section class="col-sm-9 col-md-9">
             <?php
             // Consulta SQL
                 $sql= "SELECT anuncios.*, COUNT(comentarios.id_comentario) AS 'num_comentarios', subcategorias.nombre_subcat FROM anuncios LEFT JOIN comentarios ON anuncios.id_anuncio = comentarios.anuncio_id LEFT JOIN subcategorias ON anuncios.subcategoria_id = subcategorias.id_subcategoria WHERE anuncios.categoria_id = ? GROUP BY anuncios.id_anuncio";
@@ -103,8 +100,46 @@
                 $query->execute(array($id_cat));
                 //Comprobamos si existen resultados
                 if ($query->rowCount() > 0){
-                    while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){         
-                        echo '<div class="col-sm-12 list-group">
+                    while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){  ?>
+                        
+                    <div class="listado-anuncios">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <img class="img-thumbnail" src="images/anuncios/<?php echo $resultado['imagen']; ?>" alt="<?php echo $resultado['razon_soc']; ?>">
+                                    </div>
+                                    <div class="col-xs-9">
+                                        <h3 class="listado-titulo"><a href="anuncio.php?id='.$resultado['id_anuncio'].'"><?php echo $resultado['razon_soc']; ?></a></h3>
+                                        <p class="listado-categoria"> <?php echo $resultado['nombre_subcat']; ?></p>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-xs-10 col-xs-offset-2 col-sm-6 col-md-3 col-md-offset-0"><i class="fa fa-map-marker listado-ubicacion"></i> <?php echo $resultado['direccion']; ?></div>
+                            
+                            <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-2">
+                                <?php
+                                    if ($resultado['num_comentarios'] == 1){
+                                            echo '<p><i class="fa fa-comment-o" aria-hidden="true"></i> '.$resultado['num_comentarios'].' opinión </p>';
+                                        } else {
+                                            echo '<p> <i class="fa fa-comments-o" aria-hidden="true"></i> '.$resultado['num_comentarios'].' opiniones</p>';
+                                        }                                      
+                                ?>
+                            </div>
+                            
+                            <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
+                                <div class="listado-favorito">
+                                    <a href="#" data-toggle="tooltip" data-placement="top" title="" class="estrella" data-original-title=">Guardar como favorito"><i class="fa fa-star fa-2x"></i></a>
+                                 </div>
+                            </div>
+                                
+                            </div>
+                        </div> 
+                        
+                        
+                   <?php    /* echo '<div class="col-sm-12 list-group">
                                 <div class="wrapper">
                                 <a href="anuncio.php?id='.$resultado['id_anuncio'].'">
                                     <div class="item-list">
@@ -129,7 +164,15 @@
                                         </a>
                                     </div>
                                     
-                                </div>';
+                                </div>';*/
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                         }
                     } else {
                         echo '<div class="col-sm-12 mg-tp-80 text-center">

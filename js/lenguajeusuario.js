@@ -10,7 +10,7 @@ $(document).ready(function() {
 			{ "data": "razon" },
 			{ "data": "imagenUrl",
               "render": function(data, type, row){
-                   return '<img class="img-rounded" src="images/'+data+'" height="40px"/>';
+                   return '<img class="img-rounded" src="images/anuncios/'+data+'" height="30px" />';
               }
             },
 			{ "data": "categoria" },

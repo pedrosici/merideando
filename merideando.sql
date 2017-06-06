@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-05-2017 a las 00:07:17
+-- Tiempo de generación: 06-06-2017 a las 14:51:25
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 5.6.30
 
@@ -36,10 +36,10 @@ CREATE TABLE `anuncios` (
   `telefono` varchar(15) COLLATE utf8_spanish_ci NOT NULL,
   `email` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `descripcion` text COLLATE utf8_spanish_ci NOT NULL,
-  `web` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
+  `web` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `twitter` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `instagram` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  `facebook` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
+  `facebook` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `imagen` varchar(250) COLLATE utf8_spanish_ci NOT NULL,
   `likes` int(5) NOT NULL,
   `hates` int(5) NOT NULL,
@@ -54,9 +54,12 @@ CREATE TABLE `anuncios` (
 --
 
 INSERT INTO `anuncios` (`id_anuncio`, `razon_soc`, `cif`, `direccion`, `latitud`, `longitud`, `telefono`, `email`, `descripcion`, `web`, `twitter`, `instagram`, `facebook`, `imagen`, `likes`, `hates`, `fecha`, `usuario_id`, `categoria_id`, `subcategoria_id`) VALUES
-(16, 'Pizzería Galileo', 'E123456789', 'John Lennon, 34', '38.914582', '-6.345157', '924 31 55 055', 'info@galileo.com', 'Restaurante italiano situado en el centro de Mérida. Ofrecemos pizzas, pastas, carnes y ensaladas. Tenemos servicio a domicilio.', 'www.galileo.com', 'galileo', 'galileo', 'galileofb', 'galileo.jpg', 0, 0, '2017-03-26', 3, 9, 0),
-(17, 'sda', 'sad', 'Plaza de España, 10', '38.915985', '-6.346243', 'sad', 'bk@gmail.com', 'dsad', '', '', '', '', 'flag_eng.png', 0, 0, '2017-05-28', 3, 9, 0),
-(18, 'sad', 'dasd', 'Plaza de España, 10', '38.915985', '-6.346243', 'assad', 'asdasd', 'sad', '', '', '', '', 'logo_stones.png', 0, 0, '2017-05-29', 3, 7, 25);
+(2, 'Burger King', '50692009D', 'Plaza de España, 10', '38.915985', '-6.346243', '924485460', 'bk@info.com', 'Burger King, también conocida como BK,1 es una cadena de establecimientos de comida rápida estadounidense con sede central en Miami (Florida), presente a nivel internacional y especializada principalmente en la elaboración de hamburguesas.', 'www.burgerking.es', 'BurgerKing', 'burgerking', 'burgerkingespana', 'burger_logo.png', 0, 0, '2017-06-06', 3, 7, 24),
+(4, 'McDonalds', '50692009D', 'Avenida Reina Sofía s/n', '38.909709', '-6.344191', '924371567', 'info.mcdonalds@gmail.com', 'Veterana cadena de comida rápida famosa por sus hamburguesas, patatas fritas y bebidas, con opción de menús.', 'www.mcdonalds.es', '@MCDonalds', '', 'McDonaldsSpain', 'logo_mcdonald.jpg', 0, 0, '2017-06-06', 3, 7, 24),
+(5, 'Telepizza', 'B61670972', 'Plaza de España, 13', '38.916047', '-6.346691', '924252525', 'info.telepizza@gmail.com', 'Telepizza es una cadena multinacional de origen español de pizzerías con presencia en varios países.', 'www.telepizza.es', 'telepizza', 'telepizza', 'telepizza', 'logo_telepizza.jpg', 0, 0, '2017-06-06', 3, 7, 24),
+(7, 'La Sureña de Mérida', '90159420H', 'Calle Delgado Valencia, 11', '38.917944', '-6.343148', '902197494', 'lasurena.merida@gmail.com', 'La franquicia de Cervecería La Sureña ofrece una manera distinta de entender el tiempo de ocio. Ha sabido conquistar a los consumidores y a los emprendedores de media España. Además, supone una muy buena inversión para aquellos que buscan emprender un negocio y, por supuesto, para desarrollar un negocio rentable y de éxito. Se ha consolidado en el territorio español con más de 100 locales abiertos.', 'http://lasurena.es', '', 'cervecerialasurena', 'La-Sureña', 'la-surena-restalia-logo.png', 0, 0, '2017-06-06', 3, 7, 24),
+(8, 'La Piel del Oso', '71233123F', 'Calle Bartolome Torres Naharro, 7', '38.909709', '-6.337628', '924317739', 'lapieldeloso@gmail.com', 'Bar con decoración ecléctica, cafés y tés de calidad, repostería casera, cañas y vinos acompañados de tapa cortesía del Sr. Oso.\r\n', '', '', '', 'lapieldeloso.merida', 'logo_pieldeloso.jpg', 0, 0, '2017-06-06', 3, 7, 26),
+(12, 'dsadasd', '71233123F', 'Plaza de España, 10', '38.915985', '-6.346243', '924317739', 'burger35@gmail.com', 'sadasdds', '', '', '', '', 'logo_grande-Pizza-Bull.jpg', 0, 0, '2017-06-06', 3, 9, 20);
 
 -- --------------------------------------------------------
 
@@ -81,7 +84,9 @@ INSERT INTO `categorias` (`id_categoria`, `nombre_cat`, `icono`) VALUES
 (5, 'Formación', 'fa-leanpub'),
 (7, 'Comer y Beber', 'fa-cutlery'),
 (8, 'Salud y Belleza', 'fa-medkit'),
-(9, 'Comercio Local', 'fa-shopping-cart');
+(9, 'Comercio Local', 'fa-shopping-cart'),
+(10, 'Eventos', 'fa-calendar'),
+(11, 'Turismo', 'fa-camera-retro');
 
 -- --------------------------------------------------------
 
@@ -94,18 +99,38 @@ CREATE TABLE `comentarios` (
   `comentario` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
   `nick` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `fecha_comentario` date NOT NULL,
-  `anuncio_id` int(11) NOT NULL
+  `anuncio_id` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `comentarios`
 --
 
-INSERT INTO `comentarios` (`id_comentario`, `comentario`, `nick`, `fecha_comentario`, `anuncio_id`) VALUES
-(19, 'Prueba de comentario', 'Pedro', '2017-05-10', 16),
-(20, 'Prueba de comentario', 'Juan', '2017-05-10', 16),
-(21, 'Muy rico todo', 'Maria', '2017-05-10', 16),
-(22, 'Asquerosa comida', 'Paco', '2017-05-10', 16);
+INSERT INTO `comentarios` (`id_comentario`, `comentario`, `nick`, `fecha_comentario`, `anuncio_id`, `usuario_id`) VALUES
+(19, 'Prueba de comentario', 'Pedro', '2017-05-10', 16, 4),
+(20, 'Prueba de comentario', 'Juan', '2017-05-10', 16, 3),
+(21, 'Muy rico todo', 'Maria', '2017-05-10', 16, 5),
+(22, 'Asquerosa comida', 'Paco', '2017-05-10', 16, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `favoritos`
+--
+
+CREATE TABLE `favoritos` (
+  `id_fav` int(11) NOT NULL,
+  `anuncio_ïd` int(11) NOT NULL,
+  `usuario_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `favoritos`
+--
+
+INSERT INTO `favoritos` (`id_fav`, `anuncio_ïd`, `usuario_id`) VALUES
+(1, 16, 3);
 
 -- --------------------------------------------------------
 
@@ -152,7 +177,11 @@ INSERT INTO `subcategorias` (`id_subcategoria`, `nombre_subcat`, `categoria_id`)
 (28, 'Clínicas Dentales', 8),
 (29, 'Peluquería y Estética', 8),
 (30, 'Farmacias', 8),
-(31, 'Ópticas', 8);
+(31, 'Ópticas', 8),
+(32, 'Festivales y Conciertos', 10),
+(33, 'Exposiciones, Talleres y Actividades', 10),
+(34, 'Monumentos y Museos', 11),
+(35, 'Alojamiento', 11);
 
 -- --------------------------------------------------------
 
@@ -175,9 +204,15 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`id`, `nombre`, `usuario`, `email`, `password`, `fecha_creacion`) VALUES
 (3, 'Pedro Sicilia', 'pedrosici', 'pedro@gmail.com', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', '2017-01-30 17:26:31'),
-(4, 'Pedro Sicilia Marcelo', 'admin', 'pedrosm1991@gmail.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', '2017-02-21 17:59:58'),
-(5, 'Paco García', 'pacog', 'paco@gmail.com', '5f6955d227a320c7f1f6c7da2a6d96a851a8118f', '2017-05-23 22:52:56'),
-(6, 'Lionel Messi', 'tusworten', 'messi@gmail.com', 'b58e6693e0ba007ce2f9e152c4cf19dd5cdbbad6', '2017-05-23 23:06:30');
+(7, 'Francisco García', 'fgarcia01', 'francisco@gmail.com', '12345', '2017-06-04 00:00:00'),
+(9, 'María Sanchez', 'msanchezss', 'mariass92@hotmail.com', '12345', '0000-00-00 00:00:00'),
+(10, 'Jorge Jiménez', 'jjimenez99', 'jimenez99@gmail.com', '12345', '2017-06-01 00:00:00'),
+(11, 'Javier González', 'jgongon', 'jgonzalez90@gmail.com', '1234', '2017-06-02 00:00:00'),
+(12, 'Julio Visconti', 'jvisconga01', 'visconti88@gmail.com', '1234', '2017-06-01 00:00:00'),
+(13, 'Tania Sánchez', 'taniass', 'tanisuki@gmail.com', '123445', '2017-06-03 00:00:00'),
+(14, 'nachopeña', 'nachopo', 'nachogarcia@gmail.com', '12334', '2017-06-01 00:00:00'),
+(15, 'Ángeles Marcelo', 'aamarcelo60', 'chiquimarcelo@gmail.com', '12345', '2017-06-01 00:00:00'),
+(16, 'Dolores Urrutia', 'doloresurra', 'dolor@gmail.com', '12345', '2017-06-03 00:00:00');
 
 --
 -- Índices para tablas volcadas
@@ -205,6 +240,12 @@ ALTER TABLE `comentarios`
   ADD KEY `id_anuncio` (`anuncio_id`);
 
 --
+-- Indices de la tabla `favoritos`
+--
+ALTER TABLE `favoritos`
+  ADD PRIMARY KEY (`id_fav`);
+
+--
 -- Indices de la tabla `subcategorias`
 --
 ALTER TABLE `subcategorias`
@@ -226,27 +267,32 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `anuncios`
 --
 ALTER TABLE `anuncios`
-  MODIFY `id_anuncio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_anuncio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT de la tabla `comentarios`
 --
 ALTER TABLE `comentarios`
   MODIFY `id_comentario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
+-- AUTO_INCREMENT de la tabla `favoritos`
+--
+ALTER TABLE `favoritos`
+  MODIFY `id_fav` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT de la tabla `subcategorias`
 --
 ALTER TABLE `subcategorias`
-  MODIFY `id_subcategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id_subcategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

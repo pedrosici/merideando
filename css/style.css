@@ -722,3 +722,50 @@ line-height: 36px;
   background-color: #2098d1;
   color: white;
 }
+
+/*------ LISTADO ANUNCIOS --------------*/
+
+.listado-anuncios{
+    padding-left: 15px;
+    border: solid 2px #d9d9d9;
+    border-bottom: none;
+    padding-top: 30px;
+    padding-bottom: 10px;
+    padding-left: 19px;
+    padding-right: 25px;
+    -webkit-transition: all .2s ease-out;
+    -moz-transition: all .2s ease-out;
+    transition: all .2s ease-out;
+}
+
+.listado-anuncios:hover {
+    background: #fafafa;
+}
+
+
+.listado-titulo{
+    margin-top: 0;
+}
+.listado-titulo a{
+    color: #009F97;
+    text-decoration: none;
+    font-size:18px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+}
+.listado-ubicacion{
+    margin-right: 5px;
+    color: #999;
+}
+.listado-favorito{
+    text-align:right;
+}
+
+.listado-categoria{
+    text-transform: uppercase;
+}
+.estrella{
+    color: #999;
+}
