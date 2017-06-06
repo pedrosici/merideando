@@ -38,27 +38,72 @@
 							<div class="icon_wrap"><i class="fa fa-search"></i></div>
 				    </div>
                     <div class="col-md-12 text-center">
+                        <ul class="row clearfix">
             <?php
-                $sql = "SELECT categorias.nombre_cat, categorias.id_categoria, categorias.icono, COUNT(anuncios.id_anuncio) AS 'cantidad' FROM categorias LEFT JOIN anuncios ON categorias.id_categoria = anuncios.categoria_id GROUP BY categorias.id_categoria";
+                $sql = "SELECT categorias.*, subcategorias.* FROM categorias, subcategorias WHERE categorias.id_categoria = subcategorias.categoria_id ORDER BY categorias.nombre_cat ASC";
                     
                 $query = $con->prepare($sql);
                 $query->execute();
+                        
+                $categoria = "";
+                $categorias = array();
+                            
+                $pos = 0;        
+                        
                 //Comprobamos si existen resultados
                 if ($query->rowCount() > 0){
-                    while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){                
-                        echo ' <a href="categoria.php?id='.$resultado['id_categoria'].'" target="_blank"><div class="col-md-4 col-sm-4 wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s" data-wow-offset="0">
-                        <div class="single_feature">
-                            <i class="fa '.$resultado['icono'].'"></i>
-                                <h4>'.$resultado['nombre_cat'].'</h4>
-                                    <ul class="list-group">
-                                        <li class="list-group-item">'.$resultado['cantidad'].' anuncios publicados</li>
-                                    </ul>
-                                </div>
-                            </div></a>';                                                              
-                     
-                            } //FIN while
-                           }  // FIN if
-                    ?>
+                
+                   
+                    while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
+                        
+                        if($categoria != $resultado['nombre_cat']){
+                            $categoria = $resultado['nombre_cat'];
+                            $id_categoria = $resultado['id_categoria'];
+                            $icono = $resultado['icono'];
+                            
+                            $pos = array_push($categorias,  array($categoria, array(), $id_categoria, $icono));
+                            
+                        }    
+                        $categorias[$pos][1][] = array( $resultado['id_subcategoria'], $resultado['nombre_subcat'] );
+                       
+                    }
+
+
+                    foreach ($categorias as $categoria)
+                        {
+ 
+                            if( !empty( $categoria[0] ) ) {
+                             echo "<li class='col-lg-3 col-md-3 col-sm-6 col-xs-12'>";
+                                 echo "<section class='lista-subcategorias'>
+                                        <div><i class='fa ".$categoria[3]."'></i>
+                                        <a href='categoria.php?id=".$categoria[2]."'><span class='lista-categoria-titulo'>".$categoria[0]."</span></a>
+                                        </div>";
+                           
+                            }
+                            if (count($categoria[1]) > 0)
+                            {
+                               
+                                        
+                                foreach ($categoria[1] as $subCat)
+                                {
+                                    echo "<ul class='list'>
+                                    <li><a href='categoria.php?id=" . $subCat[0] . "'>" .
+                                        $subCat[1] . "</a></li></ul>";
+                                }
+                                echo "</section></li>";
+                                
+                            }
+                    }  
+                
+                
+                
+                }  // FIN if
+                   
+                        
+                        
+                        
+                        ?>
+                        </ul>
                     </div>
                 </div>
             </div>

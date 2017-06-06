@@ -29,6 +29,7 @@ include('php/conexion.php');
     </head>
 
     <body>
+        
         <nav class="navbar navbar-default">
           <div class="container-fluid">
             <div class="navbar-header">
@@ -43,18 +44,11 @@ include('php/conexion.php');
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="#"><i class="fa fa-home" aria-hidden="true"></i> Inicio<span class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="#">Inicio<span class="sr-only">(current)</span></a></li>
                 <!-- Mostramos las opciones de cuenta segun la sesión del usuario -->
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users" aria-hidden="true"></i> Nosotros <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#nosotros">Servicio</a></li>
-                    <li><a href="#anunciate">Anúnciate</a></li>
-                    <li><a href="#contacto">Contacto</a></li>
-                  </ul>
-                </li>     
+                <li><a href="nosotros.php">Nosotros</a></li>     
                  <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars" aria-hidden="true"></i> Categorías <span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categorías <span class="caret"></span></a>
                       <ul class="dropdown-menu">
                     <?php
 
@@ -130,6 +124,7 @@ include('php/conexion.php');
             </div>
         </header>
         
+        
         <section class="section-padding" id="nosotros">
             <div class="container">
                 <div class="row">
@@ -152,103 +147,49 @@ include('php/conexion.php');
             </div>
         </section>
         
-        <section class="fondo">
-				<div class="container">
-					<div class="row text-center">
-						<div class="section_title mg-bt-40">						
-							<h2>Sobre Nosotros</h2>
-                            <h4>Conoce como trabajamos</h4>
-							<div class="icon_wrap"><i class="fa fa-heart-o"></i></div>	
-						</div>		
-                        <br>
-						<div class="col-md-4 col-sm-4 wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s" data-wow-offset="0">
-							<div class="single_feature">
-								<i class="fa fa-desktop"></i>
-								<h4>Herramienta útil</h4>
-								<p>Publicar anuncios en nuestra página es un medio ideal para contactar con posibles clientes y con la garantía de ganar visibilidad en internet.</p>
-							</div>
-						</div><!-- END COL -->
-                        
-                        <?php //Consulta para sacar TOTAL de anuncios en la BD
-                            $sql = "SELECT COUNT(id_anuncio) as cantidad FROM anuncios";
-                            $query = $con->prepare($sql);
-                            $query->execute();
-                        //Comprobamos si existen resultados
-                           if ($query->rowCount() > 0){
-                            while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
-                                echo '<div class="col-md-4 col-sm-4 wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.4s" data-wow-offset="0">
-							<div class="single_feature">
-								<i class="fa fa-database"></i>
-								<h4>Variedad de anuncios</h4>
-								<p>Disponemos de más de 10 <a href="categorias.php">categorías</a> diferentes y '.$resultado['cantidad'].' anuncios publicados hasta el momento, ¿A qué esperas para publicar el tuyo?</p>
-							</div>
-						</div><!-- END COL -->';
-                            }
-                           }
-                        
-                        ?>
-						
-						<div class="col-md-4 col-sm-4 wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.5s" data-wow-offset="0">
-							<div class="single_feature">
-								<i class="fa fa-heart-o"></i>
-								<h4>Somos profesionales</h4>
-								<p>Merideando es el primer buscador de anuncios que ofrece una interfaz de calidad y responsiva. Estamos comprometidos con nuestra labor.</p>
-							</div>
-						</div><!-- END COL -->
-						
-					</div><!-- END ROW -->
-				</div><!-- END CONTAINER -->		
-			</section>
-			<!-- END FEATURES -->
         
-            <!-- END NOSOTROS -->
+    <section class="section-padding" id="nosotros">
+        <div class="container">
+            <div class="row">
+                <div class="section_title text-center">					<h2>¿Qué necesitas hoy?</h2>
+				    <h4>Elige una de nuestras categorías</h4>
+				    <div class="icon_wrap"><i class="fa fa-search"></i></div>
+				</div>
+                <div class="col-md-12">
+            <?php 
+            $sql = "SELECT * FROM categorias";
+            $query = $con->prepare($sql);
+            $query->execute();
         
-        <!-- START ANUNCIATE -->
+        //Comprobamos si existen resultados
+            if ($query->rowCount() > 0){
+                while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
+                echo '<div class="col-md-4 cuadro-categoria">
+                        <a href="categoria.php?id='.$resultado['id_categoria'].'" class="hover-grow">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa '.$resultado['icono'].' fa-stack-1x fa-inverse"></i>
+                        </span>
+                        <span class="nombre-categoria">'.$resultado['nombre_cat'].'</span>
+                        </a>
+                    </div>';
+                }
+            }
         
-    <section class="anunciate section-padding" id="anunciate">
-            <div class="container">
-					<div class="row text-center">
-						<div class="section_title mg-bt-40">						
-							<h2>Anúnciate</h2>
-                            <h4>Ten presencia en internet</h4>
-							<div class="icon_wrap"><i class="fa fa-bullhorn"></i></div>	
-						</div>	
-                    
-                         <div class="col-md-4 wow fadeInLeft" data-wow-duration="1s" delay="0.2s" data-wow-offset="0">
-                             <div class="single-address">
-                                <i class="fa fa-pencil-square-o"></i>
-                                <h4>Regístrate</h4>
-                             </div>
-                             <p>Necesitamos información sobre ti y tu negocio. Para registrarte, pincha en <a href="login.php">este enlace</a></p>
-                        </div>
-                        
-                        <div class="col-md-4 wow fadeInLeft" data-wow-duration="1s" delay="0.2s" data-wow-offset="0" >
-                            <div class="single-address">
-                                <i class="fa fa-pencil-square-o"></i>
-                            <h4>Crea tu anuncio</h4>
-                            </div>
-                            <p>Una vez registrado podrás empezar a crear el anuncio ideal, para ello puedes acceder a <a href="panel_usuario.php">tu panel de administración</a></p>    
-                        </div>
-                        <div class="col-md-4 wow fadeInLeft" data-wow-duration="1s" delay="0.2s" data-wow-offset="0">
-                            <div class="single-address">
-                                <i class="fa fa-pencil-square-o"></i>
-                                <h4>Visualiza tu anuncio y compártelo</h4>
-                            </div>
-                            <p>Ya has publicado tu anuncio, es hora de que todos lo vean. Puedes compartirlo o ver el resto de anuncios relacionados con el tuyo</p>
-                                
-                        </div><!-- FIN COL -->
-                   
-                    
-                    </div> <!-- FIN ROW -->
-                </div><!-- FIN CONTAINER -->
-    </section><!-- FIN SECTION -->
+        ?>       
+                </div>
+            </div>
+        </div>
+    </section>
+        
+        
         
     <section class="fondo section-padding">
             <div class="container">
                 <div class="row">
                     <div class="section_title text-center">						
 							<h2>Novedades</h2>
-							<h4>Últimos anuncios publicados</h4>
+							<h4>Conoce los anuncios más relevantes</h4>
 							<div class="icon_wrap"><i class="fa fa-search"></i></div>
 				    </div>
                     
@@ -264,7 +205,7 @@ include('php/conexion.php');
                             echo '<div class="col-sm-4 col-xs-12 media">
                               <div class="media-left media-middle">
                                 <a href="anuncio.php?id='.$resultado['id_anuncio'].'">
-                                  <img class="media-object img-rounded" src="images/'.$resultado['imagen'].'" alt="logo" width="80">
+                                  <img class="media-object img-rounded" src="images/'.$resultado['imagen'].'" alt="logo" width="150">
                                 </a>
                               </div>
                               <div class="media-body">
