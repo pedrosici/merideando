@@ -5,11 +5,19 @@
 
     session_start();
     $id = $_SESSION['user_id'];
+
     if (isset($_GET['id'])){
          $id_cat = $_GET['id'];
          //Seleccionamos los datos referentes a la categoría elegida 
         $sql = "SELECT * FROM categorias WHERE id_categoria='{$_GET['id']}'";
     }
+    else if (isset($_GET['idsubcat'])){
+        $id_subcat = $_GET['idsubcat'];
+         //Seleccionamos los datos referentes a la categoría elegida 
+        $sql = "SELECT s.* , c.icono FROM subcategorias s, categorias c WHERE s.categoria_id = c.id_categoria AND s.id_subcategoria ='{$_GET['idsubcat']}'";
+    }
+        
+    
   
 ?>
 
@@ -38,21 +46,35 @@
             <div class="container">
                 <div class="row"> 
                     
-               <?php
-                   //Comprobamos si existen resultados
-                   $query = $con->prepare($sql);
+             <?php 
+                if (isset($id_cat)){
+                    //Comprobamos si existen resultados
+                    $query = $con->prepare($sql);
                     $query->execute(array());
-                        //Comprobamos si existen resultados
-                           if ($query->rowCount() > 0){
-                            while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
-                    
-                    echo '<div class="section_title text-center mg-tp-80 mg-bt-40">						
-							<h2>'.$resultado['nombre_cat'].'</h2>
-							<h4>Encuentra los anuncios más relevantes en esta categoría</h4>
-							<div class="icon_wrap"><i class="fa '.$resultado['icono'].'"></i></div>
-				    </div>';
+                    //Comprobamos si existen resultados
+                    if ($query->rowCount() > 0){
+                        while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
+                        echo '<div class="section_title text-center mg-tp-80 mg-bt-40">				     <h2>'.$resultado['nombre_cat'].'</h2>
+							     <h4>Encuentra los anuncios más relevantes en esta categoría</h4>
+							     <div class="icon_wrap"><i class="fa '.$resultado['icono'].'"></i></div>
+				                </div>';
                         }
                     }
+                } else if (isset($id_subcat)){
+                    //Comprobamos si existen resultados
+                    $query = $con->prepare($sql);
+                    $query->execute(array());
+                    //Comprobamos si existen resultados
+                    if ($query->rowCount() > 0){
+                        while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
+                        echo '<div class="section_title text-center mg-tp-80 mg-bt-40">				     <h2>'.$resultado['nombre_subcat'].'</h2>
+							     <h4>Encuentra los anuncios más relevantes en esta subcategoría</h4>
+							     <div class="icon_wrap"><i class="fa '.$resultado['icono'].'"></i></div>
+				                </div>';
+                        }
+                    }
+                }
+                   
                 ?>  
                 </div>
             </div>
@@ -93,8 +115,9 @@
             </div>
 
         <section class="col-sm-9 col-md-9">
-            <?php
-            // Consulta SQL
+        <?php
+            if (isset($id_cat)){
+                // Consulta SQL
                 $sql= "SELECT anuncios.*, COUNT(comentarios.id_comentario) AS 'num_comentarios', subcategorias.nombre_subcat FROM anuncios LEFT JOIN comentarios ON anuncios.id_anuncio = comentarios.anuncio_id LEFT JOIN subcategorias ON anuncios.subcategoria_id = subcategorias.id_subcategoria WHERE anuncios.categoria_id = ? GROUP BY anuncios.id_anuncio";
                 $query = $con->prepare($sql);
                 $query->execute(array($id_cat));
@@ -136,10 +159,12 @@
                             </div>
                                 
                             </div>
-                        </div> 
+                        </div>  
+               <!-- FIN WHILE -->
+                
                         
                         
-                   <?php    /* echo '<div class="col-sm-12 list-group">
+                   <?php   }   /* echo '<div class="col-sm-12 list-group">
                                 <div class="wrapper">
                                 <a href="anuncio.php?id='.$resultado['id_anuncio'].'">
                                     <div class="item-list">
@@ -165,16 +190,59 @@
                                     </div>
                                     
                                 </div>';*/
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        }
-                    } else {
+ 
+                        } //FIN IF
+                    
+                } else if (isset($id_subcat)){
+                   // Consulta SQL
+                    $sql= "SELECT anuncios.*, COUNT(comentarios.id_comentario) AS 'num_comentarios', subcategorias.nombre_subcat FROM anuncios LEFT JOIN comentarios ON anuncios.id_anuncio = comentarios.anuncio_id LEFT JOIN subcategorias ON anuncios.subcategoria_id = subcategorias.id_subcategoria WHERE anuncios.subcategoria_id = ? GROUP BY anuncios.id_anuncio";
+                    $query = $con->prepare($sql);
+                    $query->execute(array($id_subcat));
+                    //Comprobamos si existen resultados
+                    if ($query->rowCount() > 0){
+                        while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){  ?>
+                            <div class="listado-anuncios">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="row">
+                                            <div class="col-xs-3">
+                                                <img class="img-thumbnail" src="images/anuncios/<?php echo $resultado['imagen']; ?>" alt="<?php echo $resultado['razon_soc']; ?>">
+                                            </div>
+                                            <div class="col-xs-9">
+                                                <h3 class="listado-titulo"><a href="anuncio.php?id=<?php echo $resultado['id_anuncio']; ?>"><?php echo $resultado['razon_soc']; ?></a></h3>
+                                                <p class="listado-categoria"> <?php echo $resultado['nombre_subcat']; ?></p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-10 col-xs-offset-2 col-sm-6 col-md-3 col-md-offset-0"><i class="fa fa-map-marker listado-ubicacion"></i> <?php echo $resultado['direccion']; ?></div>
+
+                                    <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-2">
+                                        <?php
+                                            if ($resultado['num_comentarios'] == 1){
+                                                    echo '<p><i class="fa fa-comment-o" aria-hidden="true"></i> '.$resultado['num_comentarios'].' opinión </p>';
+                                                } else {
+                                                    echo '<p> <i class="fa fa-comments-o" aria-hidden="true"></i> '.$resultado['num_comentarios'].' opiniones</p>';
+                                                }                                      
+                                        ?>
+                                    </div>
+
+                                    <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
+                                        <div class="listado-favorito">
+                                            <a href="#" data-toggle="tooltip" data-placement="top" title="" class="estrella" data-original-title=">Guardar como favorito"><i class="fa fa-star fa-2x"></i></a>
+                                         </div>
+                                    </div>
+
+                                    </div>
+                                </div>   
+            <?php
+                                                                         
+                        } // FIN WHILE
+                
+                    }
+                
+                } else {
                         echo '<div class="col-sm-12 mg-tp-80 text-center">
                                 <h4>No existen anuncios para esta categoría</h4>
                                </div>';
@@ -198,8 +266,7 @@
         <script>
              $(document).ready(function(){
                   
-                 
-                 //Cuando el combo de categorias cambie de valor
+                //Cuando el combo de categorias cambie de valor
                 $("#categoria").change(function(){
                     $("#categoria option:selected").each(function(){
                         //Guardamos la seleccion de la categoria

@@ -87,7 +87,7 @@
                                 foreach ($categoria[1] as $subCat)
                                 {
                                     echo "<ul class='list'>
-                                    <li><a href='categoria.php?id=" . $subCat[0] . "'>" .
+                                    <li><a href='categoria.php?idsubcat=" . $subCat[0] . "'>" .
                                         $subCat[1] . "</a></li></ul>";
                                 }
                                 echo "</section></li>";
