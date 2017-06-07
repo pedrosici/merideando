@@ -727,8 +727,8 @@ line-height: 36px;
 
 .listado-anuncios{
     padding-left: 15px;
-    border: solid 2px #d9d9d9;
-    border-bottom: none;
+    border: solid 1px #d9d9d9;
+    
     padding-top: 30px;
     padding-bottom: 10px;
     padding-left: 19px;
@@ -766,6 +766,10 @@ line-height: 36px;
 .listado-categoria{
     text-transform: uppercase;
 }
-.estrella{
+.fav{
     color: #999;
+}
+
+.fav:hover{
+    color:orangered;
 }

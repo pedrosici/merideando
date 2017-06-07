@@ -142,7 +142,7 @@ include('php/conexion.php');
 							<div class="single_welcome">
 								<p>La base de nuestro buscador está basado en anuncios publicados por los propios dueños de cada negocio o servicio e intentan facilitar al cliente la mayor información posible acerca del mismo.</p>
 							</div>
-                </div>
+                        </div>
                 </div>
             </div>
         </section>
@@ -151,7 +151,8 @@ include('php/conexion.php');
     <section class="fondo section-padding" id="nosotros">
         <div class="container">
             <div class="row">
-                <div class="section_title text-center">					<h2>¿Qué necesitas hoy?</h2>
+                <div class="section_title text-center">
+                    <h2>¿Qué necesitas hoy?</h2>
 				    <h4>Elige una de nuestras categorías</h4>
 				    <div class="icon_wrap"><i class="fa fa-search"></i></div>
 				</div>
@@ -186,59 +187,84 @@ include('php/conexion.php');
         
     <section class="section-padding">
         <div class="container">
-            <div class="section_title text-center mg-bt-40">						
-				<h2>Novedades</h2>
-				<h4>Conoce los anuncios más relevantes</h4>
-				<div class="icon_wrap"><i class="fa fa-search"></i></div>
-            </div>
-               
-                <?php
-                //Consulta para sacar ultimos anuncios publicados
-                $sql = "SELECT a.razon_soc,a.id_anuncio, a.direccion, a.imagen, a.categoria_id, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE id_anuncio = a.id_anuncio ORDER BY fecha DESC LIMIT 5";
-                $query = $con->prepare($sql);
-                $query->execute();
-                //Comprobamos si existen resultados
-                if ($query->rowCount() > 0){
-                  while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
-                   ?>   
-                    <div class="listado-anuncios">
-                        <div class="row">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <img class="img-responsive" src="images/anuncios/<?php echo $resultado['imagen']; ?>" alt="<?php echo $resultado['razon_soc']; ?>">
-                                    </div>
-                                    <div class="col-xs-9">
-                                        <h3 class="listado-titulo"><a href="anuncio.php?id='.$resultado['id_anuncio'].'"><?php echo $resultado['razon_soc']; ?></a></h3>
-                                        <p class="listado-categoria"><i class="fa <?php echo $resultado['icono']; ?>"></i> <?php echo $resultado['nombre_cat']; ?></p>
-                                        
+            <div class="row">
+                <div class="section_title text-center mg-bt-40">						
+                    <h2>Novedades</h2>
+                    <h4>Conoce los anuncios más relevantes</h4>
+                    <div class="icon_wrap"><i class="fa fa-search"></i></div>  
+                </div>
+
+                
+               <div class="col-md-12 mg-bt-40 text-center">   
+                  <!-- Nav tabs -->
+                 
+                    <a href="#recientes" aria-controls="home" role="tab" data-toggle="tab"><button class="btn btn-default btn-lg" role="presentation" class="active"><i class="fa fa-clock-o" aria-hidden="true"></i> Más Recientes</button></a>
+                    <a href="#valorados" aria-controls="profile" role="tab" data-toggle="tab"><button class="btn btn-default btn-lg" role="presentation"><i class="fa fa-star-o" aria-hidden="true"></i> Mejor Valorados</button></a>
+                    <a href="#comentados" aria-controls="messages" role="tab" data-toggle="tab"><button class="btn btn-default btn-lg" role="presentation"><i class="fa fa-comment-o" aria-hidden="true"></i> Más Comentados</button></a>
+                    
+                  
+
+                  <!-- Tab panes -->
+                 <div class="tab-content mg-tp-40">
+                    <div role="tabpanel" class="tab-pane fade in active" id="recientes">
+                         <?php
+                    //Consulta para sacar ultimos anuncios publicados
+                    $sql = "SELECT a.razon_soc,a.id_anuncio, a.direccion, a.imagen, a.categoria_id, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE id_anuncio = a.id_anuncio ORDER BY fecha DESC LIMIT 5";
+                    $query = $con->prepare($sql);
+                    $query->execute();
+                    //Comprobamos si existen resultados
+                    if ($query->rowCount() > 0){
+                      while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
+                       ?>   
+                        <div class="listado-anuncios">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <img class="img-responsive" src="images/anuncios/<?php echo $resultado['imagen']; ?>" alt="<?php echo $resultado['razon_soc']; ?>">
+                                        </div>
+                                        <div class="col-xs-9">
+                                            <h3 class="listado-titulo"><a href="anuncio.php?id='.$resultado['id_anuncio'].'"><?php echo $resultado['razon_soc']; ?></a></h3>
+                                            <p class="listado-categoria"><i class="fa <?php echo $resultado['icono']; ?>"></i> <?php echo $resultado['nombre_cat']; ?></p>
+
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-2 col-md-2 col-md-offset-0"><i class="fa fa-map-marker listado-ubicacion"></i> <?php echo $resultado['direccion']; ?></div>
-                            
-                            <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-3">
-                                <p>Posteado hace 5 días</p>
-                            </div>
-                            
-                            <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
-                                <div class="listado-favorito">
-                                    <a href="#" data-toggle="tooltip" data-placement="top" title="" class="estrella" data-original-title=">Guardar como favorito"><i class="fa fa-star fa-2x"></i></a>
-                                 </div>
-                            </div>
-                                
+
+                                <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-2 col-md-2 col-md-offset-0"><i class="fa fa-map-marker listado-ubicacion"></i> <?php echo $resultado['direccion']; ?></div>
+
+                                <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-3">
+                                    <p>Posteado hace 5 días</p>
+                                </div>
+
+                                <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
+                                    <div class="listado-favorito">
+                                        <a href="#" data-toggle="tooltip" data-placement="top" title="" class="fav" data-original-title=">Guardar como favorito"><i class="fa fa-heart fa-2x"></i></a>
+                                     </div>
+                                </div>
                             </div>
                         </div> 
-                   
-            
-                    <?php  
-                  } // FIN while
-                } //FIN if
-                    ?> 
-                    
+
+                        <?php  
+                      } // FIN while
+                    } //FIN if
+                        ?> 
+                     
+                    </div>
+                     
+                    <div role="tabpanel" class="tab-pane fade" id="valorados">...</div>
+                    <div role="tabpanel" class="tab-pane fade" id="comentados">...</div>
+                      
                 </div>
-            
+
+            </div>
+                
+                
+                
+
+                   
+                </div>
+            </div>
         </section>
         
      <!-- Incluimos el footer o pie de página -->       
