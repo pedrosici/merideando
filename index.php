@@ -125,28 +125,27 @@ include('php/conexion.php');
         </header>
         
         
-        <section class="section-padding" id="nosotros">
-            <div class="container">
-                <div class="row">
-                    <div class="section_title text-center">						
-							<h2>Bienvenido a Merideando.es</h2>
-							<h4>Busca y encuentra</h4>
-							<div class="icon_wrap"><i class="fa fa-search"></i></div>
-						</div>	
-                    <div class="col-md-5 col-md-offset-1 col-md-6">
-							<div class="single_welcome">
-								<p>Nuestra propuesta de valor reside en proporcionar un servicio de búsqueda y localización de establecimientos y servicios locales que sean útiles tanto al visitante como a la ciudadanía emeritense.</p>
-							</div>
-						</div><!--- END COL -->
-						<div class="col-md-5 col-md-6">
-							<div class="single_welcome">
-								<p>La base de nuestro buscador está basado en anuncios publicados por los propios dueños de cada negocio o servicio e intentan facilitar al cliente la mayor información posible acerca del mismo.</p>
-							</div>
-                        </div>
+    <section class="section-padding" id="nosotros">
+        <div class="container">
+            <div class="row">
+                <div class="section_title text-center">						
+				    <h2>Bienvenido a Merideando.es</h2>
+				    <h4>Busca y encuentra</h4>
+				    <div class="icon_wrap"><i class="fa fa-search"></i></div>
+				</div>	
+                <div class="col-md-5 col-md-offset-1 col-md-6">
+				    <div class="single_welcome">
+				        <p>Nuestra propuesta de valor reside en proporcionar un servicio de búsqueda y localización de establecimientos y servicios locales que sean útiles tanto al visitante como a la ciudadanía emeritense.</p>
+				    </div>
+				</div><!--- END COL -->
+				<div class="col-md-5 col-md-6">
+				    <div class="single_welcome">
+				        <p>La base de nuestro buscador está basado en anuncios publicados por los propios dueños de cada negocio o servicio e intentan facilitar al cliente la mayor información posible acerca del mismo.</p>
+				    </div>
                 </div>
             </div>
-        </section>
-        
+        </div>
+    </section>
         
     <section class="fondo section-padding" id="nosotros">
         <div class="container">
@@ -176,14 +175,11 @@ include('php/conexion.php');
                     </div>';
                 }
             }
-        
-        ?>       
+            ?>       
                 </div>
             </div>
         </div>
     </section>
-        
-        
         
     <section class="section-padding">
         <div class="container">
@@ -194,7 +190,6 @@ include('php/conexion.php');
                     <div class="icon_wrap"><i class="fa fa-search"></i></div>  
                 </div>
 
-                
                <div class="col-md-12 mg-bt-40 text-center">   
                   <!-- Nav tabs -->
                  
@@ -202,12 +197,11 @@ include('php/conexion.php');
                     <a href="#valorados" aria-controls="profile" role="tab" data-toggle="tab"><button class="btn btn-default btn-lg" role="presentation"><i class="fa fa-star-o" aria-hidden="true"></i> Mejor Valorados</button></a>
                     <a href="#comentados" aria-controls="messages" role="tab" data-toggle="tab"><button class="btn btn-default btn-lg" role="presentation"><i class="fa fa-comment-o" aria-hidden="true"></i> Más Comentados</button></a>
                     
-                  
-
                   <!-- Tab panes -->
                  <div class="tab-content mg-tp-40">
                     <div role="tabpanel" class="tab-pane fade in active" id="recientes">
-                         <?php
+                        
+                    <?php
                     //Consulta para sacar ultimos anuncios publicados
                     $sql = "SELECT a.razon_soc,a.id_anuncio, a.direccion, a.imagen, a.categoria_id, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE id_anuncio = a.id_anuncio ORDER BY fecha DESC LIMIT 5";
                     $query = $con->prepare($sql);
@@ -221,10 +215,10 @@ include('php/conexion.php');
                                 <div class="col-sm-12 col-md-6">
                                     <div class="row">
                                         <div class="col-xs-3">
-                                            <img class="img-responsive" src="images/anuncios/<?php echo $resultado['imagen']; ?>" alt="<?php echo $resultado['razon_soc']; ?>">
+                                            <img class="img-rounded" src="images/anuncios/<?php echo $resultado['imagen']; ?>" alt="<?php echo $resultado['razon_soc']; ?>" width="100px">
                                         </div>
                                         <div class="col-xs-9">
-                                            <h3 class="listado-titulo"><a href="anuncio.php?id='.$resultado['id_anuncio'].'"><?php echo $resultado['razon_soc']; ?></a></h3>
+                                            <h3 class="listado-titulo"><a href="anuncio.php?id=<?php echo $resultado['id_anuncio']; ?>"><?php echo $resultado['razon_soc']; ?></a></h3>
                                             <p class="listado-categoria"><i class="fa <?php echo $resultado['icono']; ?>"></i> <?php echo $resultado['nombre_cat']; ?></p>
 
                                         </div>
@@ -255,17 +249,11 @@ include('php/conexion.php');
                     <div role="tabpanel" class="tab-pane fade" id="valorados">...</div>
                     <div role="tabpanel" class="tab-pane fade" id="comentados">...</div>
                       
-                </div>
-
-            </div>
-                
-                
-                
-
-                   
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
         
      <!-- Incluimos el footer o pie de página -->       
       <?php include "php/footer.php"; ?>

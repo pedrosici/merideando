@@ -369,7 +369,7 @@ line-height: 36px;
     list-style: none;
 }
 .social li {
-	background: none repeat scroll 0 0 #B5B5B5;
+	
 	border: 2px solid #B5B5B5;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
@@ -405,9 +405,22 @@ line-height: 36px;
 }
 .social li a i {
 	font-size: 16px;
-	margin: 0 0 0 5px;
-	color: #EDEFF1 !important;
+	margin: 0 0 0 0px;
+	color: #EDEFF1;
 }
+
+
+.social li a i.fa.fa-instagram{
+    color: #db3171;
+} 
+.social li a i.fa.fa-facebook{
+    color: #3A5795;
+} 
+.social li a i.fa.fa-twitter{
+    color: #5EA9DD;
+} 
+
+
 .footer-bottom {
 	background: #121212;
 	padding-top: 10px;
@@ -772,4 +785,19 @@ line-height: 36px;
 
 .fav:hover{
     color:orangered;
+}
+
+#lista-anuncios {
+ float:left;
+ left:50%;
+ list-style-type:none;
+ margin:0 auto;
+ padding:0;
+ position:relative;
+}
+
+#lista-anuncios li {
+ float:left;
+ position:relative;
+ right:50%;
 }

@@ -12,6 +12,7 @@ if(isset($_SESSION["user_id"]) || $_SESSION["user_id"] != null){ $sesion = true;
 
 $id_anuncio = $_GET['id'];
 
+
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +53,7 @@ $id_anuncio = $_GET['id'];
                     $lng = $resultado['longitud']; ?>
             
             <div class="col-md-4 mg-tp-40 mg-bt-40 text-center">
-                    <img src="images/<?php echo $resultado['imagen']; ?>" class="img-rounded" height="80">
+                    <img src="images/anuncios/<?php echo $resultado['imagen']; ?>" class="img-rounded" height="80">
             </div>
              <div class="col-md-8 mg-tp-40 mg-bt-40 text-center ">						
                  <h2><?php echo $resultado['razon_soc']; ?></h2>
@@ -118,11 +119,12 @@ $id_anuncio = $_GET['id'];
             <div class="mg-bt-40 text-center">
                 <h3>Redes sociales</h3>
             </div>
+            
                   <?php   
                     if (($resultado['facebook'] == "") && ($resultado['twitter'] == "") && ($resultado['instagram'] == "")){
                         echo '<p>El anunciante no dispone de redes sociales.</p>';
                     } else {
-                        echo '<ul class="social" style="list-style:none;">';
+                        echo '<ul class="social" id="lista-redes">';
                         if ($resultado['facebook'] != NULL || $resultado['facebook'] != "" ){
                             echo '<li><a href="https://es-la.facebook.com/'.$resultado['facebook'].'"><i class="fa fa-facebook"></i></a></li>';
                         }
@@ -134,7 +136,7 @@ $id_anuncio = $_GET['id'];
                         }
                         echo '</ul>';
                     }  ?>
-                    
+                 
                 
         </div>
 
@@ -146,13 +148,25 @@ $id_anuncio = $_GET['id'];
         </div>  
    
         <div class="col-sm-12 mg-bt-40">
-            <div class="mg-bt-40 text-center">
-                <h3>Opiniones del anuncio</h3>
+            <div class="mg-bt-40 text-center">    
+        <?php
+            $sql = "SELECT COUNT(id_comentario) as num_comentarios FROM comentarios WHERE anuncio_id = ?";
+            $query = $con->prepare($sql);
+            $query->execute(array($id_anuncio)); 
+            $resultado = $query->fetch(PDO::FETCH_ASSOC);
+            //Comprobamos si existen resultados
+            if ($query->rowCount() > 0){
+                echo '<h3>Opiniones del anuncio ('.$resultado['num_comentarios'].' opiniones)</h3>';
+            }
+            
+        ?>
+   
             </div>
+            
             <div id="listaComentarios">
                 
         <?php
-            $sql = "SELECT comentario, nick, fecha_comentario FROM comentarios WHERE anuncio_id = ?";
+            $sql = "SELECT u.nombre, c.* FROM comentarios c INNER JOIN usuarios u ON c.usuario_id = u.id WHERE c.anuncio_id = ?";
             $query = $con->prepare($sql);
             $query->execute(array($id_anuncio));
                     
@@ -162,9 +176,13 @@ $id_anuncio = $_GET['id'];
                     echo '<div class="col-md-6">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <i class="fa fa-user-circle-o" aria-hidden="true"></i> <strong>'.$resultado['nick'].'</strong>  <span style="float:right"; class="text-muted"><i class="fa fa-clock-o" aria-hidden="true"></i> '.$resultado['fecha_comentario'].'</span>
+                                    <i class="fa fa-user-circle-o" aria-hidden="true"></i> <strong>'.$resultado['nombre'].'</strong>  <span style="float:right"; class="text-muted"><i class="fa fa-clock-o" aria-hidden="true"></i> '.$resultado['fecha_comentario'].'</span>
                                 </div>
-                                <div class="panel-body">'.$resultado['comentario'].'</div>
+                                <div class="panel-body">
+                                    <h3 class="panel-title">'.$resultado['titulo'].'</h3>
+                                    <p>'.$resultado['comentario'].'</p>
+                                    <p style="float:right";><i class="fa fa-star" aria-hidden="true"></i> '.$resultado['valoracion'].'/5</p>
+                                </div>
                             </div>
                           </div>';
                 }
@@ -173,51 +191,80 @@ $id_anuncio = $_GET['id'];
             
             </div>
         </div><!-- /col-sm-5 -->
-        <?php
-            if ($sesion){
-                echo '<div class="col-sm-12 text-center mg-tp-40 mg-bt-40">
-                <form role="form" name="comentario" id="comentarios_ajax" method="POST" class="col-md-6 col-md-offset-3 text-center">
-                    <h3>Escribe tu opinión</h3>
-                    <p>Tu opinión es importante, intenta ser justo y sincero con tu aportación.</p>
-                 <div class="form-group col-sm-6">
-                    <label for="name">Tu nombre</label>
-                     <input id="autor_id" name="name" type="text" class="form-control" placeholder="Autor del comentario" required>
-                  </div>
-                  <div class="form-group col-sm-6">
-                    <label for="email">E-mail</label>
-                     <input id="email" name="email" type="email" class="form-control" placeholder="Correo electrónico" required>
-                  </div>
-                  <div class="form-group col-sm-12">
-                        <label for="message">Mensaje</label>
-                        <textarea id="comentario" name="comentario" class="form-control" placeholder="Escribe tu comentario acerca del anuncio" required></textarea>
-                  </div>
-                  <div class="form-group col-sm-12 text-center">
-                        <label for="valoracion">Valoración 
-                            <ul class="stars stars-24">
-                                <li>1</li>
-                                <li>2</li>
-                                <li>3</li>
-                                <li>4</li>
-                                <li>5</li>
-                            </ul>
-                        </label> 
-                  </div>
-                  <input type="hidden" id="id_anuncio" value="'.$id_anuncio.'">
-                  <div class="form-group col-sm-12">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Publicar Opinión</button>
-                  </div>
-                    <div class="col-sm-12" id="resultado"></div>
-              </form>
-            </div>';
-            }
-            else {
-                echo '<div class="col-sm-12 mg-tp-40 mg-bt-40 text-center">
-                        <h4>Solo pueden opinar los usuarios registrados. Haz <a href="login.php">Login o <a href="registro.php">Regístrate</a></h4>
-                      </div>';
-            }
+            
+            
         
-  
-         
+            
+        <?php
+            if ($sesion){ ?>
+                <div class="col-sm-12 text-center mg-tp-40 mg-bt-40">
+                    <div class="panel panel-default">
+                         <div class="panel-heading">
+                             <h3 class="panel-title">Escribe tu opinión sobre este negocio</h3>
+                         </div>
+                         <div class="panel-body">
+                            <form role="form" id="comentarios_ajax" method="POST" class="col-md-12 text-center">
+                                
+                             <div class="form-group text-center col-sm-8 col-sm-offset-2">
+                                <label for="name">Título de tu opinión</label>
+                                 <input id="titulo" name="titulo" type="text" class="form-control" placeholder="Escribe un título" max-length="50" required>
+                              </div>
+                              
+                              <div class="form-group col-sm-8 col-sm-offset-2">
+                                    <label for="message">Tu opinión</label>
+                                    <textarea id="comentario" name="comentario" class="form-control" rows="3" maxlength="300" placeholder="Escribe tu comentario acerca del anuncio" required></textarea>
+                              </div>
+                                
+                              <div class="form-group col-sm-2 col-sm-offset-5 text-center">
+                                    <label for="valoracion">Valoración (0 a 5)</label>  
+<!--
+                                        <ul class="stars stars-24">
+                                            <li>1</li>
+                                            <li>2</li>
+                                            <li>3</li>
+                                            <li>4</li>
+                                            <li>5</li>
+                                        </ul>
+-->
+                                   <select class="form-control" id="valoracion">
+                                       <option value="0">0 - Horrible</option>
+                                       <option value="1">1 - Insuficiente</option>
+                                       <option value="2">2 - No me convence</option>
+                                       <option value="3">3 - Aceptable</option>
+                                       <option value="4">4 - Notable</option>
+                                       <option value="5">5 - Sobresaliente</option>
+                                   </select>     
+                                   
+                              </div>
+                              <div class="form-group col-sm-10 col-sm-offset-1 text-center">
+                                <input type="checkbox" name="legal" id="legal" value="1" />
+                                  <small>Certifico que esta opinión está basada en mi propia experiencia, que refleja mi opinión sincera sobre este anuncio y que además no me ha ofrecido incentivo o pago alguno por escribirla.</small>
+                              </div>
+                               <!-- Guardamos el id del anuncio sobre el que se hace el comentario y el id del usuario que realiza el comentario --> 
+                              <input type="hidden" id="id_anuncio" value="<?php echo $id_anuncio; ?>" />
+                              <input type="hidden" id="autor_id" value="<?php echo $_SESSION["user_id"]; ?>" />
+                                
+                              <div class="form-group col-sm-12 mg-tp-40">
+                                <button type="submit" name="submit" value="submit" class="btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Publicar Opinión</button>
+                              </div>
+                            </form>
+                                <!-- Mensaje de aviso tras escribir el comentario -->
+                              <div class="col-sm-12" id="resultado"></div>
+                    </div>
+                </div>
+            </div>
+       <?php    
+            }
+            else { ?>
+                <div class="col-sm-12 mg-tp-40 mg-bt-40 text-center">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h4><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Solo pueden opinar los usuarios registrados. Haz <a href="login.php">Login</a> o <a href="registro.php">Regístrate</a></h4>
+                        </div>
+                    </div>
+                </div>
+
+        <?php  }
    
                 } //FIN IF
              } //FIN WHILE
@@ -231,6 +278,8 @@ $id_anuncio = $_GET['id'];
     <!-- Incluimos el footer o pie de página -->       
       <?php include "php/footer.php"; ?>
         
+     <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+     <script type="text/javascript" src="js/main.js"></script>   
      <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC516yYGBDQeQIHcm7W1KhWJ_NDL8iUT8s&callback=initMap">
     </script>  
@@ -249,34 +298,34 @@ $id_anuncio = $_GET['id'];
 	      }
         </script>
         
-        <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
-        <script type="text/javascript" src="js/main.js"></script>
+        
         
         <script>
             $(document).ready(function() {
             /*Obtenemos el evento Submit, este ejecuta cuando el usuario hace click al boton comentar
             #comentario_ajax es el id del formulario de donde tratamos de enviar el comentario, si tu formulario tiene otro id tenes que cambiar este acontinucion*/
-            $("#comentarios_ajax").submit(function() {
-                var autor_id = $("#autor_id").val();
-                var comentario = $("#comentario").val();
-                var email = $("#email").val();
-                var id_anuncio = $("#id_anuncio").val();
-                
-                var cadena = '&id_anuncio='+id_anuncio+'&autor_id='+autor_id+'&email='+email+'&comentario='+encodeURIComponent(comentario);
-                
-                $.ajax({ type: "POST", 
-                         url: "php/comentarios_anuncio.php", 
-                         data: cadena,
-                         cache: false, 
-                         success: function(datos){ 
-                                  if (datos) {  
-                                     $("#resultado").addClass('alert alert-success').html('Comentario publicado con éxito');
-                                     $("#listaComentarios").append(datos); 
-                                     }
-                                  }
+                $("#comentarios_ajax").submit(function() {
+                    var id_usuario = $("#autor_id").val();
+                    var id_anuncio = $("#id_anuncio").val();
+                    var titulo = $("#titulo").val();
+                    var valoracion = $("#valoracion option:selected").val();
+                    var comentario = $("#comentario").val();
+                    
+                    var cadena = '&id_anuncio='+id_anuncio+'&autor_id='+id_usuario+'&titulo='+titulo+'&comentario='+encodeURIComponent(comentario)+'&valoracion='+valoracion;
+
+                    $.ajax({ type: "POST", 
+                             url: "php/comentarios_anuncio.php", 
+                             data: cadena,
+                             cache: false, 
+                             success: function(datos){ 
+                                      if (datos) {  
+                                         $("#resultado").addClass('alert alert-success').html('Comentario publicado con éxito');
+                                         $("#listaComentarios").append(datos); 
+                                         }
+                                      }
+                    });
+                    return false;
                 });
-                return false;
-            });
             });
         </script>
         <script src="js/bootstrap.min.js"></script>
