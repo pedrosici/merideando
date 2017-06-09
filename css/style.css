@@ -787,6 +787,14 @@ line-height: 36px;
     color:orangered;
 }
 
+.fav-active{
+    color:orangered;
+}
+
+.fav-active:hover{
+    color:#999;
+}
+
 #lista-anuncios {
  float:left;
  left:50%;

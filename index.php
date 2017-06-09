@@ -1,9 +1,15 @@
 <?php
 
 //Evitamos que nos salgan los NOTICES de PHP
-
+error_reporting(E_ALL ^ E_NOTICE);
 //Iniciamos variables SESSION
 session_start();
+
+if(isset($_SESSION["user_id"]) || $_SESSION["user_id"] != null){
+    $nombre = $_SESSION['nombre'];
+    $id = $_SESSION['user_id'];
+}
+
 //Incluimos archivo de conexion a la BD
 include('php/conexion.php');
 ?>
@@ -232,8 +238,20 @@ include('php/conexion.php');
                                 </div>
 
                                 <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
-                                    <div class="listado-favorito">
-                                        <a href="#" data-toggle="tooltip" data-placement="top" title="" class="fav" data-original-title=">Guardar como favorito"><i class="fa fa-heart fa-2x"></i></a>
+                                     <div class="listado-favorito">
+                                <?php
+                                    $sql_fav = "SELECT * FROM favoritos WHERE usuario_id = :usuario_id AND anuncio_id = :anuncio_id";
+                                    $query_fav = $con->prepare($sql_fav);
+                                    $query_fav->execute(array(':usuario_id'=>$id, ':anuncio_id'=> $resultado['id_anuncio']));
+                                    $num_rows = $query_fav->fetchColumn();
+                          
+                                    if ($num_rows > 0){
+                                        echo '<a href="#" data-toggle="tooltip" data-placement="top" title="" class="fav-active" data-original-title=">Guardar como favorito"><i class="fa fa-heart fa-2x"></i></a>';
+                                    } else {
+                                        echo '<a href="#" data-toggle="tooltip" data-placement="top" title="" class="fav" data-original-title=">Guardar como favorito"><i class="fa fa-heart fa-2x" aria-hidden="true"></i></a>';
+                                    }
+                                ?>
+                                        
                                      </div>
                                 </div>
                             </div>
@@ -247,7 +265,61 @@ include('php/conexion.php');
                     </div>
                      
                     <div role="tabpanel" class="tab-pane fade" id="valorados">...</div>
-                    <div role="tabpanel" class="tab-pane fade" id="comentados">...</div>
+                    <div role="tabpanel" class="tab-pane fade" id="comentados">
+                    <?php
+                        //Consulta para sacar ultimos anuncios publicados
+                        $sql = "SELECT COUNT(com.anuncio_id) as num_comentarios , a.razon_soc, a.id_anuncio, a.direccion, a.imagen, a.categoria_id, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c ON a.categoria_id = c.id_categoria INNER JOIN comentarios com ON a.id_anuncio = com.anuncio_id GROUP BY com.anuncio_id ORDER BY num_comentarios DESC LIMIT 5";
+                        $query = $con->prepare($sql);
+                        $query->execute();
+                        //Comprobamos si existen resultados
+                        if ($query->rowCount() > 0){
+                          while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
+                    ?>   
+                            <div class="listado-anuncios">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <img class="img-rounded" src="images/anuncios/<?php echo $resultado['imagen']; ?>" alt="<?php echo $resultado['razon_soc']; ?>" width="100px">
+                                        </div>
+                                        <div class="col-xs-9">
+                                            <h3 class="listado-titulo"><a href="anuncio.php?id=<?php echo $resultado['id_anuncio']; ?>"><?php echo $resultado['razon_soc']; ?></a></h3>
+                                            <p class="listado-categoria"><i class="fa <?php echo $resultado['icono']; ?>"></i> <?php echo $resultado['nombre_cat']; ?></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-2 col-md-2 col-md-offset-0"><i class="fa fa-map-marker listado-ubicacion"></i> <?php echo $resultado['direccion']; ?></div>
+
+                                <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-3">
+                                    <p><i class="fa fa-comments-o" aria-hidden="true"></i> <?php echo $resultado['num_comentarios']; ?> opiniones</p>
+                                </div>
+
+                                <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
+                                     <div class="listado-favorito">
+                                <?php
+                                    $sql_fav = "SELECT * FROM favoritos WHERE usuario_id = :usuario_id AND anuncio_id = :anuncio_id";
+                                    $query_fav = $con->prepare($sql_fav);
+                                    $query_fav->execute(array(':usuario_id'=>$id, ':anuncio_id'=> $resultado['id_anuncio']));
+                                    $num_rows = $query_fav->fetchColumn();
+                          
+                                    if ($num_rows > 0){
+                                        echo '<a href="#" data-toggle="tooltip" data-placement="top" title="" class="fav-active" data-original-title=">Guardar como favorito"><i class="fa fa-heart fa-2x"></i></a>';
+                                    } else {
+                                        echo '<a href="#" data-toggle="tooltip" data-placement="top" title="" class="fav" data-original-title=">Guardar como favorito"><i class="fa fa-heart fa-2x" aria-hidden="true"></i></a>';
+                                    }
+                                ?>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                           <?php  
+                      } // FIN while
+                    } //FIN if
+                        ?> 
+                        
+                    </div>
                       
                     </div>
                 </div>
@@ -255,16 +327,16 @@ include('php/conexion.php');
         </div>
     </section>
         
-     <!-- Incluimos el footer o pie de página -->       
-      <?php include "php/footer.php"; ?>
-
+    <!-- Incluimos el footer o pie de página -->       
+    <?php include "php/footer.php"; ?>
     
     <script type="text/javascript" src="js/main.js"></script>
     
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <script src="js/bootstrap.min.js"></script>
-     <script>   
+        
+    <script>   
          $(document).ready(function(){
 
              $('#buscador').autocomplete({
@@ -282,8 +354,9 @@ include('php/conexion.php');
              })
 
             });  
-            </script>
-            <script src="js/jquery.vide.min.js"></script>
+    </script>
+        
+    <script src="js/jquery.vide.min.js"></script>
         
     </body>
 </html>

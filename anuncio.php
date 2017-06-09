@@ -237,7 +237,7 @@ $id_anuncio = $_GET['id'];
                                    
                               </div>
                               <div class="form-group col-sm-10 col-sm-offset-1 text-center">
-                                <input type="checkbox" name="legal" id="legal" value="1" />
+                                <input type="checkbox" name="legal" id="legal" title="Debe aceptar las condiciones" required />
                                   <small>Certifico que esta opinión está basada en mi propia experiencia, que refleja mi opinión sincera sobre este anuncio y que además no me ha ofrecido incentivo o pago alguno por escribirla.</small>
                               </div>
                                <!-- Guardamos el id del anuncio sobre el que se hace el comentario y el id del usuario que realiza el comentario --> 
@@ -298,8 +298,6 @@ $id_anuncio = $_GET['id'];
 	      }
         </script>
         
-        
-        
         <script>
             $(document).ready(function() {
             /*Obtenemos el evento Submit, este ejecuta cuando el usuario hace click al boton comentar
@@ -328,7 +326,10 @@ $id_anuncio = $_GET['id'];
                 });
             });
         </script>
+        
+        
         <script src="js/bootstrap.min.js"></script>
        <script src="js/jquery.vide.min.js"></script>
+        
     </body>
   </html>

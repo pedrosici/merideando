@@ -28,7 +28,7 @@ require_once('conexion.php');
             $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
             
             date_default_timezone_set('UTC');
-            echo '<div class="col-md-6">
+            echo '<div class="col-md-6 in fade">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <i class="fa fa-user-circle-o" aria-hidden="true"></i> <strong>'.$resultado['nombre'].'</strong>  <span style="float:right"; class="text-muted"><i class="fa fa-clock-o" aria-hidden="true"></i> '.$resultado['fecha_comentario'].'</span>
