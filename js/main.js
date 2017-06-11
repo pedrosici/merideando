@@ -65,17 +65,18 @@ function editarAnuncio(id){
 
             $('#id_anuncio').val(id);
             $('#razon_soc').val(datos[0]);
-            $('#identidad').val(datos[1]);
+            $('#nif').val(datos[1]);
             $('#direc').val(datos[2]);
-            $('#telef').val(datos[3]);
+            $('#phone').val(datos[3]);
+            console.log($('#phone').val(datos[3]));
             $('#email').val(datos[4]);
-            $('#descripcion').val(datos[5]);
+            $('#descrip').val(datos[5]);
             $('#url').val(datos[6]);
             $('#id_anuncio').val(datos[7]);
             $('#twit').val(datos[8]);
             $('#insta').val(datos[9]);
             $('#fb').val(datos[10]);
-            $('#img').attr("src", 'images/' + datos[11]);
+            $('#img').attr("src", 'images/anuncios/' + datos[11]);
            
             //Seleccionamos por defecto la categoría del anuncio que deseamos editar
             $('#id_cat option[value=' + datos[12] + ']').attr('selected', true);

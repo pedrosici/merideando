@@ -16,9 +16,6 @@ else{
 }
 
 
-
-
-
 ?>
 <!DOCTYPE html>
  <html lang="en">
@@ -59,7 +56,7 @@ else{
                                     <li role="presentation"><a href="#perfil" role="tab" data-toggle="tab"><i class="fa fa-user" aria-hidden="true"></i> Mi perfil</a></li>
                                     <li role="presentation"><a href="#opiniones" role="tab" data-toggle="tab"><i class="fa fa-comments-o" aria-hidden="true"></i> Mis Opiniones</a></li>
                                     <li role="presentation"><a href="#favoritos" role="tab" data-toggle="tab"><i class="fa fa-star" aria-hidden="true"></i> Mis Favoritos</a></li> 
-                                    <li role="presentation"><a href="#ayuda" role="tab" data-toggle="tab"><i class="fa fa-info-circle" aria-hidden="true"></i> Ayuda</a></li>  
+                                    
                                 </ul>
                                 
                                 <div class="tab-content">
@@ -127,9 +124,12 @@ else{
                                             </div>
                                             <div class="panel-body">
                                               <div class="row">
-                                                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="images/avatar_unknown.png" class="img-circle img-responsive"> </div>
+                                                <div class="col-md-2 col-lg-2 text-center" align="center"> 
+                                                    <img alt="User Pic" src="images/avatar_unknown.png" class="img-circle img-responsive"> 
+                                                    <span>Tu avatar</span>
+                                                </div>
 
-                                                <div class=" col-md-9 col-lg-9 "> 
+                                                <div class=" col-md-10 col-lg-10 "> 
                                                   <table class="table table-user-information">
                                                     <tbody>
                                                       <tr>
@@ -140,10 +140,7 @@ else{
                                                         <td>Email</td>
                                                         <td><a href="<?php echo $resultado['email']; ?>"><?php echo $resultado['email']; ?></a></td>
                                                        </tr>
-                                                       <tr>
-                                                        <td>Contraseña:</td>
-                                                           <td><a href="#">Cambiar contraseña</a></td>
-                                                        </tr>
+                                                       
                                                       <tr>
                                                         <td>Fecha Creación Cuenta:</td>
                                                         <td><?php echo $resultado['fecha_creacion']; ?></td>
@@ -151,7 +148,7 @@ else{
                                                         
                                                       <tr>
                                                         <td>Anuncios Publicados:</td>
-                                                        <td><?php echo $resultado['num_anuncios']; ?> anuncios creados</td>
+                                                        <td><a href="#anuncios" id="tabs" role="tab" data-toggle="tab"><?php echo $resultado['num_anuncios']; ?> anuncios creados</a></td>
                                                       </tr>
                                                       <tr>
                                                         <td>Opiniones Publicadas:</td>
@@ -171,33 +168,97 @@ else{
                                             </div>
                                                  <div class="panel-footer">
                                                         <span>Perfil de Usuario de Merideando</span>
-                                                        <span class="pull-right">
-                                                            <a href="edit.html" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i> Editar Mi Perfil</a>
-                                                            
-                                                        </span>
+                                                        
                                                     </div>
 
                                           </div>
                                     </div>
-                                <?php } 
+                            <?php } 
                                     
-                                $sql = "SELECT comentarios.id_comentario, comentarios.fecha_comentario, comentarios.anuncio_id, comentarios.comentario
-                                FROM comentarios, usuarios
-                                WHERE comentarios.usuario_id = usuarios.id AND usuarios.id = ?";
+                            $sql = "SELECT com.*, a.razon_soc, a.id_anuncio
+                                    FROM comentarios com INNER JOIN usuarios u ON com.usuario_id = u.id INNER JOIN anuncios a ON com.anuncio_id = a.id_anuncio
+                                    WHERE u.id = ?";
+                            $query = $con->prepare($sql);
+                            $query->execute(array($id));
+                            ?>
                                     
-                                ?>
                             <div role="tabpanel" class="tab-pane fade in" id="opiniones">
-                                <div class='col-md-12'>
-                                              
+                                <div class="col-md-12 mg-tp-40">        
+                                    <table class="table table-striped table-bordered table-list text-center">
+                            <?php
+                            if ($query->rowCount() > 0){
+                                
+                            ?>
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" width="150">Anuncio</th>
+                                        <th class="text-center" width="50">Título del comentario</th>
+                                        <th class="text-center" width="50">Tu valoración</th>
+                                        <th class="text-center" width="25">Fecha</th>
+                                        <th class="text-center" width="50">Enlace</th>
+                                    </tr>
+                                </thead>
+                           
+                             <?php
+                                while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ ?>
+                                   <tr>
+                                        <td><?php echo $resultado['razon_soc']; ?></td>
+                                        <td><?php echo $resultado['titulo']; ?></td>
+                                        <td><?php echo $resultado['valoracion']; ?></td>
+                                        <td><?php echo $resultado['fecha_comentario']; ?></td>
+                                        <td><a href="anuncio.php?id=<?php echo $resultado['id_anuncio']; ?>" target="_blank"><i class="fa fa-link fa-2x" aria-hidden="true"></i></a></td>
+                                    </tr>
+                        <?php  }
+                            }
+                            ?>
+                                    </table>
                                 </div>
+                            </div>   
+                             <?php 
+                                $sql = "SELECT a.id_anuncio, a.razon_soc, a.imagen, a.likes
+                                        FROM favoritos f INNER JOIN anuncios a ON f.anuncio_id = a.id_anuncio
+                                        WHERE f.usuario_id = ?";
+                                $query = $con->prepare($sql);
+                                $query->execute(array($id));
+                            ?>
+                                    
                             <div role="tabpanel" class="tab-pane fade in" id="favoritos">
+                                 <div class="col-md-12 mg-tp-40">        
+                                    <table class="table table-striped table-bordered table-list text-center">  
+                                    <?php
                                         
+                                    if ($query->rowCount() > 0){ ?>
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" width="150">Anuncio</th>
+                                            <th class="text-center" width="50">Imagen</th>
+                                            <th class="text-center" width="50">Categoría</th>
+                                            <th class="text-center" width="50">Valoración</th>
+                                            <th class="text-center" width="50">Enlace</th>
+                                            <th class="text-center" width="50">Acción</th>
+                                        </tr>
+                                    </thead> 
+                                 <?php   
+                                        while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ ?>
+                                            <tr>
+                                                <td><?php echo $resultado['razon_soc']; ?></td>
+                                                <td><?php echo $resultado['imagen']; ?></td>
+                                                <td></td>
+                                                <td><?php echo $resultado['likes']; ?></td>
+                                                <td><a href="anuncio.php?id=<?php echo $resultado['id_anuncio']; ?>" target="_blank"><i class="fa fa-link fa-2x" aria-hidden="true"></i></a></td>
+                                                <td>Quitar favorito</td>
+                                            </tr>
+                                   <?php }
+                                      }
+                                    ?>
+                                     </table>
+                                </div>
                             </div>
                         </div> <!-- FIN TAB CONTENT -->
                     </div>   
                 </div>
             </div>
-        </div>
+       
    <!-- MODAL PARA CREAR ANUNCIOS -->     
 
         <div class="modal fade" data-backdrop="false" id="crear-anuncio" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
@@ -220,7 +281,7 @@ else{
                                     </div>
                                     <div class="col-md-6">
                                         <label for="telefono">Teléfono*</label>
-                                        <input type="tel" class="form-control" name="telefono" id="telef" pattern="[0-9]{9}" title="Introduce sólo números y máximo 9" placeholder="Teléfono de contacto" required>
+                                        <input type="text" class="form-control" name="telefono" id="phone" pattern="[0-9]{9}" title="Introduce sólo números y máximo 9" placeholder="Teléfono de contacto" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -351,11 +412,11 @@ else{
                                 <div class="form-group row">
                                     <div class="col-md-6">
                                         <label for="cif">NIF*</label>
-                                        <input type="text" class="form-control col-md-6" name="cif" id="identidad" placeholder="Introduce un NIF" pattern="^(([A-Z])|\d)?\d{8}(\d|[A-Z])?$" required />
+                                        <input type="text" class="form-control col-md-6" name="cif" id="nif" placeholder="Introduce un NIF"   />
                                     </div>
                                     <div class="col-md-6">
                                         <label for="telefono">Teléfono*</label>
-                                        <input type="tel" class="form-control" name="telefono" id="telef" pattern="[0-9]{9}" placeholder="Teléfono de contacto" required>
+                                        <input type="text" class="form-control" name="telefono" id="phone" pattern="[0-9]{9}" placeholder="Teléfono de contacto" required />
                                     </div>
                                 </div>
                             <div class="form-group row">
@@ -381,7 +442,7 @@ else{
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <label for="descripcion">Descripción* (Máximo 500 caracteres)</label>
-                                    <textarea class="form-control" rows="5" name="descripcion" placeholder="Describe tu negocio" id="descripcion" required></textarea>
+                                    <textarea class="form-control" rows="5" name="descripcion" placeholder="Describe tu negocio" id="descrip" required></textarea>
                                 </div>
                                 <!-- PASAMOS OCULTO EL ID DEL USUARIO QUE CREA EL ANUNCIO -->
                                 <input type="hidden" name="id_usuario" value="<?php echo '.$id.'?>">

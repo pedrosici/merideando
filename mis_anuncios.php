@@ -15,7 +15,7 @@
             
           $enlace = '<a href=\"anuncio.php?id='.$resultado['id_anuncio'].'\" target=\"_blank\" title=\"Ver Anuncio\"><i class=\"fa fa-link fa-2x\" aria-hidden=\"true\"></i></a>';
             
-          $editar = '<a href=\"#editar-anuncio\" title=\"Editar\" data-toggle=\"modal\"  class=\"btn btn-primary\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i> Editar</a>';
+          $editar = '<a href=\"#editar-anuncio\" onclick=\"editarAnuncio('.$resultado['id_anuncio'].')\" title=\"Editar\" data-toggle=\"modal\"  class=\"btn btn-primary\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i> Editar</a>';
             
 		  $eliminar = '<a href=\"#eliminar-anuncio\" onclick=\"setIdAnuncio('.$resultado['id_anuncio'].')\" data-toggle=\"modal\" title=\"Eliminar\" class=\"btn btn-danger\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i> Borrar</a>';
                 
