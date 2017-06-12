@@ -2,10 +2,10 @@
                 <div class="footer" id="footer">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6 mg-tp-40">
-                            <img class="img-responsive" src="images/logo1.png">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 mg-tp-40 text-left">
+                            <img class="img-responsive" src="images/logo-merideando.png">
                         </div>
-                        <div class="col-lg-2  col-md-2 col-sm-3 hidden-xs">
+                        <div class="col-lg-3 col-md-3 col-sm-3 hidden-xs">
                             <h3> Merideando </h3>
                             <ul>
                                 <li> <a href="index.php"> Inicio </a> </li>
@@ -15,7 +15,7 @@
                                 
                             </ul>
                         </div>
-                        <div class="col-lg-2  col-md-2 col-sm-3 hidden-xs">
+                        <div class="col-lg-3  col-md-3 col-sm-3 hidden-xs">
                             <h3> Proyecto </h3>
                             <ul>
                                 <li> <a href="#"> Sobre nosotros </a> </li>

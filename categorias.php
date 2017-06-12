@@ -29,6 +29,25 @@
     <body>
         <?php include "php/navbar.php"; ?>
         
+    <header>
+        <div id="bg-categorias">
+            <div class="slider_overlay">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12">
+
+                                <div class="slider_text text-center">
+                                    <h2 class="titulo">Categorías de anuncios</h2>
+                                     <p>Encuentra lo que buscas según tus necesidades</p>
+                                     <!---<a class="btn-light-bg " href="#">Purchase Now</a> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
         <section class="categorias">
             <div class="container">
                 <div class="row">
@@ -73,7 +92,7 @@
                         {
  
                             if( !empty( $categoria[0] ) ) {
-                             echo "<li class='col-lg-3 col-md-3 col-sm-6 col-xs-12'>";
+                             echo "<li class='col-lg-4 col-md-4 col-sm-6 col-xs-12'>";
                                  echo "<section class='lista-subcategorias'>
                                         <div><i class='fa ".$categoria[3]."'></i>
                                         <a href='categoria.php?id=".$categoria[2]."'><span class='lista-categoria-titulo'>".$categoria[0]."</span></a>

@@ -9,12 +9,12 @@
     if (isset($_GET['id'])){
          $id_cat = $_GET['id'];
          //Seleccionamos los datos referentes a la categoría elegida 
-        $sql = "SELECT * FROM categorias WHERE id_categoria='{$_GET['id']}'";
+        $sql = "SELECT * FROM categorias WHERE id_categoria= ? ";
     }
     else if (isset($_GET['idsubcat'])){
         $id_subcat = $_GET['idsubcat'];
          //Seleccionamos los datos referentes a la categoría elegida 
-        $sql = "SELECT s.* , c.icono FROM subcategorias s, categorias c WHERE s.categoria_id = c.id_categoria AND s.id_subcategoria ='{$_GET['idsubcat']}'";
+        $sql = "SELECT s.* , c.icono FROM subcategorias s, categorias c WHERE s.categoria_id = c.id_categoria AND s.id_subcategoria = ?";
     }
         
     
@@ -44,46 +44,14 @@
         
         <section class="categorias">
             <div class="container">
-                <div class="row"> 
-                    
-             <?php 
-                if (isset($id_cat)){
-                    //Comprobamos si existen resultados
-                    $query = $con->prepare($sql);
-                    $query->execute(array());
-                    //Comprobamos si existen resultados
-                    if ($query->rowCount() > 0){
-                        while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
-                        echo '<div class="section_title text-center mg-tp-80 mg-bt-40">				     <h2>'.$resultado['nombre_cat'].'</h2>
-							     <h4>Encuentra los anuncios más relevantes en esta categoría</h4>
-							     <div class="icon_wrap"><i class="fa '.$resultado['icono'].'"></i></div>
-				                </div>';
-                        }
-                    }
-                } else if (isset($id_subcat)){
-                    //Comprobamos si existen resultados
-                    $query = $con->prepare($sql);
-                    $query->execute(array());
-                    //Comprobamos si existen resultados
-                    if ($query->rowCount() > 0){
-                        while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
-                        echo '<div class="section_title text-center mg-tp-80 mg-bt-40">				     <h2>'.$resultado['nombre_subcat'].'</h2>
-							     <h4>Encuentra los anuncios más relevantes en esta subcategoría</h4>
-							     <div class="icon_wrap"><i class="fa '.$resultado['icono'].'"></i></div>
-				                </div>';
-                        }
-                    }
-                }
-                   
-                ?>  
-                </div>
+                
             </div>
         </section> 
         
         <section class="main container-fluid mg-bt-40"> 
-            <div class="col-sm-3 col-md-3 mg-bt-40 pull-left">
-                <div class="section_title text-center mg-bt-40">
-                    <h3><i class="fa fa-align-justify"></i> Categorias</h3>
+            <div class="col-sm-2 col-md-2 mg-tp-40 text-center pull-left">
+                <div class="section_title mg-bt-40">
+                    <h4>Categorías</h4>
                 </div>
         <!-- Script php para las categorias -->
                 <div class="mg-bt-40">     
@@ -105,16 +73,40 @@
                     </select>
                 </div>     
                 <div class="section_title text-center mg-bt-40">
-                    <h3><i class="fa fa-align-justify"></i> Subcategorías</h3>
+                    <h4>Subcategorías</h4>
                 </div>
                 <div class="mg-bt-40">
                     <select class="form-control" name="subcategoria" id="subcategoria">
                         <option value="0">Todas las subcategorías</option>
                     </select>
                 </div>
+                
+                 <div class="section_title text-center mg-bt-40">
+                    <h4>FILTROS</h4>
+                </div>
+                <div class="mg-bt-40">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        Filtrar resultados  <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Más Recientes</a></li>
+                        <li><a href="#">Más Comentados</a></li>
+                        <li><a href="#">Mejor Valoración</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Todos los resultados</a></li>
+                      </ul>
+                    </div>
+                </div>
+                
             </div>
 
-        <section class="col-sm-9 col-md-9">
+        <section class="col-sm-8 col-sm-offset-1 col-md-8 col-md-offset-1 mg-tp-40 mg-bt-80">
+            <ol class="breadcrumb">
+                  <li><a href="index.php">Inicio</a></li>
+                  <li><a href="categorias.php">Categorías</a></li>
+                  <li class="active">Bootstrap 3</li>
+                </ol>
         <?php
             if (isset($id_cat)){
                 // Consulta SQL
@@ -133,7 +125,7 @@
                                         <img class="img-thumbnail" src="images/anuncios/<?php echo $resultado['imagen']; ?>" alt="<?php echo $resultado['razon_soc']; ?>">
                                     </div>
                                     <div class="col-xs-9">
-                                        <h3 class="listado-titulo"><a href="anuncio.php?id='.$resultado['id_anuncio'].'"><?php echo $resultado['razon_soc']; ?></a></h3>
+                                        <h3 class="listado-titulo"><a href="anuncio.php?id=<?php echo $resultado['id_anuncio']; ?>"><?php echo $resultado['razon_soc']; ?></a></h3>
                                         <p class="listado-categoria"> <?php echo $resultado['nombre_subcat']; ?></p>
                                         
                                     </div>
@@ -154,7 +146,7 @@
                             
                             <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
                                 <div class="listado-favorito">
-                                    <a href="#" data-toggle="tooltip" data-placement="top" title="" class="estrella" data-original-title=">Guardar como favorito"><i class="fa fa-star fa-2x"></i></a>
+                                    <a href="#" data-toggle="tooltip" data-placement="top" title="" class="fav" data-original-title=">Guardar como favorito"><i class="fa fa-heart fa-2x"></i></a>
                                  </div>
                             </div>
                                 

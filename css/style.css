@@ -205,10 +205,18 @@ line-height: 36px;
     
 }
 
-#backimage{
-    
-   background-image: url("../images/acueducto.jpg");
+#bg-nosotros{
+    background-image: url("../images/acueducto.jpg");
+    background-position: center 30%;
+    background-repeat: no-repeat;
 }
+
+#bg-categorias{
+    background-image: url("../images/puente_romano.jpg");
+    background-position: center top;
+    background-repeat: no-repeat;
+}
+
 .block{
     min-width: 100%;
     min-height: 100%;
@@ -920,8 +928,6 @@ transition-timing-function: ease-out;
 
 .listado-anuncios{
     padding-left: 15px;
-    border: solid 1px #d9d9d9;
-    
     padding-top: 30px;
     padding-bottom: 10px;
     padding-left: 19px;
