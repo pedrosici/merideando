@@ -28,6 +28,7 @@ include('php/conexion.php');
         <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+        <link href="css/hover.css" rel="stylesheet" media="all"> 
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
          <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
         
@@ -70,7 +71,13 @@ include('php/conexion.php');
                       ?>
                       </ul>
                   </li>
+                  
               </ul>
+                
+              <ul class="nav navbar-nav navbar-center">
+                   <li class="text-center"><p class="navbar-btn"><a class="btn btn-default" href="panel_usuario.php"><i class="fa fa-plus-circle "></i> Crea tu anuncio</a></p>
+                  </li> 
+              </ul>  
                 
               <ul class="nav navbar-nav navbar-right">
                   <li><a href="faq.html"><i class="fa fa-question-circle" aria-hidden="true"></i> FAQ / Ayuda</a></li>

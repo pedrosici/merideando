@@ -119,24 +119,36 @@ $id_anuncio = $_GET['id'];
             <div class="mg-bt-40 text-center">
                 <h3>Redes sociales</h3>
             </div>
-            
-                  <?php   
-                    if (($resultado['facebook'] == "") && ($resultado['twitter'] == "") && ($resultado['instagram'] == "")){
-                        echo '<p>El anunciante no dispone de redes sociales.</p>';
-                    } else {
-                        echo '<ul class="social" id="lista-redes">';
-                        if ($resultado['facebook'] != NULL || $resultado['facebook'] != "" ){
-                            echo '<li><a href="https://es-la.facebook.com/'.$resultado['facebook'].'"><i class="fa fa-facebook"></i></a></li>';
+            <div class="row">
+            <?php   
+            if (($resultado['facebook'] == "") && ($resultado['twitter'] == "") && ($resultado['instagram'] == "")){
+                echo '<p>El anunciante no dispone de redes sociales.</p>';
+            } else {
+                echo '<div class="col-md-12 text-center">';
+                if ($resultado['facebook'] != NULL || $resultado['facebook'] != "" ){
+                    echo '<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 text-center">
+                            <div class="icon-circle">
+                                <a href="https://es-la.facebook.com/'.$resultado['facebook'].'" class="ifacebook title="facebook"><i class="fa fa-facebook"></i></a>
+                            </div>
+                          </div>';
+                }
+                if ($resultado['twitter'] != NULL || $resultado['twitter'] != "" ){
+                    echo '<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 text-center">
+                            <div class="icon-circle">
+                                <a href="https://twitter.com/'.$resultado['twitter'].'" class="itwittter" title="Twitter"><i class="fa fa-twitter"></i></a>
+                            </div>
+                          </div>';
+                }
+                if ($resultado['instagram'] != NULL || $resultado['instagram'] != "" ){
+                    echo '<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 text-center">
+                            <div class="icon-circle">
+                                <a href="https://www.instagram.com/'.$resultado['instagram'].'" class="iinstagram" title="instagram"><i class="fa fa-instagram"></i></a>
+                            </div>
+                          </div>';
                         }
-                        if ($resultado['twitter'] != NULL || $resultado['twitter'] != "" ){
-                            echo '<li><a href="https://twitter.com/'.$resultado['twitter'].'"><i class="fa fa-twitter"></i></a></li>';
-                        }
-                        if ($resultado['instagram'] != NULL || $resultado['instagram'] != "" ){
-                            echo '<li><a href="https://www.instagram.com/'.$resultado['instagram'].'"><i class="fa fa-instagram"></i></a></li>';
-                        }
-                        echo '</ul>';
+                        echo '</div>';
                     }  ?>
-                 
+              </div>   
                 
         </div>
 
