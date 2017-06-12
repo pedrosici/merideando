@@ -113,7 +113,6 @@ include('php/conexion.php');
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12 col-xs-12">
-
                                 <div class="slider_text text-center">
                                     <h2 class="titulo">Hola, estas Merideando</h2>
                                      <p>Encuentra información acerca de multitud de servicios y negocios situados en Mérida. </p>
@@ -122,12 +121,12 @@ include('php/conexion.php');
                             </div>
                             <div class="col-md-6 col-md-offset-3 text-center">
                                 <div class="form-group">
-                                <form>
-                                    <div class="input-group">
-                                    <input id="buscador" class="form-control input-lg" type="text" placeholder="¿Qué buscas?" />
-                                    <div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
-                                </div>
-                                </form>
+                                    <form>
+                                        <div class="input-group">
+                                            <input id="buscador" class="form-control input-lg" type="text" placeholder="¿Qué buscas?" />
+                                            <div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
+                                        </div>
+                                    </form>
                                 
                                 </div>
                             </div>

@@ -42,9 +42,12 @@
                       ?>
                       </ul>
                   </li>
-                  
-                 
               </ul>
+                
+              <ul class="nav navbar-nav navbar-center">
+                   <li class="text-center"><p class="navbar-btn"><a class="btn btn-default" href="panel_usuario.php"><i class="fa fa-plus-circle "></i> Crea tu anuncio</a></p>
+                  </li> 
+              </ul>   
                 
               <ul class="nav navbar-nav navbar-right">
                   <!-- Mostramos las opciones de cuenta segun la sesión del usuario -->

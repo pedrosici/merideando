@@ -205,6 +205,10 @@ line-height: 36px;
     
 }
 
+#backimage{
+    
+   background-image: url("../images/acueducto.jpg");
+}
 .block{
     min-width: 100%;
     min-height: 100%;

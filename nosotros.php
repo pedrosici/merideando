@@ -53,8 +53,9 @@ include('php/conexion.php');
         <?php include "php/navbar.php"; ?>
  <!-- START HOME -->
         <header>
+            <div id="backimage">
             <div class="slider_overlay">
-                <div class="block">
+                
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12 col-xs-12">
@@ -66,9 +67,9 @@ include('php/conexion.php');
                                 </div>
                             </div>
                         </div>
-                        </div>
                     </div>
                 </div>
+            </div>
         </header>
         <section class="fondo">
 				<div class="container">
