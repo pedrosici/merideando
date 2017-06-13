@@ -75,7 +75,15 @@ ul, ul li{
 .titulo {
     color:white;
     font-family: 'Lobster', cursive;
+    font-size:40px;
+}
+.titulo-mapa{
+    color:black;
+    font-family: 'Lobster', cursive;
     font-size:45px;
+}
+.subtitulo-mapa{
+    color:black;
 }
 
 .cuenta a {

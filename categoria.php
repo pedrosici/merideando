@@ -215,11 +215,13 @@
                             
                             <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-2">
                                 <?php
-                                    if ($resultado['num_comentarios'] == 1){
-                                        echo '<p><i class="fa fa-comment-o" aria-hidden="true"></i> <span class="comentarios">'.$resultado['num_comentarios'].'</span> opinión </p>';
-                                        } else {
-                                            echo '<p> <i class="fa fa-comments-o" aria-hidden="true"></i> <span class="comentarios">'.$resultado['num_comentarios'].'</span> opiniones</p>';
-                                        }                                      
+                                    if ($resultado['num_comentarios'] == 0){
+                                        echo '<p><i class="fa fa-comment-o" aria-hidden="true"></i> <span class="comentarios">¡Sé el primero!</span></p>';
+                                        } elseif ($resultado['num_comentarios'] == 1) {
+                                            echo '<p> <i class="fa fa-comment" aria-hidden="true"></i> <span class="comentarios">'.$resultado['num_comentarios'].'</span> opinión</p>';
+                                        } elseif ($resultado['num_comentarios'] > 1) { 
+                                         echo '<p> <i class="fa fa-comments-o" aria-hidden="true"></i> <span class="comentarios">'.$resultado['num_comentarios'].'</span> opiniones</p>';
+                                    }
                                 ?>
                             </div>
                             <div class="hidden fecha"><?php echo $resultado['fecha'];?></div>

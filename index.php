@@ -72,6 +72,7 @@ include('php/conexion.php');
                       </ul>
                   </li>
                   
+                  
               </ul>
                 
               <ul class="nav navbar-nav navbar-center">
@@ -80,7 +81,7 @@ include('php/conexion.php');
               </ul>  
                 
               <ul class="nav navbar-nav navbar-right">
-                  <li><a href="faq.html"><i class="fa fa-question-circle" aria-hidden="true"></i> FAQ / Ayuda</a></li>
+                  <li><a href="mapa_anuncios.php"><i class="fa fa-map" aria-hidden="true"></i> Mapa de Anuncios</a></li>
                   <!-- Mostramos las opciones de cuenta segun la sesión del usuario -->
                   <?php if(!isset($_SESSION["user_id"])):?>
                   <li class="dropdown">
@@ -98,6 +99,7 @@ include('php/conexion.php');
                     <li><a href="php/logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i> Salir</a></li>
                   </ul>
                 </li>
+                
                   <?php endif;?>
               </ul>
 
