@@ -4,10 +4,6 @@
 include('conexion.php');
 
 session_start();
-
-if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"] == null){
-	print "<script>alert(\"Acceso invalido!\");window.location='login.php';</script>";
-}
    
 if (isset($_POST['id_categoria'])){
     $id_subcat = $_POST['id_categoria'];
@@ -17,6 +13,8 @@ if (isset($_POST['id_categoria'])){
     $query = $con->prepare($sql);
     $query->execute(array($id_subcat));
    
+    $indice = "<option value=0>Todas las subcategorías</option>";
+    echo $indice;
     
     if ($query->rowCount() > 0 ){
         while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
