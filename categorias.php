@@ -23,7 +23,6 @@
         <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-        
     </head>
 
     <body>
@@ -68,7 +67,7 @@
                 $categorias = array();
                             
                 $pos = 0;        
-                        
+                  
                 //Comprobamos si existen resultados
                 if ($query->rowCount() > 0){
                 
@@ -87,17 +86,18 @@
                        
                     }
 
-
+                        
                     foreach ($categorias as $categoria)
                         {
  
                             if( !empty( $categoria[0] ) ) {
+                                
                              echo "<li class='col-lg-4 col-md-4 col-sm-6 col-xs-12'>";
                                  echo "<section class='lista-subcategorias'>
                                         <div><i class='fa ".$categoria[3]."'></i>
                                         <a href='categoria.php?id=".$categoria[2]."'><span class='lista-categoria-titulo'>".$categoria[0]."</span></a>
                                         </div>";
-                           
+                               
                             }
                             if (count($categoria[1]) > 0)
                             {
@@ -115,11 +115,8 @@
                     }  
                 
                 
-                
                 }  // FIN if
                    
-                        
-                        
                         
                         ?>
                         </ul>
@@ -127,11 +124,7 @@
                 </div>
             </div>
         </section>
-        
-        
-        
-        
-        
+ 
        <!-- Incluimos el footer o pie de página -->       
       <?php include "php/footer.php"; ?>
         

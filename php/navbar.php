@@ -50,6 +50,7 @@
               </ul>   
                 
               <ul class="nav navbar-nav navbar-right">
+                  <li class="<?php if ($current_page == "mapa_anuncios.php"){ echo "active"; } ?>"><a href="mapa_anuncios.php"><i class="fa fa-map" aria-hidden="true"></i> Mapa de Anuncios</a></li>
                   <!-- Mostramos las opciones de cuenta segun la sesión del usuario -->
                   <?php if(!isset($_SESSION["user_id"])):?>
                   <li class="dropdown">

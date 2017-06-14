@@ -48,6 +48,8 @@ h6 {
 ul, ul li{
     list-style: none;
 }
+
+
 /* ---------------- MÁRGENES DE CONTENIDO ---------------------- */
 
 .mg-bt-80 {
@@ -332,6 +334,9 @@ line-height: 36px;
 }
 .footer p {
 	margin: 0;
+}
+.copyright{
+    color:#fff;
 }
 .footer img {
 	max-width: 100%;
@@ -969,6 +974,56 @@ transition-timing-function: ease-out;
 .listado-favorito{
     text-align:right;
 }
+/* --------- FAVORITOS ---- */
+
+.heart_icon {
+		background: url("../images/twitter-heart-button.png");
+		background-size: 2900px;
+		background-repeat: no-repeat;
+		height: 100px;
+		width: 100px;
+		cursor: pointer;
+		position: relative;
+	}
+ 
+	.on { background-position: right; }
+ 
+	.off { background-position: left; }
+ 
+	.heart_icon:hover {	background-position: right;	}
+ 
+	@-webkit-keyframes heart_animation {
+		from {background-position: left;}
+		to {background-position: right;}
+	}
+ 
+	@keyframes heart_animation {
+		from {background-position: left;}
+		to {background-position: right;}
+	}
+ 
+	.heartAnimation {
+		-webkit-animation-name: heart_animation;
+		-webkit-animation-duration: 1s;
+		-webkit-animation-iteration-count: 1;
+		-webkit-animation-timing-function: steps(28, end);
+ 
+		animation-name: heart_animation;
+		animation-duration: 1s;
+		animation-iteration-count: 1;
+		animation-timing-function: steps(28, end);
+ 
+		background-position: right;
+	}
+ 
+	.num_vote {
+		margin-left: -20px;
+		font-size: 18px;
+		color: #333
+	}
+	#lineBlock div.oneLine { display: inline-block; vertical-align: middle; }
+
+
 
 .listado-categoria{
     text-transform: uppercase;
@@ -978,7 +1033,11 @@ transition-timing-function: ease-out;
 }
 
 .fav:hover{
-    color:orangered;
+    color:indianred;
+}
+
+a .fav:visited{
+    color: #999;
 }
 
 .fav-active{

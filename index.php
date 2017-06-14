@@ -248,16 +248,23 @@ include('php/conexion.php');
                                 <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
                                      <div class="listado-favorito">
                                 <?php
+                              
+                             //Si el usuario está logueado
+                              if (isset($id)){
                                     $sql_fav = "SELECT * FROM favoritos WHERE usuario_id = :usuario_id AND anuncio_id = :anuncio_id";
                                     $query_fav = $con->prepare($sql_fav);
                                     $query_fav->execute(array(':usuario_id'=>$id, ':anuncio_id'=> $resultado['id_anuncio']));
                                     $num_rows = $query_fav->fetchColumn();
-                          
+                                    
+                                    //Si el usuario tiene algun anuncio marcado como favorito lo marcamos en rojo
                                     if ($num_rows > 0){
-                                        echo '<a href="#" data-toggle="tooltip" data-placement="top" title="" class="fav-active" data-original-title=">Guardar como favorito"><i class="fa fa-heart fa-2x"></i></a>';
+                                        echo '<div id="heart'.$resultado['id_anuncio'].'" class="oneLine heart_icon on" rel="'.$id.'" data-toggle="tooltip" data-placement="right" title="Eliminar de mis favoritos"></div>';
                                     } else {
-                                        echo '<a href="#" data-toggle="tooltip" data-placement="top" title="" class="fav" data-original-title=">Guardar como favorito"><i class="fa fa-heart fa-2x" aria-hidden="true"></i></a>';
+                                        echo '<div id="heart'.$resultado['id_anuncio'].'" class="oneLine heart_icon off" rel="'.$id.'" data-toggle="tooltip" data-placement="right" title="Añadir a mis favoritos"></div>';
                                     }
+                             } else {
+                                   echo '<div class="oneLine heart_icon off" data-toggle="tooltip" data-placement="right" title="¡Debes loguearte primero!"></div>';
+                              }
                                 ?>
                                         
                                      </div>
@@ -305,17 +312,25 @@ include('php/conexion.php');
 
                                 <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
                                      <div class="listado-favorito">
+                                         
                                 <?php
+                              
+                              //Si el usuario está logueado
+                              if (isset($id)){
                                     $sql_fav = "SELECT * FROM favoritos WHERE usuario_id = :usuario_id AND anuncio_id = :anuncio_id";
                                     $query_fav = $con->prepare($sql_fav);
                                     $query_fav->execute(array(':usuario_id'=>$id, ':anuncio_id'=> $resultado['id_anuncio']));
                                     $num_rows = $query_fav->fetchColumn();
-                          
+                                    
+                                   ///Si el usuario tiene algun anuncio marcado como favorito lo marcamos en rojo
                                     if ($num_rows > 0){
-                                        echo '<a href="#" data-toggle="tooltip" data-placement="top" title="" class="fav-active" data-original-title=">Guardar como favorito"><i class="fa fa-heart fa-2x"></i></a>';
+                                        echo '<div id="heart'.$resultado['id_anuncio'].'" class="oneLine heart_icon on" rel="'.$id.'" data-toggle="tooltip" data-placement="right" title="Eliminar de mis favoritos"></div>';
                                     } else {
-                                        echo '<a href="#" data-toggle="tooltip" data-placement="top" title="" class="fav" data-original-title=">Guardar como favorito"><i class="fa fa-heart fa-2x" aria-hidden="true"></i></a>';
+                                        echo '<div id="heart'.$resultado['id_anuncio'].'" class="oneLine heart_icon off" rel="'.$id.'" data-toggle="tooltip" data-placement="right" title="Añadir a mis favoritos"></div>';
                                     }
+                             } else {
+                                  echo '<div class="oneLine heart_icon off" data-toggle="tooltip" data-placement="right" title="¡Debes loguearte primero!"></div>';
+                              }
                                 ?>
                                      </div>
                                 </div>
@@ -344,7 +359,7 @@ include('php/conexion.php');
 
     <script src="js/bootstrap.min.js"></script>
         
-    <script>   
+    <script type="text/javascript">   
          $(document).ready(function(){
 
              $('#buscador').autocomplete({
@@ -362,6 +377,51 @@ include('php/conexion.php');
              })
 
             });  
+    </script>
+        
+    <script type="text/javascript">
+       $(".heart_icon").mouseout(function() {
+          $(this).removeAttr("style");
+        });
+ 
+        $(".heart_icon").on("click", function(){ // Click event (when user click on the heart button)
+            var getMediaId = $(this).attr("id").split("heart");
+            console.log(getMediaId);
+            var anuncioId = getMediaId[1]; // Result is the media Id from div called "heart"
+
+            // Check if Class Attribut contains "off". If yes then the new value (when user click) will be 1. Else the new value will be 0.
+            if ( $(this).attr("class").indexOf('off') !== -1 ) var value = 1; else var value = 0;
+
+            // Get the user Id
+            var userId=$(this).attr("rel");
+
+            var dataFields = {'anuncioId': anuncioId, 'userId': userId, 'value': value}; // We pass the 3 arguments
+            $.ajax({ // Ajax
+                type: "POST",
+                url: "php/favoritos.php",
+                data: dataFields,
+                timeout: 3000,
+                success: function(dataBack){
+                    },
+                error: function() {}
+            });
+
+            // If the value is 1 we update the Class and run the CSS3 Animation
+            if (value == 1) {
+                $("#heart" + anuncioId).removeClass("off").addClass("on heartAnimation");
+                // We increment the counter (+1)
+                $("#heart_num_vote" + anuncioId).text(parseInt($("#heart_num_vote" + anuncioId).text()) + 1);
+            }	
+            if (value == 0) {
+                $("#heart" + anuncioId).removeClass("on heartAnimation").addClass("off").css("background-position","left");
+                $("#heart_num_vote" + anuncioId).text(parseInt($("#heart_num_vote" + anuncioId).text()) - 1);
+            }
+        });
+        
+        
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
     </script>
         
     <script src="js/jquery.vide.min.js"></script>

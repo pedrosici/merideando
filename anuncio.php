@@ -209,10 +209,10 @@ $id_anuncio = $_GET['id'];
             
         <?php
             if ($sesion){ ?>
-                <div class="col-sm-12 text-center mg-tp-40 mg-bt-40">
+                <div class="col-sm-6 col-sm-offset-3 text-center mg-tp-40 mg-bt-40">
                     <div class="panel panel-default">
                          <div class="panel-heading">
-                             <h3 class="panel-title">Escribe tu opinión sobre este negocio</h3>
+                             <h3 class="panel-title"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Escribe tu opinión sobre este negocio</h3>
                          </div>
                          <div class="panel-body">
                             <form role="form" id="comentarios_ajax" method="POST" class="col-md-12 text-center">
@@ -224,10 +224,10 @@ $id_anuncio = $_GET['id'];
                               
                               <div class="form-group col-sm-8 col-sm-offset-2">
                                     <label for="message">Tu opinión</label>
-                                    <textarea id="comentario" name="comentario" class="form-control" rows="3" maxlength="300" placeholder="Escribe tu comentario acerca del anuncio" required></textarea>
+                                    <textarea id="comentario" name="comentario" class="form-control" rows="4" maxlength="300" placeholder="Escribe tu comentario acerca del anuncio" required></textarea>
                               </div>
                                 
-                              <div class="form-group col-sm-2 col-sm-offset-5 text-center">
+                              <div class="form-group col-sm-4 col-sm-offset-4 text-center">
                                     <label for="valoracion">Valoración (0 a 5)</label>  
 <!--
                                         <ul class="stars stars-24">
