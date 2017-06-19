@@ -13,12 +13,14 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Merideando - Registro</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
         <!-- Bootstrap -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">  
         <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+        
 
     </head>
      <body>
@@ -37,25 +39,23 @@
                             </div>  
                             <!-- Formulario Registro -->
                             <div class="col-md-8 col-md-offset-2" id="registro" >
-                                <form role="form" name="registro" action="php/registrar.php" method="post" accept-charset="utf-8">
-                                <div class="form-group row">
-                                    <div class="col-md-6 col-md-offset-3">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-user-circle-o"></i></span>
-                                            <input type="text" class="form-control col-md-6" name="usuario" id="usuario" placeholder="Tu nombre de usuario" minlength="4" maxlength="13" pattern="[A-Za-z0-9_-]{1,15}" required />  
-                                        </div>
-                                    </div>
-                                </div>
-                                    
+                                <form role="form" id="registro_form" action="php/registrar.php" method="POST" accept-charset="utf-8">
                                 <div class="form-group row">
                                     <div class="col-md-6 col-md-offset-3">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                                            <input type="text" class="form-control col-md-6" name="nombre" id="nombre" placeholder="Tu nombre completo" pattern="[A-Za-z]{4-16}" required />
+                                            <input type="text" class="form-control col-md-6" name="nombre" id="nombre" pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ]{2,25}[ ]{1}[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ]{2,25}[ ]{1}[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ]{2,25}" placeholder="Tu Nombre y Apellidos" required />
                                         </div>
                                     </div>
                                 </div>
-                                    
+                                <div class="form-group row">
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-user-circle-o"></i></span>
+                                            <input type="text" class="form-control col-md-6" name="usuario" id="usuario" placeholder="Tu Nombre de Usuario" minlength="4" maxlength="13" title="Tu nombre de usuario debe tener mínimo 4 caracteres" pattern="^([a-z]+[0-9]{0,2}){4,13}$" required />  
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group row">
                                     <div class="col-md-6 col-md-offset-3">
                                         <div class="input-group">
@@ -63,8 +63,8 @@
                                             <input type="email" class="form-control col-md-6" name="email" id="email" placeholder="Email de contacto" required>
                                         </div>
                                     </div>
-                                    
                                 </div>
+                                
                                 <div class="form-group row">
                                     
                                         <div class="col-md-6 col-md-offset-3">
@@ -86,22 +86,18 @@
                                     <div id="checkPassword"></div>
                                 </div>                                   
                                 <div class="form-group row text-center">
-                                   
-                                    <div class="col-md-4 col-md-offset-4 mg-bt-40">
-                                        <button type="submit" class="btn btn-primary" id="submitRegistro">Crear mi cuenta</button>
+                                    <div class="col-md-4 col-md-offset-4">
+                                        <button type="submit" class="btn btn-default" id="registro_btn">Crear mi cuenta</button>
                                     </div>
-                                    
-                                    
+                                    <div id="checkregistro"></div> 
                                 </div>
-                                    
-                                </form>
-                                <div class="col-md-8 col-md-offset-2 text-center cuenta">
-                                        <a href="login.php"><p>Ya soy usuario de Merideando</p></a>
+                            </form>
+                                <div class="col-md-12 text-center cuenta">
+                                    <a href="login.php"><p>Ya soy usuario de Merideando</p></a>
                                 </div>
                             </div>  <!-- FIN Formulario Registro -->
                         </div> <!-- fin ROW -->
                     </div> <!-- FIN container -->
-               
              </div> <!-- FIN slider overlay -->
      </header>  
          
@@ -110,7 +106,7 @@
   
         
       <!--Import jQuery before materialize.js-->
-      <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+      
       <script src="js/bootstrap.min.js"></script>
        <script src="js/jquery.vide.min.js"></script>
         

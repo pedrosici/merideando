@@ -3,6 +3,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 require_once('conexion.php');
 
+
     if ($_POST) :
         $autor_id = $_POST['autor_id'];
         $comentario = $_POST['comentario'];
@@ -36,12 +37,30 @@ require_once('conexion.php');
                                 <div class="panel-body">
                                     <h3 class="panel-title">'.$resultado['titulo'].'</h3>
                                     <p>'.$resultado['comentario'].'</p>
-                                     <p style="float:right";><i class="fa fa-star" aria-hidden="true"></i> '.$resultado['valoracion'].'/5</p>
+
+                                    <div class="valoracion-'.$resultado['id_anuncio'].'"></div>
                                 </div>
                             </div>
-                          </div>';  
-            exit();
+                          </div>';
+            ?>
+            
+        <?php
+            
         }
+        
+        $sql = "SELECT COUNT(id_comentario) as num_comentarios, SUM(valoracion) as suma FROM comentarios WHERE anuncio_id = ?";
+        $query = $con->prepare($sql);
+        $query->execute(array($id_anuncio));
+        $num_coment = $query->fetch(PDO::FETCH_ASSOC);
+       
+        
+        $valor = $num_coment['suma'] / $num_coment['num_comentarios'];
+        
+        $sql = "UPDATE anuncios SET valor_medio = :valor_medio WHERE id_anuncio = :id_anuncio";
+        $query = $con->prepare($sql);
+        $query->execute(array(":valor_medio"=>$valor, ":id_anuncio"=>$id_anuncio));
+        
+        
 
     endif;
 ?>

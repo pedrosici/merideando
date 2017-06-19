@@ -5,9 +5,9 @@
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 mg-tp-40 text-lcenter">
                             <img class="img-responsive" src="images/logo-merideando.png">
                             <ul class="social">
-                                <li> <a href="#"> <i class=" fa fa-facebook"> </i></a></li>
-                                <li> <a href="#"> <i class="fa fa-twitter"> </i></a></li>
-                                <li> <a href="#"> <i class="fa fa-instagram"> </i></a></li>
+                                <li> <a href="https://www.facebook.com/pedro.sicilia.35"> <i class=" fa fa-facebook"> </i></a></li>
+                                <li> <a href="https://twitter.com/PedroSici"> <i class="fa fa-twitter"> </i></a></li>
+                                <li> <a href="https://www.instagram.com/pedro_sici/"> <i class="fa fa-instagram"> </i></a></li>
                             </ul>
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3 hidden-xs">

@@ -16,12 +16,13 @@
         
         $miga = '<ol class="breadcrumb">
                     <li><a href="index.php">Inicio</a></li>
+                    <li><a href="categorias.php">Categorias</a></li>
                     <li class="active">'.$resultado['nombre_cat'].'</li>
                 </ol>';
     }
     else if (isset($_GET['idsubcat'])){
         $id_subcat = $_GET['idsubcat'];
-         //Seleccionamos los datos referentes a la categoría elegida 
+         //Seleccionamos los datos referentes a la subcategoría elegida 
         $sql = "SELECT s.* , c.* FROM subcategorias s, categorias c WHERE s.categoria_id = c.id_categoria AND s.id_subcategoria = ?";
         $query = $con->prepare($sql);
         $query->execute(array($id_subcat));
@@ -29,6 +30,7 @@
         
         $miga = '<ol class="breadcrumb">
                     <li><a href="index.php">Inicio</a></li>
+                    <li><a href="categorias.php">Categorias</a></li>
                     <li><a href="categoria.php?id='.$resultado['id_categoria'].'">'.$resultado['nombre_cat'].'</a></li>
                     <li class="active">'.$resultado['nombre_subcat'].'</li>
                 </ol>';
@@ -88,19 +90,34 @@
                 <div class="mg-bt-40">     
                     <select class="form-control" name="categoria" id="categoria"> 
                     <?php
-                        $sql = "SELECT * FROM categorias ORDER BY nombre_cat ASC";
-                        $query = $con->prepare($sql);
-                        $query->execute();
-                        while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
-                            if ($resultado['id_categoria'] == $id_cat){
-                                echo '<option selected value="'.$resultado['id_categoria'].'">'.$resultado['nombre_cat'].'</option>';
-                            }
-                            else{
-                                echo '<option value="'.$resultado['id_categoria'].'">'.$resultado['nombre_cat'].'</option>';
+                        if (isset($id_cat)){
+                            $sql = "SELECT * FROM categorias ORDER BY nombre_cat ASC";
+                            $query = $con->prepare($sql);
+                            $query->execute();
+                            while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
+                                if ($resultado['id_categoria'] == $id_cat){
+                                    echo '<option selected value="'.$resultado['id_categoria'].'">'.$resultado['nombre_cat'].'</option>';
                                 }
+                                else{
+                                    echo '<option value="'.$resultado['id_categoria'].'">'.$resultado['nombre_cat'].'</option>';
+                                    }
+                                }
+                        } elseif (isset($id_subcat)){
+                            $sql = "SELECT s.* , c.* FROM subcategorias s, categorias c WHERE s.id_subcategoria = ?";
+                            $query = $con->prepare($sql);
+                            $query->execute(array($_GET['idsubcat']));
+                            
+                            while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
+                                if ($resultado['id_categoria'] == $resultado['categoria_id']){
+                                    echo '<option selected value="'.$resultado['id_categoria'].'">'.$resultado['nombre_cat'].'</option>';
+                                }
+                                else{
+                                    
+                                    echo '<option value="'.$resultado['id_categoria'].'">'.$resultado['nombre_cat'].'</option>';
+                                    }
+                                }
+                        }      
                         ?>
-                                
-                            <?php   } ?>
                     </select>
                 </div>     
                 <div class="section_title text-center mg-bt-40">
@@ -227,7 +244,25 @@
                             <div class="hidden fecha"><?php echo $resultado['fecha'];?></div>
                             <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
                                 <div class="listado-favorito">
-                                    <a href="#" data-toggle="tooltip" data-placement="top" title="" class="fav" data-original-title=">Guardar como favorito"><i class="fa fa-heart fa-2x"></i></a>
+                                    <?php
+                              
+                                          //Si el usuario está logueado
+                                          if (isset($id)){
+                                                $sql_fav = "SELECT * FROM favoritos WHERE usuario_id = :usuario_id AND anuncio_id = :anuncio_id";
+                                                $query_fav = $con->prepare($sql_fav);
+                                                $query_fav->execute(array(':usuario_id'=>$id, ':anuncio_id'=> $resultado['id_anuncio']));
+                                                $num_rows = $query_fav->fetchColumn();
+
+                                               ///Si el usuario tiene algun anuncio marcado como favorito lo marcamos en rojo
+                                                if ($num_rows > 0){
+                                                    echo '<div id="heart'.$resultado['id_anuncio'].'" class="oneLine heart_icon on" rel="'.$id.'" data-toggle="tooltip" data-placement="right" title="Eliminar de mis favoritos"></div>';
+                                                } else {
+                                                    echo '<div id="heart'.$resultado['id_anuncio'].'" class="oneLine heart_icon off" rel="'.$id.'" data-toggle="tooltip" data-placement="right" title="Añadir a mis favoritos"></div>';
+                                                }
+                                         } else {
+                                              echo '<div class="oneLine heart_icon off" data-toggle="tooltip" data-placement="right" title="¡Debes loguearte primero!"></div>';
+                                          }
+                                            ?>
                                  </div>
                             </div>
                                 
@@ -279,11 +314,30 @@
                                         ?>
                                     </div>
 
-                                    <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
-                                        <div class="listado-favorito">
-                                            <a href="#" data-toggle="tooltip" data-placement="top" title="" class="estrella" data-original-title=">Guardar como favorito"><i class="fa fa-star fa-2x"></i></a>
-                                         </div>
-                                    </div>
+                                    <div class="hidden fecha"><?php echo $resultado['fecha'];?></div>
+                                        <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
+                                            <div class="listado-favorito">
+                                            <?php
+                              
+                                          //Si el usuario está logueado
+                                          if (isset($id)){
+                                                $sql_fav = "SELECT * FROM favoritos WHERE usuario_id = :usuario_id AND anuncio_id = :anuncio_id";
+                                                $query_fav = $con->prepare($sql_fav);
+                                                $query_fav->execute(array(':usuario_id'=>$id, ':anuncio_id'=> $resultado['id_anuncio']));
+                                                $num_rows = $query_fav->fetchColumn();
+
+                                               ///Si el usuario tiene algun anuncio marcado como favorito lo marcamos en rojo
+                                                if ($num_rows > 0){
+                                                    echo '<div id="heart'.$resultado['id_anuncio'].'" class="oneLine heart_icon on" rel="'.$id.'" data-toggle="tooltip" data-placement="right" title="Eliminar de mis favoritos"></div>';
+                                                } else {
+                                                    echo '<div id="heart'.$resultado['id_anuncio'].'" class="oneLine heart_icon off" rel="'.$id.'" data-toggle="tooltip" data-placement="right" title="Añadir a mis favoritos"></div>';
+                                                }
+                                         } else {
+                                              echo '<div class="oneLine heart_icon off" data-toggle="tooltip" data-placement="right" title="¡Debes loguearte primero!"></div>';
+                                          }
+                                            ?>
+                                             </div>
+                                        </div>
 
                                     </div>
                                 </div>   
@@ -316,6 +370,7 @@
                     $("#categoria option:selected").each(function(){
                         //Guardamos la seleccion de la categoria
                         id_cat = $(this).val();
+                       
                         //Llamamos al archivo que manda el id de la subcategoría
                         $.post("php/crear_anuncio.php", {id_categoria: id_cat}, function(data){
                             //Le devolvemos ese id_subcat al option del combobox de subcategorias
@@ -327,6 +382,52 @@
                  
             }); 
         </script>
+        
+        <script type="text/javascript">
+       $(".heart_icon").mouseout(function() {
+          $(this).removeAttr("style");
+        });
+ 
+        $(".heart_icon").on("click", function(){ // Click event (when user click on the heart button)
+            var getMediaId = $(this).attr("id").split("heart");
+            console.log(getMediaId);
+            var anuncioId = getMediaId[1]; // Result is the media Id from div called "heart"
+
+            // Check if Class Attribut contains "off". If yes then the new value (when user click) will be 1. Else the new value will be 0.
+            if ( $(this).attr("class").indexOf('off') !== -1 ) var value = 1; else var value = 0;
+
+            // Get the user Id
+            var userId=$(this).attr("rel");
+
+            var dataFields = {'anuncioId': anuncioId, 'userId': userId, 'value': value}; // We pass the 3 arguments
+            $.ajax({ // Ajax
+                type: "POST",
+                url: "php/favoritos.php",
+                data: dataFields,
+                timeout: 3000,
+                success: function(dataBack){
+                    },
+                error: function() {}
+            });
+
+            // If the value is 1 we update the Class and run the CSS3 Animation
+            if (value == 1) {
+                $("#heart" + anuncioId).removeClass("off").addClass("on heartAnimation");
+                // We increment the counter (+1)
+                $("#heart_num_vote" + anuncioId).text(parseInt($("#heart_num_vote" + anuncioId).text()) + 1);
+            }	
+            if (value == 0) {
+                $("#heart" + anuncioId).removeClass("on heartAnimation").addClass("off").css("background-position","left");
+                $("#heart_num_vote" + anuncioId).text(parseInt($("#heart_num_vote" + anuncioId).text()) - 1);
+            }
+        });
+        
+        
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+        
         <script>
             $('#categoria').on('change', function() {
               window.open('categoria.php?id=' + this.value, "_self");

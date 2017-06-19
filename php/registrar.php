@@ -3,6 +3,9 @@
 //Evitamos que nos salgan los NOTICES de PHP
 error_reporting(E_ALL ^ E_NOTICE);
 include "conexion.php";
+sleep(3);
+
+$jsondata = array();
 
 if(!empty($_POST)){
     //Los usuarios de tipo 1 no tienen privilegios
@@ -16,30 +19,29 @@ if(!empty($_POST)){
     $sha1_pass = sha1($password);
     $enc=false;
     
-    try {
-        $query = $con->prepare('SELECT COUNT(*) usuario, email FROM usuarios WHERE email = :email OR usuario = :usuario');
-        $query->execute(array('email'=>$email, 'usuario'=>$usuario));
-        $num_filas = $query->fetchColumn();
-    }
-    catch (PDOException $e){
-        echo 'Error: ' . $e->getMessage();
-    }
+    
+    $query = $con->prepare('SELECT COUNT(*) usuario, email FROM usuarios WHERE email = :email OR usuario = :usuario');
+    $query->execute(array('email'=>$email, 'usuario'=>$usuario));
+    $num_filas = $query->fetchColumn();
+   
     
     if ($num_filas > 0){
-        header("Location: ".$SERVER["HTTP_REFERER"]);
-        $status = "<div class='alert alert-danger'> ¡El registro no pudo completarse, vuelva a intentarlo!</div>";
+        $jsondata['success'] = false;
+        
     } else if ($num_filas == 0){
         //Insertamos el registro del nuevo usuario
         $query = $con->prepare('INSERT INTO usuarios (nombre, usuario, email, password, fecha_creacion) VALUES (:nombre, :usuario, :email, :password, NOW())');
         $query->execute(array('nombre'=>$nombre, 'usuario'=>$usuario, 'email'=>$email, 'password'=>$sha1_pass));
-        $status = "<div class='alert alert-success'>¡Usted ya es usuario de Merideando, ¡Gracias por registrarse!</div>";
+        
+        $jsondata['success'] = true;
         
     }
     
-    if($query != null){
-        echo $status;
-    }
-		
+    
+	 //Aunque el content-type no sea un problema en la mayoría de casos, es recomendable especificarlo
+    header('Content-type: application/json; charset=utf-8');
+    echo json_encode($jsondata);
+    exit();
 }
 
 

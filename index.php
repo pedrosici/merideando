@@ -31,8 +31,7 @@ include('php/conexion.php');
         <link href="css/hover.css" rel="stylesheet" media="all"> 
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
          <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
-        
-
+        <script src="js/jquery.raty.js"></script>
     </head>
 
     <body>
@@ -75,8 +74,8 @@ include('php/conexion.php');
                   
               </ul>
                 
-              <ul class="nav navbar-nav navbar-center">
-                   <li class="text-center"><p class="navbar-btn"><a class="btn btn-default" href="panel_usuario.php"><i class="fa fa-plus-circle "></i> Crea tu anuncio</a></p>
+              <ul class="nav navbar-nav navbar-center hidden-sm">
+                   <li class="text-center"><p class="navbar-btn"><a class="btn btn-merid" href="panel_usuario.php">¡Crea tu anuncio!</a></p>
                   </li> 
               </ul>  
                 
@@ -117,7 +116,7 @@ include('php/conexion.php');
                             <div class="col-md-12 col-xs-12">
                                 <div class="slider_text text-center">
                                     <h2 class="titulo">Hola, estas Merideando</h2>
-                                     <p>Encuentra información acerca de multitud de servicios y negocios situados en Mérida. </p>
+                                     <p>Encuentra información acerca de multitud de servicios y negocios situados en Mérida</p>
                                      <!---<a class="btn-light-bg " href="#">Purchase Now</a> -->
                                 </div>
                             </div>
@@ -217,7 +216,7 @@ include('php/conexion.php');
                         
                     <?php
                     //Consulta para sacar ultimos anuncios publicados
-                    $sql = "SELECT a.razon_soc,a.id_anuncio, a.direccion, a.imagen, a.categoria_id, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE id_anuncio = a.id_anuncio ORDER BY fecha DESC LIMIT 5";
+                    $sql = "SELECT a.razon_soc,a.id_anuncio, a.direccion, a.imagen, a.categoria_id, a.fecha, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE id_anuncio = a.id_anuncio ORDER BY fecha DESC LIMIT 5";
                     $query = $con->prepare($sql);
                     $query->execute();
                     //Comprobamos si existen resultados
@@ -234,15 +233,25 @@ include('php/conexion.php');
                                         <div class="col-xs-9">
                                             <h3 class="listado-titulo"><a href="anuncio.php?id=<?php echo $resultado['id_anuncio']; ?>"><?php echo $resultado['razon_soc']; ?></a></h3>
                                             <p class="listado-categoria"><i class="fa <?php echo $resultado['icono']; ?>"></i> <?php echo $resultado['nombre_cat']; ?></p>
-
+                                            
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-2 col-md-2 col-md-offset-0"><i class="fa fa-map-marker listado-ubicacion"></i> <?php echo $resultado['direccion']; ?></div>
-
+                                
+                                <?php 
+                          
+                                $fecha_i = $resultado['fecha'];
+                                $fecha_f = date("Y/m/d");
+                          
+                                $dias = (strtotime($fecha_i)-strtotime($fecha_f))/86400;
+                                $dias = abs($dias); $dias = floor($dias);		
+                                    
+                          
+                                ?>
                                 <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-3">
-                                    <p>Posteado hace 5 días</p>
+                                    <p><i class="fa fa-calendar" aria-hidden="true"></i> Hace <?php echo $dias; ?> días</p>
                                 </div>
 
                                 <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
@@ -279,7 +288,73 @@ include('php/conexion.php');
                      
                     </div>
                      
-                    <div role="tabpanel" class="tab-pane fade" id="valorados">...</div>
+                    <div role="tabpanel" class="tab-pane fade" id="valorados">
+                    <?php 
+                        //Consulta para sacar ultimos anuncios publicados
+                        $sql = "SELECT a.razon_soc, a.id_anuncio, a.direccion, a.imagen, a.categoria_id, a.valor_medio, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE id_anuncio = a.id_anuncio ORDER BY a.valor_medio DESC LIMIT 5";
+                        $query = $con->prepare($sql);
+                        $query->execute();
+                        if ($query->rowCount() > 0){
+                          while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
+                    ?>
+                            <div class="listado-anuncios">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="row">
+                                            <div class="col-xs-3">
+                                                <img class="img-rounded" src="images/anuncios/<?php echo $resultado['imagen']; ?>" alt="<?php echo $resultado['razon_soc']; ?>" width="100px">
+                                            </div>
+                                            <div class="col-xs-9">
+                                                <h3 class="listado-titulo"><a href="anuncio.php?id=<?php echo $resultado['id_anuncio']; ?>"><?php echo $resultado['razon_soc']; ?></a></h3>
+                                                <p class="listado-categoria"><i class="fa <?php echo $resultado['icono']; ?>"></i> <?php echo $resultado['nombre_cat']; ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-2 col-md-2 col-md-offset-0"><i class="fa fa-map-marker listado-ubicacion"></i> <?php echo $resultado['direccion']; ?></div>
+
+                                    <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-3">
+                                        <div class="valor_id-<?php echo $resultado['id_anuncio']; ?>" data-score="<?php echo $resultado['valor_medio'];?>"></div>
+                                        
+                                    </div>
+
+                                    <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
+                                         <div class="listado-favorito">
+
+                                    <?php
+
+                                  //Si el usuario está logueado
+                                  if (isset($id)){
+                                        $sql_fav = "SELECT * FROM favoritos WHERE usuario_id = :usuario_id AND anuncio_id = :anuncio_id";
+                                        $query_fav = $con->prepare($sql_fav);
+                                        $query_fav->execute(array(':usuario_id'=>$id, ':anuncio_id'=> $resultado['id_anuncio']));
+                                        $num_rows = $query_fav->fetchColumn();
+
+                                       ///Si el usuario tiene algun anuncio marcado como favorito lo marcamos en rojo
+                                        if ($num_rows > 0){
+                                            echo '<div id="heart'.$resultado['id_anuncio'].'" class="oneLine heart_icon on" rel="'.$id.'" data-toggle="tooltip" data-placement="right" title="Eliminar de mis favoritos"></div>';
+                                        } else {
+                                            echo '<div id="heart'.$resultado['id_anuncio'].'" class="oneLine heart_icon off" rel="'.$id.'" data-toggle="tooltip" data-placement="right" title="Añadir a mis favoritos"></div>';
+                                        }
+                                 } else {
+                                      echo '<div class="oneLine heart_icon off" data-toggle="tooltip" data-placement="right" title="¡Debes loguearte primero!"></div>';
+                                  }
+                                    ?>
+                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <script>
+                             $('.valor_id-<?php echo $resultado['id_anuncio']; ?>').raty({
+                      readOnly: true   
+                });
+                        </script>
+                    <?php  
+                          } // FIN while
+                        } //FIN if
+                    ?> 
+                    </div>
+                     
                     <div role="tabpanel" class="tab-pane fade" id="comentados">
                     <?php
                         //Consulta para sacar ultimos anuncios publicados
@@ -378,6 +453,8 @@ include('php/conexion.php');
 
             });  
     </script>
+        
+    
         
     <script type="text/javascript">
        $(".heart_icon").mouseout(function() {

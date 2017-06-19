@@ -22,6 +22,7 @@
         <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">  
         <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/hover.css">
         <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     </head>
 
@@ -55,7 +56,7 @@
 							<h4>Elige la categoría adecuada para el anuncio que buscas</h4>
 							<div class="icon_wrap"><i class="fa fa-search"></i></div>
 				    </div>
-                    <div class="col-md-12 text-center">
+                    <div class="col-md-12 text-center mg-bt-80">
                         <ul class="row clearfix">
             <?php
                 $sql = "SELECT categorias.*, subcategorias.* FROM categorias, subcategorias WHERE categorias.id_categoria = subcategorias.categoria_id ORDER BY categorias.nombre_cat ASC";
@@ -94,7 +95,7 @@
                                 
                              echo "<li class='col-lg-4 col-md-4 col-sm-6 col-xs-12'>";
                                  echo "<section class='lista-subcategorias'>
-                                        <div><i class='fa ".$categoria[3]."'></i>
+                                        <div><i class='fa ".$categoria[3]." hover-grow'></i>
                                         <a href='categoria.php?id=".$categoria[2]."'><span class='lista-categoria-titulo'>".$categoria[0]."</span></a>
                                         </div>";
                                
@@ -121,6 +122,14 @@
                         ?>
                         </ul>
                     </div>
+                    
+                    <div class="col-sm-12 mg-tp-40 mg-bt-40 text-center">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h4><i class="fa fa-exclamation-circle" aria-hidden="true"></i> ¿Echas en falta alguna categoría? Puedes proponerla enviándonos un mensaje a nuestro <a href="mailto:merideando@gmail.com">correo de contacto</a></h4>
+                        </div>
+                    </div>
+                </div>
                 </div>
             </div>
         </section>

@@ -3,7 +3,7 @@
 error_reporting(E_ALL ^ E_NOTICE);
 include "conexion.php";
 
-sleep(2);
+sleep(3);
 
 if(!empty($_POST)){
     

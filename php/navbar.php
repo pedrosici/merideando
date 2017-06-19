@@ -43,11 +43,14 @@
                       </ul>
                   </li>
               </ul>
-                
-              <ul class="nav navbar-nav navbar-center">
-                   <li class="text-center"><p class="navbar-btn"><a class="btn btn-default" href="panel_usuario.php"><i class="fa fa-plus-circle "></i> Crea tu anuncio</a></p>
-                  </li> 
-              </ul>   
+              <?php 
+                if ($current_page != "panel_usuario.php"){ ?>
+                    <ul class="nav navbar-nav navbar-center">
+                       <li class="text-center"><p class="navbar-btn"><a class="btn btn-default" href="panel_usuario.php"><i class="fa fa-plus-circle "></i> Crea tu anuncio</a></p>
+                      </li> 
+                   </ul>   
+              <?php  }  ?>
+              
                 
               <ul class="nav navbar-nav navbar-right">
                   <li class="<?php if ($current_page == "mapa_anuncios.php"){ echo "active"; } ?>"><a href="mapa_anuncios.php"><i class="fa fa-map" aria-hidden="true"></i> Mapa de Anuncios</a></li>

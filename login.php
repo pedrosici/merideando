@@ -37,8 +37,8 @@
                             <div class="col-md-12 col-xs-12">
 
                                 <div class="slider_text text-center" id="titulo_registro">
-                                    <h2 class="titulo">Inicia Sesión en Merideando</h2>
-                                     <p>Antes de publicar tu anuncio debes loguearte si ya tienes una cuenta de usuario registrada en Merideando </p>
+                                    <h2 class="titulo">Inicia Sesión</h2>
+                                     <p>Para crear y administrar tus anuncios, antes debes loguearte con tu cuenta de usuario de Merideando </p>
                                      <!---<a class="btn-light-bg " href="#">Purchase Now</a> -->
                                 </div>
                                 
@@ -75,7 +75,7 @@
                                     </div>
                                     <div class="form-group row">
                                           <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 mg-bt-40 text-center">
-                                              <button type="submit" id="login_btn" class="btn btn-primary">Iniciar Sesión</button>
+                                              <button type="submit" id="login_btn" class="btn btn-default">Iniciar Sesión</button>
                                          </div>
                                          <div id="checklogin"></div>
                                         

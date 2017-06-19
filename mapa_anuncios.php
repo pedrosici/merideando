@@ -8,7 +8,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1"> 
         <!-- Bootstrap -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="js/bootstrap.min.js">
+        
         <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">  
         <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/style.css">
@@ -16,6 +16,7 @@
         <link href="css/hover.css" rel="stylesheet" media="all"> 
        
          <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
         <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -36,17 +37,19 @@
         <div class="row">
             <div class="col-md-12 col-xs-12">
                 <div class="slider_text text-center">
-                    <h2 class="titulo-mapa">Mapa de Merideando</h2>
-                        <p class="subtitulo-mapa">Encuentra todos los anuncios publicados en nuestro mapa interactivo</p>
+                    <h2 class="titulo-mapa">
+                        <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-map fa-stack-1x fa-inverse"></i>
+                        </span> Mapa de Merideando
+                    </h2>
+                        
                                      <!---<a class="btn-light-bg " href="#">Purchase Now</a> -->
                 </div>
             </div>
-            
-            
-      
-      
         </div>
       </div>
+      
       <div id="map"></div>
 
       <!-- Incluimos el footer o pie de página -->       
@@ -59,10 +62,10 @@
    <script>
       var customLabel = {
         comybeb: {
-          label: 'R'
+           icon: { url: "images/markers/png/Food_4.png" }
         },
-        bar: {
-          label: 'B'
+        motor: {
+          icon: { url:"images/markers/png/Train_6.png"}
         }
       };
 
@@ -88,6 +91,8 @@
               var name = markerElem.getAttribute('name');
               var address = markerElem.getAttribute('address');
               var type = markerElem.getAttribute('type');
+              var enlace = markerElem.getAttribute('enlace');
+                
               var point = new google.maps.LatLng(
                   parseFloat(markerElem.getAttribute('lat')),
                   parseFloat(markerElem.getAttribute('lng')));
@@ -101,12 +106,21 @@
               var text = document.createElement('text');
               text.textContent = address
               infowincontent.appendChild(text);
-              var icon = customLabel[type] || {};
+                infowincontent.appendChild(document.createElement('br'));
+                
+              var a = document.createElement('a');
+                a.textContent = "Ver Anuncio"
+                a.href = enlace;
+                infowincontent.appendChild(a);
+                
+                
+              var icon = customLabel[type].icon || {};
+             
               var marker = new google.maps.Marker({
                 map: map,
                 animation: google.maps.Animation.DROP,
                 position: point,
-                label: icon.label
+               icon: icon.url
               });
               marker.addListener('click', function() {
                 infoWindow.setContent(infowincontent);

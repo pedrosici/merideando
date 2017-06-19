@@ -13,7 +13,7 @@ return $xmlStr;
 }
 
 // Select all the rows in the markers table
-$sql = "SELECT a.razon_soc, a.direccion, a.latitud, a.longitud,
+$sql = "SELECT a.id_anuncio, a.razon_soc, a.direccion, a.latitud, a.longitud,
         CASE c.id_categoria
         WHEN 2 THEN 'motor'
         WHEN 3 THEN 'profyemp'
@@ -48,6 +48,7 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)){
   echo 'lat="' . $row['latitud'] . '" ';
   echo 'lng="' . $row['longitud'] . '" ';
   echo 'type="' . $row['nombre_cat'] . '" ';
+  echo 'enlace="anuncio.php?id='. $row['id_anuncio'].'"';
   echo '/>';
 }
 

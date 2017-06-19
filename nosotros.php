@@ -59,7 +59,7 @@ include('php/conexion.php');
                         <div class="row">
                             <div class="col-md-12 col-xs-12">
 
-                                <div class="slider_text text-center">
+                                <div class="slider_text_nosotros text-center">
                                     <h2 class="titulo">Conoce Merideando</h2>
                                      <p>Somos el buscador referente en Mérida. Te enseñamos a darte a conocer en la ciudad </p>
                                      <!---<a class="btn-light-bg " href="#">Purchase Now</a> -->
@@ -98,7 +98,7 @@ include('php/conexion.php');
 							<div class="single_feature">
 								<i class="fa fa-database"></i>
 								<h4>Variedad de anuncios</h4>
-								<p>Disponemos de más de 10 <a href="categorias.php">categorías</a> diferentes y '.$resultado['cantidad'].' anuncios publicados hasta el momento, ¿A qué esperas para publicar el tuyo?</p>
+								<p>Disponemos de 7 <a href="categorias.php">categorías</a> diferentes y '.$resultado['cantidad'].' anuncios publicados hasta el momento,<br> ¿A qué esperas para publicar el tuyo?</p>
 							</div>
 						</div><!-- END COL -->';
                             }
@@ -134,7 +134,7 @@ include('php/conexion.php');
                     
                          <div class="col-md-4 wow fadeInLeft" data-wow-duration="1s" delay="0.2s" data-wow-offset="0">
                              <div class="single-address">
-                                <i class="fa fa-pencil-square-o"></i>
+                                <i class="fa fa-user"></i>
                                 <h4>Regístrate</h4>
                              </div>
                              <p>Necesitamos información sobre ti y tu negocio. Para registrarte, pincha en <a href="login.php">este enlace</a></p>
@@ -149,7 +149,7 @@ include('php/conexion.php');
                         </div>
                         <div class="col-md-4 wow fadeInLeft" data-wow-duration="1s" delay="0.2s" data-wow-offset="0">
                             <div class="single-address">
-                                <i class="fa fa-pencil-square-o"></i>
+                                <i class="fa fa-share"></i>
                                 <h4>Visualiza tu anuncio y compártelo</h4>
                             </div>
                             <p>Ya has publicado tu anuncio, es hora de que todos lo vean. Puedes compartirlo o ver el resto de anuncios relacionados con el tuyo</p>

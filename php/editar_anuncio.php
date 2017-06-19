@@ -38,6 +38,7 @@ if (isset($_POST['id'])){
             10 => $resultado['facebook'],
             11 => $resultado['imagen'],
             12 => $resultado['categoria_id'],
+            13 => $resultado['subcategoria_id'],
         );
         $response_array['status'] = 'success';    
         echo json_encode($anuncio);

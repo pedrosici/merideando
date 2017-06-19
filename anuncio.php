@@ -7,11 +7,16 @@ session_start();
 include('php/conexion.php');
 
 $sesion = false;
+// Comprobamos si el usuario inició sesión para permitirle comentar el anuncio
 if(isset($_SESSION["user_id"]) || $_SESSION["user_id"] != null){ $sesion = true; }
 
-
+//Obtenemos el id del anuncio pasada por parametro en la url
 $id_anuncio = $_GET['id'];
 
+$miga = '<ol class="breadcrumb">
+            <li><a href="index.php">Inicio</a></li>
+            <li class="active">'.$resultado['nombre_cat'].'</li>
+        </ol>';
 
 ?>
 
@@ -21,7 +26,7 @@ $id_anuncio = $_GET['id'];
         <!-- Meta -->
 		<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Merideando - Panel Admin.</title>
+        <title>Merideando</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1"> 
         <!-- Bootstrap -->
          
@@ -30,7 +35,11 @@ $id_anuncio = $_GET['id'];
         <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">  
         <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/style.css">
+        <link href="css/jquery.raty.css" rel="stylesheet">
         <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+          <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>  
+        <script src="js/jquery.raty.js"></script>
 
     </head>
 	<body>
@@ -41,19 +50,30 @@ $id_anuncio = $_GET['id'];
             
         <?php 
             // Consulta SQL
-            $sql = "SELECT a.razon_soc, a.cif, a.direccion, a.longitud, a.latitud, a.telefono, a.email, a.descripcion, a.web, a.twitter, a.facebook, a.instagram, a.imagen, a.likes, a.hates, c.nombre_cat, c.icono FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE a.id_anuncio = ?";
+            $sql = "SELECT a.*, c.*, COUNT(com.id_comentario) as num_comentarios, s.nombre_subcat, s.id_subcategoria FROM anuncios a INNER JOIN categorias c ON a.categoria_id = c.id_categoria INNER JOIN comentarios com ON a.id_anuncio = com.anuncio_id INNER JOIN subcategorias s ON a.subcategoria_id = s.id_subcategoria
+            WHERE a.id_anuncio = ?";
             $query = $con->prepare($sql);
             $query->execute(array($id_anuncio));
-            
+
             // Comprobamos existencia del anuncio
              if ($query->rowCount() > 0){
                 while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){ 
-                    //Posición ubicación anuncio
-                    $lat = $resultado['latitud'];
-                    $lng = $resultado['longitud']; ?>
-            
+                    $miga = '<ol class="breadcrumb">
+            <li><a href="index.php">Inicio</a></li>
+            <li><a href="categoria.php?id='.$resultado['id_categoria'].'">'.$resultado['nombre_cat'].'</a></li>
+            <li><a href="categoria.php?idsubcat='.$resultado['id_subcategoria'].'">'.$resultado['nombre_subcat'].'</a></li>
+            <li class="active">'.$resultado['razon_soc'].'</li>
+        </ol>';
+                //Posición ubicación anuncio
+                $lat = $resultado['latitud'];
+                $lng = $resultado['longitud']; ?>
+            <div class="col-md-12 mg-bt-40 text-center"><?php echo $miga; ?></div>
             <div class="col-md-4 mg-tp-40 mg-bt-40 text-center">
+                <div class="col-sm-12">
                     <img src="images/anuncios/<?php echo $resultado['imagen']; ?>" class="img-rounded" height="80">
+                </div>   
+                <div class="valor_id-<?php echo $id_anuncio; ?>" data-score="<?php echo $resultado['valor_medio'];?>"></div><span>(<?php echo $resultado['num_comentarios'];?> opiniones)</span>
+                
             </div>
              <div class="col-md-8 mg-tp-40 mg-bt-40 text-center ">						
                  <h2><?php echo $resultado['razon_soc']; ?></h2>
@@ -154,7 +174,7 @@ $id_anuncio = $_GET['id'];
 
         <div class="col-md-12 mg-bt-40">
             <div class="mg-bt-40 text-center">
-                <h3>Ubicación</h3>
+                <h3>Ubicación </h3><span><?php echo $resultado['direccion']; ?></span>
             </div>
             <div id="map"></div>
         </div>  
@@ -168,7 +188,7 @@ $id_anuncio = $_GET['id'];
             $resultado = $query->fetch(PDO::FETCH_ASSOC);
             //Comprobamos si existen resultados
             if ($query->rowCount() > 0){
-                echo '<h3>Opiniones del anuncio ('.$resultado['num_comentarios'].' opiniones)</h3>';
+                echo '<h3>Opiniones</h3> <span>(Mostrando '.$resultado['num_comentarios'].' comentarios de los 5 más recientes)</span>';
             }
             
         ?>
@@ -178,7 +198,7 @@ $id_anuncio = $_GET['id'];
             <div id="listaComentarios">
                 
         <?php
-            $sql = "SELECT u.nombre, c.* FROM comentarios c INNER JOIN usuarios u ON c.usuario_id = u.id WHERE c.anuncio_id = ?";
+            $sql = "SELECT u.nombre, c.* FROM comentarios c INNER JOIN usuarios u ON c.usuario_id = u.id WHERE c.anuncio_id = ? ORDER BY c.id_comentario DESC LIMIT 5";
             $query = $con->prepare($sql);
             $query->execute(array($id_anuncio));
                     
@@ -193,20 +213,29 @@ $id_anuncio = $_GET['id'];
                                 <div class="panel-body">
                                     <h3 class="panel-title">'.$resultado['titulo'].'</h3>
                                     <p>'.$resultado['comentario'].'</p>
-                                    <p style="float:right";><i class="fa fa-star" aria-hidden="true"></i> '.$resultado['valoracion'].'/5</p>
+                                    <div class="valoracion-'.$resultado['id_comentario'].'">
+                                    </div>
                                 </div>
                             </div>
                           </div>';
+                    ?>
+                
+                <!-- Metemos en el bucle el script para generar cada valoración de cada comentario -->
+                <script>
+                  $('.valoracion-<?php echo $resultado['id_comentario']; ?>').raty({
+                      readOnly: true,
+                      score: <?php echo $resultado['valoracion']; ?> 
+                });
+                </script>
+                
+               <?php 
                 }
             }
                 ?>
             
             </div>
         </div><!-- /col-sm-5 -->
-            
-            
-        
-            
+               
         <?php
             if ($sesion){ ?>
                 <div class="col-sm-6 col-sm-offset-3 text-center mg-tp-40 mg-bt-40">
@@ -227,26 +256,9 @@ $id_anuncio = $_GET['id'];
                                     <textarea id="comentario" name="comentario" class="form-control" rows="4" maxlength="300" placeholder="Escribe tu comentario acerca del anuncio" required></textarea>
                               </div>
                                 
-                              <div class="form-group col-sm-4 col-sm-offset-4 text-center">
-                                    <label for="valoracion">Valoración (0 a 5)</label>  
-<!--
-                                        <ul class="stars stars-24">
-                                            <li>1</li>
-                                            <li>2</li>
-                                            <li>3</li>
-                                            <li>4</li>
-                                            <li>5</li>
-                                        </ul>
--->
-                                   <select class="form-control" id="valoracion">
-                                       <option value="0">0 - Horrible</option>
-                                       <option value="1">1 - Insuficiente</option>
-                                       <option value="2">2 - No me convence</option>
-                                       <option value="3">3 - Aceptable</option>
-                                       <option value="4">4 - Notable</option>
-                                       <option value="5">5 - Sobresaliente</option>
-                                   </select>     
-                                   
+                              <div class="form-group col-sm-12 text-center">
+                                <label for="valoracion">Valoración</label> 
+                                  <div id="valoracion" data-number="5"></div>
                               </div>
                               <div class="form-group col-sm-10 col-sm-offset-1 text-center">
                                 <input type="checkbox" name="legal" id="legal" title="Debe aceptar las condiciones" required />
@@ -290,8 +302,6 @@ $id_anuncio = $_GET['id'];
     <!-- Incluimos el footer o pie de página -->       
       <?php include "php/footer.php"; ?>
         
-     <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
-     <script type="text/javascript" src="js/main.js"></script>   
      <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC516yYGBDQeQIHcm7W1KhWJ_NDL8iUT8s&callback=initMap">
     </script>  
@@ -310,6 +320,20 @@ $id_anuncio = $_GET['id'];
 	      }
         </script>
         
+         <script>
+            var valoracion = 0;
+
+                  $('.valor_id-<?php echo $id_anuncio; ?>').raty({
+                      readOnly: true   
+                });
+            
+            $('#valoracion').raty({
+              click: function(score, evt) {
+                valoracion = score;
+              }
+            });
+        </script>
+        
         <script>
             $(document).ready(function() {
             /*Obtenemos el evento Submit, este ejecuta cuando el usuario hace click al boton comentar
@@ -318,7 +342,8 @@ $id_anuncio = $_GET['id'];
                     var id_usuario = $("#autor_id").val();
                     var id_anuncio = $("#id_anuncio").val();
                     var titulo = $("#titulo").val();
-                    var valoracion = $("#valoracion option:selected").val();
+                    
+                    console.log(valoracion);
                     var comentario = $("#comentario").val();
                     
                     var cadena = '&id_anuncio='+id_anuncio+'&autor_id='+id_usuario+'&titulo='+titulo+'&comentario='+encodeURIComponent(comentario)+'&valoracion='+valoracion;

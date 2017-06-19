@@ -51,7 +51,7 @@ $(function() {
 
 //Funcion para las nuevas imágenes
 function editarAnuncio(id){
-    $('#formulario')[0].reset();
+   
     var url = '/merideando/php/editar_anuncio.php';
     $.ajax({
         type:'POST',
@@ -60,6 +60,8 @@ function editarAnuncio(id){
         success: function(valores){
             //Deseleccionamos el option del select que saldrá por defecto al editar un anuncio
              $('#id_cat option').attr("selected", false);
+             $('#subcat option').attr("selected", false);
+            
             //Evalúa un código JavaScript representado como una cadena de caracteres (string)
             var datos = JSON.parse(valores);
 
@@ -80,6 +82,8 @@ function editarAnuncio(id){
            
             //Seleccionamos por defecto la categoría del anuncio que deseamos editar
             $('#id_cat option[value=' + datos[12] + ']').attr('selected', true);
+            //Seleccionamos por defecto la subcategoría del anuncio que deseamos editar
+            $('#subcat option[value=' + datos[13] + ']').attr('selected', true);
         }
         
         
@@ -146,6 +150,16 @@ function setIdAnuncio(id){
     id_anuncio = id;
 }
 
+function setIdUsuario(id){
+    id_usuario = id;
+}
+
+function setIdComentario(id){
+    id_comentario = id;
+}
+
+
+
 function eliminarSeleccion(id){
     // Recorremos todos los valores
     $("#"+id+" option").each(function(){
@@ -162,8 +176,42 @@ function eliminarAnuncio(){
         data: 'id=' + id_anuncio,
         success: function(nuevo){
             $('#mis_anuncios').DataTable().ajax.reload();
+            $('#all_anuncios').DataTable().ajax.reload();
             $('#mensaje').addClass('alert alert-success alert-dismissible mg-bt-40 text-center').html('<h4>Anuncio eliminado con exito</h4>').show(200).delay(3000).hide(200);
+            $('#mensaje-anuncio').addClass('alert alert-success alert-dismissible mg-bt-40 text-center').html('<h4>Anuncio eliminado con exito</h4>').show(200).delay(3000).hide(200);
 			$('#agrega-anuncio').html(nuevo);
+			return false;
+        }
+        });
+    return false;
+}
+
+function eliminarComentario(){
+    var url = '/merideando/php/eliminar_comentario.php';
+       $.ajax({
+        type:'POST',
+        url: url,
+        data: 'id=' + id_comentario,
+        success: function(nuevo){
+            $('#all_comentarios').DataTable().ajax.reload();
+            $('#mensaje-coment').addClass('alert alert-success alert-dismissible mg-bt-40 text-center').html('<h4>Comentario eliminado con exito</h4>').show(200).delay(3000).hide(200);
+			
+			return false;
+        }
+        });
+    return false;
+}
+
+function eliminarUsuario(){
+    var url = '/merideando/php/eliminar_usuario.php';
+       $.ajax({
+        type:'POST',
+        url: url,
+        data: 'id=' + id_usuario,
+        success: function(nuevo){
+            $('#all_usuarios').DataTable().ajax.reload();
+            $('#mensaje-user').addClass('alert alert-success alert-dismissible mg-bt-40 text-center').html('<h4>Usuario eliminado con exito</h4>').show(200).delay(3000).hide(200);
+			
 			return false;
         }
         });

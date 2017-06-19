@@ -14,10 +14,14 @@ if (isset($_POST['id_categoria'])){
     $query->execute(array($id_subcat));
    
     $indice = "<option value=0>Todas las subcategorías</option>";
-    echo $indice;
+   
     
     if ($query->rowCount() > 0 ){
+        echo $indice;
         while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
+            if ($resultado['id_subcategoria'] == $_GET['idsubcat']){
+                echo '<option selected value="'.$resultado['id_subcat'].'">'.$resultado['nombre_subcat'].'</option>';
+            }
             $html = "<option value='".$resultado['id_subcategoria']."'>".$resultado['nombre_subcat']."</option>";
             echo $html;
         }
@@ -37,7 +41,7 @@ if (isset($_FILES['logo']['type'])){
         
         $ruta = $_FILES['logo']['tmp_name'];
     //  Ruta de la carpeta donde se guarda la imagen
-        $target = $_SERVER['DOCUMENT_ROOT'].'/merideando/images/'.$_FILES['logo']['name'];
+        $target = $_SERVER['DOCUMENT_ROOT'].'/merideando/images/anuncios/'.$_FILES['logo']['name'];
     //  Movemos imagen de la carpeta temporal a la carpeta especificada en destino
         move_uploaded_file($ruta, $target);
     }
