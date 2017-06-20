@@ -1,19 +1,36 @@
 /*
 
-Hoja de estilos principal
+Hoja de estilos principal Merideando
 Autor:  Pedro Sicilia Marcelo
 
 
-/*=========================================
+/*===============================================================================================
             ÍNDICE CSS
 
     1. Estilos generales (body, links, márgenes de secciones, títulos, formatos de texto.. etc)
-    2. 
-    
-*/
+    2. Márgenes de contenido
+    3. Presentación y página INDEX
+    4. Navbar
+    5. Sección Nosotros
+    6. Footer
+    7. Iconos de redes sociales (anuncio y footer)
+    8. Ventanas Modales
+    9. Contenedores de anuncios
+    10. Estilos de tablas
+    11. Mapa de Google Maps
+    12. Buscador Index
+    13. Estilos del Login y Registro de usuarios
+    14. Valoraciones
+    15. Estilos para las categorías
+    16. Efectos pulse para los iconos fa awesome
+    17. Listados de anuncios
+    18. Estilos para marcar favoritos
+    19. Estilos del Panel de Administración
+
+================================================================================================*/
 
 
-/* -------------- ESTILOS PRINCIPALES ---------------- */
+/* -------------- 1. ESTILOS GENERALES ---------------- */
 
 body {
 background-color: #fff;
@@ -50,7 +67,7 @@ ul, ul li{
 }
 
 
-/* ---------------- MÁRGENES DE CONTENIDO ---------------------- */
+/* ---------------- 2. MÁRGENES DE CONTENIDO ---------------------- */
 
 .mg-bt-80 {
     margin-bottom: 80px;
@@ -73,7 +90,7 @@ ul, ul li{
 }
 
 
-/* ---------------- PRESENTACION ----------------- */ 
+/* ---------------- 3. PRESENTACIÓN Y PÁGINA INDEX ----------------- */ 
 .titulo {
     color:white;
     font-family: 'Lobster', cursive;
@@ -138,8 +155,6 @@ ul, ul li{
 }
 
 
-   
-
 .single_welcome p {
 color: #333;
 font-family: "Berkshire Swash",sans-serif;
@@ -194,7 +209,8 @@ line-height: 36px;
     top: 50%;
 }
 
-/* ----- NAVBAR --------*/
+/* ----------------- 4. NAVBAR -------------------*/
+
 .navbar-brand{
     font-size: 30px;
     margin-top: -20px;
@@ -290,7 +306,7 @@ line-height: 36px;
     background-color: #f8f8f8;
     border-color: #787878;
 }
-/* -------------- NOSOTROS ---------------- */
+/* -------------- 5. SECCIÓN NOSOTROS ---------------- */
 
 .fondo {
     background: #f3f3f3 none repeat scroll 0 0;
@@ -332,7 +348,6 @@ line-height: 36px;
  -webkit-transition: all 0.6s ease-out 0s;
    transition: all 0.6s ease-out 0s;}
 .single_feature:hover p{color:#fff;}
-/* ---------------- ANUNCIATE ---------------------*/
 
 .single-address { margin-bottom: 20px }
 .single-address i {
@@ -347,7 +362,7 @@ line-height: 36px;
     text-align: center;
     width: 60px;
 }
-/* ---------------- FOOTER ------------------------ */
+/* ---------------- 6. FOOTER ------------------------ */
 .full {
     width: 100%;    
 }
@@ -438,7 +453,8 @@ line-height: 36px;
     list-style: none;
 }
 
-/* ICONOS REDES SOCIALES */
+/*-------------- 7. ICONOS REDES SOCIALES (ANUNCIOS Y FOOTER) -----------------------*/
+
 .icon-circle .fa{
     font-size           : 25px;
     color               : #e84700;
@@ -573,7 +589,6 @@ line-height: 36px;
 
 }
 
-/* ICONOS REDES SOCIALES FOOTER */
 .social li {
 	
 	border: 2px solid #B5B5B5;
@@ -639,7 +654,7 @@ line-height: 36px;
 	font-size: 1.5em;	
 }
 
-/** MODAL **/
+/* -------------------- 8. VENTANAS MODALES ---------------------------*/
 
 .modal-footer{
     background:#e7e7e7;
@@ -659,7 +674,7 @@ line-height: 36px;
     overflow-y: auto;
 }
 
-/*----- CONTENEDORES -----*/
+/*-------------------- 9. CONTENEDORES DE ANUNCIOS --------------------*/
 .wrapper{
     clear:both;
     display:block;
@@ -691,7 +706,7 @@ line-height: 36px;
     vertical-align: top;
     margin-top: 5px;
 }
-/** TABLAS **/
+/*---------------- 10. ESTILOS DE TABLAS -------------------------------------*/
 
 .registros{
     padding-bottom:100px;
@@ -703,14 +718,14 @@ line-height: 36px;
 
 
 
-/* --- GOOGLE MAPS ---*/
+/* ------------- 11. MAPA DE GOOGLE MAPS ----------------------------------------*/
 
 #map {
         height: 200px;
         width: 100%;
        }
 
-/* ----- BUSCADOR ----*/
+/* ----------- 12. BUSCADOR INDEX ------------------------------------------------*/
 
 .form-control-merid {
     display: block;
@@ -779,7 +794,7 @@ line-height: 36px;
             border: 0;
         }
 
-/*----- Login y Registro ---*/
+/*-------------- 13. ESTILOS DEL LOGIN Y REGISTRO DE USUARIOS ---------------*/
 
 .aviso-error {
     color: darkred;
@@ -801,7 +816,7 @@ line-height: 36px;
     border-radius: 4px
 }
 
-/*----- VALORACIONES ---*/
+/*----- 14. VALORACIONES ---*/
 
 .stars{list-style:none;position:relative;margin:0;padding:0}
 	.voted{cursor:default !important}
@@ -826,7 +841,7 @@ line-height: 36px;
 		
 .stars span{float:left;font-size:11px;padding:2px 0 0 0;text-align:center;font-family:sans-serif;width:100%}
 
-/* CATEGORIAS */
+/*-------------- 15. ESTILOS PARA LAS CATEGORIAS -----------------------*/
 .item-categoria{
     
     position: relative;
@@ -894,34 +909,6 @@ line-height: 36px;
     transition-property: transform;
 }
 
-/* Icon Pulse Grow */
-@-webkit-keyframes hvr-icon-pulse-grow {
-to {
--webkit-transform: scale(1.3);
-transform: scale(1.3);
-}
-}
-@keyframes hvr-icon-pulse-grow {
-to {
--webkit-transform: scale(1.3);
-transform: scale(1.3);
-}
-}
-
-.hvr-icon-pulse-grow:before {
-content: "\f055";
-position: absolute;
-right: 1em;
-padding: 0 1px;
-font-family: FontAwesome;
--webkit-transform: translateZ(0);
-transform: translateZ(0);
--webkit-transition-timing-function: ease-out;
-transition-timing-function: ease-out;
-}
-
-
-
 .lista-subcategorias{
     margin: 0 0 30px 0;
 }
@@ -960,6 +947,33 @@ transition-timing-function: ease-out;
     margin: 0 0 0 15px;
     color: #333;
 }
+
+/* ------------- 16. EFECTOS PULSE DE MOVIMIENTO ICONOS FA AWESOME ---------- */
+@-webkit-keyframes hvr-icon-pulse-grow {
+to {
+-webkit-transform: scale(1.3);
+transform: scale(1.3);
+}
+}
+@keyframes hvr-icon-pulse-grow {
+to {
+-webkit-transform: scale(1.3);
+transform: scale(1.3);
+}
+}
+
+.hvr-icon-pulse-grow:before {
+content: "\f055";
+position: absolute;
+right: 1em;
+padding: 0 1px;
+font-family: FontAwesome;
+-webkit-transform: translateZ(0);
+transform: translateZ(0);
+-webkit-transition-timing-function: ease-out;
+transition-timing-function: ease-out;
+}
+
 .hover-grow:hover,
 .hover-grow:focus,
 .hover-grow:active {
@@ -1005,7 +1019,7 @@ transition-timing-function: ease-out;
   color: white;
 }
 
-/*------ LISTADO ANUNCIOS --------------*/
+/*---------------- 17. LISTADO ANUNCIOS --------------*/
 
 .btn-default {
     color: #fff;
@@ -1051,7 +1065,7 @@ transition-timing-function: ease-out;
 .listado-favorito{
     text-align:right;
 }
-/* --------- FAVORITOS ---- */
+/* --------- 18. ESTILOS PARA MARCAR FAVORITOS --------------- */
 
 .heart_icon {
 		background: url("../images/twitter-heart-button.png");
@@ -1140,7 +1154,7 @@ a .fav:visited{
  right:50%;
 }
 
-/* --------- PANEL ADMIN ----------*/
+/* --------- 19 ESTILOS DEL PANEL DE ADMINISTRADOR ----------*/
 
 .card {
     overflow: hidden;

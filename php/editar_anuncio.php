@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL ^ E_NOTICE);
 
 // crear_anuncio.php 
 
@@ -92,38 +93,18 @@ if (isset($_POST['razon'])){
      $sql = "UPDATE anuncios SET razon_soc = :razon_soc , cif = :cif, direccion = :direccion, latitud = :latitud, longitud = :longitud, telefono = :telefono, email = :email, descripcion = :descripcion, categoria_id = :categoria_id, web = :web, instagram = :instagram ,twitter = :twitter, facebook = :facebook, imagen = :imagen WHERE id_anuncio = :id_anuncio";
     $query = $con->prepare($sql);
     $query->execute(array(":razon_soc"=>$razon, ":cif"=>$cif, ":direccion"=>$direccion, ":latitud"=>$lat, ":longitud"=>$lng, ":telefono"=>$telefono, ":email"=>$email, ":descripcion"=>$descripcion,":categoria_id"=>$id_categoria, ":web"=>$web, ":twitter"=>$twitter, ":instagram"=>$instagram, ":facebook"=>$facebook, ":imagen"=>$imagen, ":id_anuncio"=>$id_anuncio));
-   
-    //Actualizamos los registros de nuestra BD
+    
+   header('Content-type: application/json');
+    if ($query != null){
+            $mensaje = "<div class='alert alert-success alert-dismissible mg-bt-40 text-center'><i class='fa fa-check'></i> ¡Enhorabuena! El anuncio ha sido editado correctamente</div>";
+            echo json_encode($mensaje);
 
-     $sql = "SELECT a.id_anuncio, a.razon_soc, a.email, a.imagen, a.likes, c.nombre_cat FROM anuncios a INNER JOIN categorias c on a.categoria_id = c.id_categoria WHERE a.usuario_id = ? ";
-     $query = $con->prepare($sql);
-     $query->execute(array($id_usuario));
-    //Creamos la vista y la devolvemos al AJAX
+        }
+        else{
+            $mensaje = "<div class='col-md-12 aviso aviso-error text-center'><i class='fa fa-close'></i> Ocurrió un error en la edición del anuncio. Por favor, inténtelo de nuevo.</div>";
+            echo json_encode($mensaje);
 
-    if ($query->rowCount() > 0 ){
-        while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
-            echo '<table class="table table-striped table-condensed table-hover table-bordered text-center">
-              <tr>
-                 <th width="150">Razón social</th>
-                  <th width="50">Logo</th>
-                  <th width="50">Categoría</th>
-                  <th width="25">Votos</th>
-                  <th width="50">Enlace</th>
-                  <th width="50">Acción</th>
-                </tr>
-                <tr>
-                   <td>'.$resultado['razon_soc'].'</td>
-                   <td><img src="images/'.$resultado['imagen'].'" height="50"/></td>
-                   <td>'.$resultado['nombre_cat'].'</td>
-                   <td>'.$resultado['likes'].'</td>
-                   <td><a href="anuncio.php?id='.$resultado['id_anuncio'].'" target="_blank"><i class="fa fa-link fa-2x" aria-hidden="true"></i></a>
-                    <td><a href="#editar-anuncio" class="fa fa-pencil fa-2x" data-toggle="modal" onClick="editarAnuncio('.$resultado['id_anuncio'].');" title="Editar Anuncio"></a> <a href="#eliminar-anuncio" data-toggle="modal" class="fa fa-trash fa-2x" title="Eliminar anuncio"></a></td>
-                  </tr>
-                  </table>';    
-        }  
-    } else {  
-        echo '<div class="slider_text text-center"><h3>No tienes ningún anuncio creado todavía</h3></div>';
-    }
+        }
 
 }
 

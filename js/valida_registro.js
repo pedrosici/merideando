@@ -16,11 +16,13 @@ jQuery(document).on('submit', '#registro_form', function(event){
         
         if (respuesta.success){
              $("#registro_btn").html("Crear mi cuenta");
-             $("#checkregistro").html("<div class='col-md-12 aviso aviso-exito text-center'><i class='fa fa-check'></i> Usted ya es nuevo usuario de Merideando. Proceda a loguearse.</div>"); 
+             $("#checkregistro").html("<div class='col-md-12 aviso aviso-exito text-center'><i class='fa fa-check'></i> ¡Usted ya es nuevo usuario de Merideando!. Proceda a loguearse.</div>"); 
+            $("#registro_form")[0].reset();
             
         } else {
            $("#registro_btn").html("Crear mi cuenta");
            $("#checkregistro").html("<div class='col-md-12 aviso aviso-error text-center'><i class='fa fa-close'></i> Error en el registro. El nombre de usuario o el correo electrónico están ya en uso.</div>"); 
+           
         }
         
         

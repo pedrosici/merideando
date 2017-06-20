@@ -13,9 +13,11 @@ $(document).ready(function (e) {
         cache: false,             // To unable request pages to be cached
         processData:false,        // To send DOMDocument or non processed data file it is set to false
         success: function(nuevo){   // A function to be called if request succeeds
-                $('#mensaje').addClass('alert alert-success alert-dismissible mg-bt-40 text-center').html('<h4>¡Anuncio creado con exito!</h4>').show(200).delay(3000).hide(200);
-			    $('#mis_anuncios').DataTable().ajax.reload();
-                
+           
+            $('#crear-anuncio').modal('hide');
+            $('#mensaje').html(nuevo).show(200).delay(3000).hide(200);
+            $('#mis_anuncios').DataTable().ajax.reload();
+            $('#formulario')[0].reset();
 			return false;
         }
     });
@@ -70,7 +72,6 @@ function editarAnuncio(id){
             $('#nif').val(datos[1]);
             $('#direc').val(datos[2]);
             $('#phone').val(datos[3]);
-            console.log($('#phone').val(datos[3]));
             $('#email').val(datos[4]);
             $('#descrip').val(datos[5]);
             $('#url').val(datos[6]);
@@ -104,10 +105,14 @@ $(document).ready(function (e) {
         cache: false,             // To unable request pages to be cached
         processData:false,        // To send DOMDocument or non processed data file it is set to false
         success: function(nuevo){   // A function to be called if request succeeds
-                $('#mensaje').addClass('alert alert-success alert-dismissible mg-bt-40 text-center').html('<h4>¡Anuncio editado con éxito!</h4>').show(200).delay(3000).hide(200);
-			    $('#agrega-anuncio').html(nuevo);
+            $('#editar-anuncio').modal('hide');
+            $('#mensaje').html(nuevo).show(200).delay(3000).hide(200);
+            $('#mensaje-anuncio').html(nuevo).show(200).delay(3000).hide(200);
+            $('#mis_anuncios').DataTable().ajax.reload();
+            $('#all_anuncios').DataTable().ajax.reload();
+            $('#formulario')[0].reset();
 			return false;
-                return false;
+           
         }
     });
     }));

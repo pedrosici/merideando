@@ -27,6 +27,7 @@ if(!empty($_POST)){
     
     if ($num_filas > 0){
         $jsondata['success'] = false;
+        echo json_encode($jsondata);
         
     } else if ($num_filas == 0){
         //Insertamos el registro del nuevo usuario
@@ -34,14 +35,12 @@ if(!empty($_POST)){
         $query->execute(array('nombre'=>$nombre, 'usuario'=>$usuario, 'email'=>$email, 'password'=>$sha1_pass));
         
         $jsondata['success'] = true;
+        echo json_encode($jsondata);
         
     }
     
     
-	 //Aunque el content-type no sea un problema en la mayoría de casos, es recomendable especificarlo
-    header('Content-type: application/json; charset=utf-8');
-    echo json_encode($jsondata);
-    exit();
+    
 }
 
 

@@ -14,11 +14,13 @@
         $query->execute(array($id_cat));
         $resultado = $query->fetch(PDO::FETCH_ASSOC);
         
-        $miga = '<ol class="breadcrumb">
+        $miga = '<div class="col-xs-12 mg-bt-40">
+                <ol class="breadcrumb">
                     <li><a href="index.php">Inicio</a></li>
                     <li><a href="categorias.php">Categorias</a></li>
                     <li class="active">'.$resultado['nombre_cat'].'</li>
-                </ol>';
+                </ol>
+                </div>';
     }
     else if (isset($_GET['idsubcat'])){
         $id_subcat = $_GET['idsubcat'];
@@ -28,12 +30,14 @@
         $query->execute(array($id_subcat));
         $resultado = $query->fetch(PDO::FETCH_ASSOC);
         
-        $miga = '<ol class="breadcrumb">
+        $miga = '<div class="col-xs-12 mg-bt-40">
+                <ol class="breadcrumb">
                     <li><a href="index.php">Inicio</a></li>
                     <li><a href="categorias.php">Categorias</a></li>
                     <li><a href="categoria.php?id='.$resultado['id_categoria'].'">'.$resultado['nombre_cat'].'</a></li>
                     <li class="active">'.$resultado['nombre_subcat'].'</li>
-                </ol>';
+                </ol>
+                </div>';
     }
         
    
@@ -83,11 +87,11 @@
     <div id="demo">
         <section class="main container-fluid mg-bt-40"> 
             <div class="col-sm-2 col-md-2 mg-tp-40 text-center pull-left">
-                <div class="section_title mg-bt-40">
+                <div class="col-xs-12 section_title mg-bt-40">
                     <h4>CATEGORÍAS</h4>
                 </div>
         <!-- Script php para las categorias -->
-                <div class="mg-bt-40">     
+                <div class="col-xs-12 mg-bt-40">     
                     <select class="form-control" name="categoria" id="categoria"> 
                     <?php
                         if (isset($id_cat)){
@@ -120,19 +124,19 @@
                         ?>
                     </select>
                 </div>     
-                <div class="section_title text-center mg-bt-40">
+                <div class="col-xs-12 section_title text-center mg-bt-40">
                     <h4>SUBCATEGORÍAS</h4>
                 </div>
-                <div class="mg-bt-40">
+                <div class="col-xs-12 mg-bt-40">
                     <select class="form-control" name="subcategoria" id="subcategoria">
                         <option value="0">Todas las subcategorías</option>
                     </select>
                 </div>
                 
-                 <div class="section_title text-center mg-bt-40">
+                 <div class="col-xs-12 section_title text-center mg-bt-40">
                     <h4>FILTROS</h4>
                 </div>
-                <div class="mg-bt-40">
+                <div class="col-xs-12 mg-bt-40">
                     <!-- panel -->
                <div class="jplist-panel">						
 
@@ -200,7 +204,7 @@
             </div>
         </div>
 
-        <section class="col-sm-8 col-sm-offset-1 col-md-8 col-md-offset-1 mg-tp-40 mg-bt-80">     
+        <section class="col-xs-12 col-sm-8 col-sm-offset-1 col-md-8 col-md-offset-1 mg-tp-40 mg-bt-80">     
         <?php
             if (isset($id_cat)){
                 // Consulta SQL
@@ -216,7 +220,7 @@
                     <div class="list-item">
                     <div class="listado-anuncios">
                         <div class="row">
-                            <div class="col-sm-12 col-md-6">
+                            <div class="col-xs-9 col-sm-12 col-md-6">
                                 <div class="row">
                                     <div class="col-xs-3">
                                         <img class="img-thumbnail" src="images/anuncios/<?php echo $resultado['imagen']; ?>" alt="<?php echo $resultado['razon_soc']; ?>">
@@ -228,9 +232,9 @@
                                 </div>
                             </div>
                             
-                            <div class="col-xs-10 col-xs-offset-2 col-sm-6 col-md-3 col-md-offset-0"><i class="fa fa-map-marker listado-ubicacion"></i> <?php echo $resultado['direccion']; ?></div>
+                            <div class="hidden-xs col-sm-6 col-md-3 col-md-offset-0"><i class="fa fa-map-marker listado-ubicacion"></i> <?php echo $resultado['direccion']; ?></div>
                             
-                            <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-2">
+                            <div class="hidden-xs col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-2">
                                 <?php
                                     if ($resultado['num_comentarios'] == 0){
                                         echo '<p><i class="fa fa-comment-o" aria-hidden="true"></i> <span class="comentarios">¡Sé el primero!</span></p>';
@@ -242,7 +246,7 @@
                                 ?>
                             </div>
                             <div class="hidden fecha"><?php echo $resultado['fecha'];?></div>
-                            <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
+                            <div class="col-xs-3 col-sm-2 col-sm-offset-0 col-md-1">
                                 <div class="listado-favorito">
                                     <?php
                               

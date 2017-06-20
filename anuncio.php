@@ -70,9 +70,9 @@ $miga = '<ol class="breadcrumb">
             <div class="col-md-12 mg-bt-40 text-center"><?php echo $miga; ?></div>
             <div class="col-md-4 mg-tp-40 mg-bt-40 text-center">
                 <div class="col-sm-12">
-                    <img src="images/anuncios/<?php echo $resultado['imagen']; ?>" class="img-rounded" height="80">
+                    <img src="images/anuncios/<?php echo $resultado['imagen']; ?>" class="img-rounded" height="120">
                 </div>   
-                <div class="valor_id-<?php echo $id_anuncio; ?>" data-score="<?php echo $resultado['valor_medio'];?>"></div><span>(<?php echo $resultado['num_comentarios'];?> opiniones)</span>
+                
                 
             </div>
              <div class="col-md-8 mg-tp-40 mg-bt-40 text-center ">						
@@ -121,17 +121,17 @@ $miga = '<ol class="breadcrumb">
         </div>
         <div class="col-md-4 mg-bt-80">
             <div class="mg-bt-40 text-center">
-                <h3>Horario Laboral</h3>
+                <h3>Estadísticas del anuncio</h3>
             </div>
             
             <table class="table table-striped table-condensed table-hover">
                 <tr>
-                    <th>Dias laborales</th>
-                    <th>Fin de Semana</th>
+                    <th><i class="fa fa-star-o" aria-hidden="true"></i> Valoración Media</th>
+                    <th><div class="valor_id-<?php echo $id_anuncio; ?>" data-score="<?php echo $resultado['valor_medio'];?>"></div></th>
                 </tr>
                 <tr>
-                    <td>10:00 AM - 20:30 PM</td>
-                    <td>11:30 AM - 18:00 PM</td>
+                    <td><i class="fa fa-comments-o" aria-hidden="true"></i> Opiniones de clientes</td>
+                    <td><span><?php echo $resultado['num_comentarios'];?> opiniones</span></td>
                 </tr>
             </table>
         </div>

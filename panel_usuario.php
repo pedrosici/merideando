@@ -59,7 +59,7 @@ else{
             if ($resultado = $query->fetch(PDO::FETCH_ASSOC)){        
             ?>
             <div class="row mg-bt-40">
-                <div class="col-xs-4">
+                <div class="col-xs-12 col-sm-4">
                     <div class="card card-inverse card-success">
                         <div class="card-block bg-success">
                             <div class="rotate">
@@ -70,7 +70,7 @@ else{
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-xs-12 col-sm-4">
                     <div class="card card-inverse card-info">
                         <div class="card-block bg-info">
                             <div class="rotate">
@@ -81,7 +81,7 @@ else{
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-xs-12 col-sm-4">
                     <div class="card card-inverse card-danger">
                         <div class="card-block bg-danger">
                             <div class="rotate">
@@ -101,7 +101,7 @@ else{
             
     ?>
             
-            <div class="col-md-12 mg-bt-80" role="tablist">
+            <div class="col-xs-12 mg-bt-80" role="tablist">
                 <ul id="tabs" class="nav nav-tabs">
                     <li role="presentation" class="active"><a href="#anuncios" role="tab" data-toggle="tab">
                         <span class="fa-stack fa-lg">
@@ -331,7 +331,7 @@ else{
                                                 </div>
                                                   
                                                 <div class="row">
-                                                    <div class="col-xs-4">
+                                                    <div class="col-xs-12 col-sm-4">
                                                         <div class="card card-inverse card-success">
                                                             <div class="card-block bg-success">
                                                                 <div class="rotate">
@@ -342,7 +342,7 @@ else{
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-xs-4">
+                                                    <div class="col-xs-12 col-sm-4">
                                                         <div class="card card-inverse card-info">
                                                             <div class="card-block bg-info">
                                                                 <div class="rotate">
@@ -353,7 +353,7 @@ else{
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-xs-4">
+                                                    <div class="col-xs-12 col-sm-4">
                                                         <div class="card card-inverse card-danger">
                                                             <div class="card-block bg-danger">
                                                                 <div class="rotate">
@@ -612,7 +612,7 @@ else{
                    <div class="modal-footer">
                         <p style="float:left;">* Campos Obligatorios</p>
                         <button type="submit" name="submit" class="btn btn-success" id="crear">Crear anuncio</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button type="button" id="close_btn" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                    </div>
                 </form>
               </div>
@@ -826,8 +826,9 @@ else{
                     $("#categoria option:selected").each(function(){
                         //Guardamos la seleccion de la categoria
                         id_cat = $(this).val();
+                        console.log(id_cat);
                         //Llamamos al archivo que manda el id de la subcategoría
-                        $.post("php/crear_anuncio.php", {id_categoria: id_cat}, function(data){
+                        $.post("php/llenar_combo_cat.php", {id_categoria: id_cat}, function(data){
                             //Le devolvemos ese id_subcat al option del combobox de subcategorias
                             $("#subcategoria").html(data);
                             
@@ -848,7 +849,7 @@ else{
                         //Guardamos la seleccion de la categoria
                         id_cat = $(this).val();
                         //Llamamos al archivo que manda el id de la subcategoría
-                        $.post("php/crear_anuncio.php", {id_categoria: id_cat}, function(data){
+                        $.post("php/llenar_combo_cat.php", {id_categoria: id_cat}, function(data){
                             //Le devolvemos ese id_subcat al option del combobox de subcategorias
                             $("#subcat").html(data);
                             

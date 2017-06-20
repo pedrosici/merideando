@@ -225,7 +225,7 @@ include('php/conexion.php');
                        ?>   
                         <div class="listado-anuncios">
                             <div class="row">
-                                <div class="col-sm-12 col-md-6">
+                                <div class="col-xs-9 col-sm-12 col-md-6">
                                     <div class="row">
                                         <div class="col-xs-3">
                                             <img class="img-rounded" src="images/anuncios/<?php echo $resultado['imagen']; ?>" alt="<?php echo $resultado['razon_soc']; ?>" width="100px">
@@ -238,7 +238,7 @@ include('php/conexion.php');
                                     </div>
                                 </div>
 
-                                <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-2 col-md-2 col-md-offset-0"><i class="fa fa-map-marker listado-ubicacion"></i> <?php echo $resultado['direccion']; ?></div>
+                                <div class="hidden-xs col-sm-4 col-sm-offset-2 col-md-2 col-md-offset-0"><i class="fa fa-map-marker listado-ubicacion"></i> <?php echo $resultado['direccion']; ?></div>
                                 
                                 <?php 
                           
@@ -250,11 +250,11 @@ include('php/conexion.php');
                                     
                           
                                 ?>
-                                <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-3">
+                                <div class="hidden-xs col-sm-4 col-sm-offset-0 col-md-3">
                                     <p><i class="fa fa-calendar" aria-hidden="true"></i> Hace <?php echo $dias; ?> días</p>
                                 </div>
 
-                                <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
+                                <div class="col-xs-3 col-sm-2 col-sm-offset-0 col-md-1">
                                      <div class="listado-favorito">
                                 <?php
                               
@@ -299,7 +299,7 @@ include('php/conexion.php');
                     ?>
                             <div class="listado-anuncios">
                                 <div class="row">
-                                    <div class="col-sm-12 col-md-6">
+                                    <div class="col-xs-9 col-sm-12 col-md-6">
                                         <div class="row">
                                             <div class="col-xs-3">
                                                 <img class="img-rounded" src="images/anuncios/<?php echo $resultado['imagen']; ?>" alt="<?php echo $resultado['razon_soc']; ?>" width="100px">
@@ -311,14 +311,14 @@ include('php/conexion.php');
                                         </div>
                                     </div>
 
-                                    <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-2 col-md-2 col-md-offset-0"><i class="fa fa-map-marker listado-ubicacion"></i> <?php echo $resultado['direccion']; ?></div>
+                                    <div class="hidden-xs  col-sm-4 col-sm-offset-2 col-md-2 col-md-offset-0"><i class="fa fa-map-marker listado-ubicacion"></i> <?php echo $resultado['direccion']; ?></div>
 
-                                    <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-3">
+                                    <div class="col-xs-3 col-sm-4 col-sm-offset-0 col-md-3">
                                         <div class="valor_id-<?php echo $resultado['id_anuncio']; ?>" data-score="<?php echo $resultado['valor_medio'];?>"></div>
                                         
                                     </div>
 
-                                    <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
+                                    <div class="col-xs-3  col-sm-2 col-sm-offset-0 col-md-1">
                                          <div class="listado-favorito">
 
                                     <?php
@@ -367,7 +367,7 @@ include('php/conexion.php');
                     ?>   
                             <div class="listado-anuncios">
                             <div class="row">
-                                <div class="col-sm-12 col-md-6">
+                                <div class="col-xs-9 col-sm-12 col-md-6">
                                     <div class="row">
                                         <div class="col-xs-3">
                                             <img class="img-rounded" src="images/anuncios/<?php echo $resultado['imagen']; ?>" alt="<?php echo $resultado['razon_soc']; ?>" width="100px">
@@ -379,13 +379,13 @@ include('php/conexion.php');
                                     </div>
                                 </div>
 
-                                <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-2 col-md-2 col-md-offset-0"><i class="fa fa-map-marker listado-ubicacion"></i> <?php echo $resultado['direccion']; ?></div>
+                                <div class="hidden-xs col-sm-4 col-sm-offset-2 col-md-2 col-md-offset-0"><i class="fa fa-map-marker listado-ubicacion"></i> <?php echo $resultado['direccion']; ?></div>
 
-                                <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-3">
+                                <div class="col-xs-3 col-sm-4 col-sm-offset-0 col-md-3">
                                     <p><i class="fa fa-comments-o" aria-hidden="true"></i> <?php echo $resultado['num_comentarios']; ?> opiniones</p>
                                 </div>
 
-                                <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
+                                <div class="col-xs-3  col-sm-2 col-sm-offset-0 col-md-1">
                                      <div class="listado-favorito">
                                          
                                 <?php

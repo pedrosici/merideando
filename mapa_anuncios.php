@@ -62,72 +62,92 @@
    <script>
       var customLabel = {
         comybeb: {
-           icon: { url: "images/markers/png/Food_4.png" }
+           icon: { url: "images/markers/png/restaurant.png" }
         },
         motor: {
-          icon: { url:"images/markers/png/Train_6.png"}
-        }
+          icon: { url:"images/markers/png/car.png"}
+        },
+        profyemp:{
+            icon: { url:"images/markers/png/company.png"}
+        },
+        depyocio:{
+            icon: { url:"images/markers/png/summercamp.png" }
+        },
+        comercio:{
+            icon: { url:"images/markers/png/departmentstore.png"}
+        },
+        salybel:{
+            icon: { url:"images/markers/png/aed-2.png"}
+        },
+        formacion:{
+            icon: { url:"images/markers/png/school.png"}
+        },
+        turismo:{
+            icon: { url:"images/markers/png/temple-2.png"}
+        },
+        
       };
 
         function initMap() {
-         var map = new google.maps.Map(document.getElementById('map'), {zoom: 15});
-        var geocoder = new google.maps.Geocoder;
-        geocoder.geocode({'address': 'Mérida'}, function(results, status) {
-          if (status === 'OK') {
-            map.setCenter(results[0].geometry.location);
-            
-          } else {
-            window.alert('Geocode was not successful for the following reason: ' +
-                status);
-          }
-        });
-        var infoWindow = new google.maps.InfoWindow;
+            var map = new google.maps.Map(document.getElementById('map'), {zoom: 15});
+            var geocoder = new google.maps.Geocoder;
+            var latlng = new google.maps.LatLng(38.91795,-6.34146);
+            geocoder.geocode({'latLng': latlng }, function(results, status) {
+              if (status === 'OK') {
+                map.setCenter(results[0].geometry.location);
 
-          // Change this depending on the name of your PHP or XML file
-          downloadUrl('php/maps.php', function(data) {
-            var xml = data.responseXML;
-            var markers = xml.documentElement.getElementsByTagName('marker');
-            Array.prototype.forEach.call(markers, function(markerElem) {
-              var name = markerElem.getAttribute('name');
-              var address = markerElem.getAttribute('address');
-              var type = markerElem.getAttribute('type');
-              var enlace = markerElem.getAttribute('enlace');
-                
-              var point = new google.maps.LatLng(
-                  parseFloat(markerElem.getAttribute('lat')),
-                  parseFloat(markerElem.getAttribute('lng')));
-
-              var infowincontent = document.createElement('div');
-              var strong = document.createElement('strong');
-              strong.textContent = name
-              infowincontent.appendChild(strong);
-              infowincontent.appendChild(document.createElement('br'));
-
-              var text = document.createElement('text');
-              text.textContent = address
-              infowincontent.appendChild(text);
-                infowincontent.appendChild(document.createElement('br'));
-                
-              var a = document.createElement('a');
-                a.textContent = "Ver Anuncio"
-                a.href = enlace;
-                infowincontent.appendChild(a);
-                
-                
-              var icon = customLabel[type].icon || {};
-             
-              var marker = new google.maps.Marker({
-                map: map,
-                animation: google.maps.Animation.DROP,
-                position: point,
-               icon: icon.url
-              });
-              marker.addListener('click', function() {
-                infoWindow.setContent(infowincontent);
-                infoWindow.open(map, marker);
-              });
+              } else {
+                window.alert('El mapa no pudo mostrarse por la siguiente razón: ' +
+                    status);
+              }
             });
-          });
+            var infoWindow = new google.maps.InfoWindow;
+
+              // Change this depending on the name of your PHP or XML file
+              downloadUrl('php/maps.php', function(data) {
+                var xml = data.responseXML;
+                var markers = xml.documentElement.getElementsByTagName('marker');
+                Array.prototype.forEach.call(markers, function(markerElem) {
+                  var name = markerElem.getAttribute('name');
+                  var address = markerElem.getAttribute('address');
+                  var type = markerElem.getAttribute('type');
+                  var enlace = markerElem.getAttribute('enlace');
+
+                  var point = new google.maps.LatLng(
+                      parseFloat(markerElem.getAttribute('lat')),
+                      parseFloat(markerElem.getAttribute('lng')));
+
+                  var infowincontent = document.createElement('div');
+                  var strong = document.createElement('strong');
+                  strong.textContent = name
+                  infowincontent.appendChild(strong);
+                  infowincontent.appendChild(document.createElement('br'));
+
+                  var text = document.createElement('text');
+                  text.textContent = address
+                  infowincontent.appendChild(text);
+                    infowincontent.appendChild(document.createElement('br'));
+
+                  var a = document.createElement('a');
+                    a.textContent = "Ver Anuncio"
+                    a.href = enlace;
+                    infowincontent.appendChild(a);
+
+
+                  var icon = customLabel[type].icon || {};
+
+                  var marker = new google.maps.Marker({
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    position: point,
+                   icon: icon.url
+                  });
+                  marker.addListener('click', function() {
+                    infoWindow.setContent(infowincontent);
+                    infoWindow.open(map, marker);
+                  });
+                });
+              });
         }
 
 

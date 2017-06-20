@@ -1,4 +1,5 @@
 <?php
+
 // ARCHIVO DE CONEXION A LA BASE DE DATOS
 
 try {
