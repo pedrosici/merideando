@@ -15,9 +15,7 @@ if (isset($_POST['id_categoria'])){
     if ($query->rowCount() > 0 ){
         echo $indice;
         while ($resultado = $query->fetch(PDO::FETCH_ASSOC)){
-            if ($resultado['id_subcategoria'] == $_GET['idsubcat']){
-                echo '<option selected value="'.$resultado['id_subcat'].'">'.$resultado['nombre_subcat'].'</option>';
-            }
+            
             $html = "<option value='".$resultado['id_subcategoria']."'>".$resultado['nombre_subcat']."</option>";
             echo $html;
         }

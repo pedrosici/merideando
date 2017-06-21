@@ -376,7 +376,7 @@
                         id_cat = $(this).val();
                        
                         //Llamamos al archivo que manda el id de la subcategoría
-                        $.post("php/crear_anuncio.php", {id_categoria: id_cat}, function(data){
+                        $.post("php/llenar_combo_cat.php", {id_categoria: id_cat}, function(data){
                             //Le devolvemos ese id_subcat al option del combobox de subcategorias
                             $("#subcategoria").html(data);
                         });
